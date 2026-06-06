@@ -72,4 +72,4 @@ KOS_LLM-Wiki/
 
 - [[03-Resources/PARA/PARA 与知识管理|PARA 与知识管理]]
 - [[03-Resources/UDC/UDC 概述|UDC 概述]]
-- [[_索引|总索引]]
+- [[../../_meta/meta_index_cn|总索引]]

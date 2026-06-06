@@ -21,7 +21,7 @@ tags: [home, index, kos]
 | [[02-Areas/|📂 02-Areas]] | 持续关注的责任领域 |
 | [[03-Resources/|📚 03-Resources]] | 主题资料与参考资源 |
 | [[04-Archives/|🗄️ 04-Archives]] | 已归档的非活跃内容 |
-| [[05-Meta/|⚙️ 05-Meta]] | 模板、脚本与附件 |
+| [[_meta/|⚙️ _meta]] | 模板、脚本与附件 |
 | [[06-Daily/|📅 06-Daily]] | 每日笔记 |
 
 ## 知识体系入口
@@ -35,3 +35,9 @@ tags: [home, index, kos]
 
 > [!info] 使用提示
 > 本 Wiki 使用 Obsidian 管理。支持 `[[双向链接]]`、标签系统、属性查询与图谱视图。
+
+## 语言版本
+
+- **English** — [[en/Home|English]]
+- **简体中文** — [[Home|简体中文]]
+- **繁體中文** — [[zh-tw/首頁|繁體中文]]
