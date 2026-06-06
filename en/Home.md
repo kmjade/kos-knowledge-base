@@ -17,11 +17,12 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 
 | Area                        | Description                           |
 |-----------------------------|---------------------------------------|
-| [[en/01-Projects/\|📋 01-Projects]] | Active projects with deadlines        |
-| [[en/02-Areas/\|📂 02-Areas]]       | Ongoing areas of responsibility       |
-| [[en/03-Resources/\|📚 03-Resources]] | Reference materials & knowledge base  |
-| [[en/04-Archives/\|🗄️ 04-Archives]]  | Archived inactive content             |
-| [[en/_meta/\|⚙️ _meta]]               | Templates, scripts & attachments      |
+| [[en/00-Inbox/\|📥 00-Inbox]]        | Unprocessed notes & captured material |
+| [[en/01-Projects/\|📋 01-Projects]]  | Active projects with deadlines        |
+| [[en/02-Areas/\|📂 02-Areas]]        | Ongoing areas of responsibility       |
+| [[en/03-Resources/\|📚 03-Resources]]  | Reference materials & knowledge base  |
+| [[en/04-Archives/\|🗄️ 04-Archives]] | Archived inactive content             |
+| [[en/_meta/\|⚙️ _meta]]              | Templates, scripts & attachments      |
 | [[en/06-Daily/\|📅 06-Daily]]        | Daily notes                           |
 
 ## Knowledge System Entry Points
