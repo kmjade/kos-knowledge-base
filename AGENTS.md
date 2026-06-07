@@ -758,11 +758,54 @@ eviewed: true 的笔记
 | 3 | 背景人物 — 知识库引用 | 学者、历史人物 |
 
 ### 使用规则
-- 新增人物：使用 _meta/Templates/实体模板.md 创建
-- 标签规则：#people/tier-{N}
+
+#### 人物识别与线索提取
+
+识别触发条件：
+- **专有名词匹配** — 首次出现的人名自动标注为 Tier 3 stub
+- **主动标记** — 使用 `@人名` 或 `[[人名]]` 格式手动标记
+- **引用分析** — 从来源资料中提取学者/作者信息
+
+提取粒度：
+- Tier 1：全量信息（互动记录 + 联系方式概要 + 关联笔记）
+- Tier 2：关键信息（互动日期 + 摘要 + 关联笔记）
+- Tier 3：基础信息（来源 + 关联笔记）
+
+#### 模板使用
+- Tier 1：使用 `_meta/Templates/person-tier1.md`
+- Tier 2：使用 `_meta/Templates/person-tier2.md`
+- Tier 3：使用 `_meta/Templates/person-tier3.md`
+
+#### 标签规则
+- 人物页标签：`#people/tier-{N}`
 - UDC：人物传记使用 929 子类
-- 跨语言：人物页统一使用英文文件名，内容可用中文
-- 互动记录：写入 wiki/log.md
+
+#### 跨语言
+- 人物页统一使用英文文件名
+- 内容可用对应语言编写
+- 三语言版本通过 frontmatter 的 `lang` 字段区分
+
+#### 互动记录格式
+- 存储位置：`wiki/log.md`（每个子库的本地日志）
+- 记录格式：
+```yaml
+- date: YYYY-MM-DD
+  type: meeting | chat | email | note
+  summary: 一句话描述
+  tags: [optional]
+```
+
+#### 隐私规则
+
+以下信息**不得**记录：
+- 电话号码、住址、身份证号等个人标识符
+- 银行账户、密码等敏感财务信息
+- 健康状况等受保护信息
+
+处理方式：
+- Tier 1 人物可记录"联系方式类型"，但不记录具体值
+- 互动记录仅包含日期、类型、摘要，不包含原始对话内容
+- 所有人物页 frontmatter 标记 `privacy: restricted`
 
 ### 维护
 - Tier 3 人物自动从 vault 扫描创建（stub）
