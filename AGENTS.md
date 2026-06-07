@@ -82,8 +82,8 @@ tags: [tag1, tag2]
 
 每次新增笔记后，同步更新以下索引文件：
 - `_meta/🔗 知识关联/Index/_index.md`（简体）- PARA 表、UDC 表
-- `en/_index.md`（英文）
-- `zh-tw/_index.md`（繁体）
+- `en/_meta/🔗 知识关联/Index/_index.md`（英文）
+- `zh-tw/_meta/🔗 知识关联/Index/_index.md`（繁体）
 
 ### 7. 跨语言链接规则
 
@@ -119,8 +119,8 @@ tags: [tag1, tag2]
 
 #### 例外：跨语言链接到索引
 
-EN 页面中引用索引：[[en/_index|display text]]（前缀 en/）
-TW 页面中引用索引：[[zh-tw/_index|顯示文字]]（前缀 zh-tw/）
+EN 页面中引用索引：[[en/_meta/🔗 知识关联/Index/_index|display text]]（前缀 en/）
+TW 页面中引用索引：[[zh-tw/_meta/🔗 知识关联/Index/_index|顯示文字]]（前缀 zh-tw/）
 CN 页面中引用索引：[[_meta/🔗 知识关联/Index/_index|索引]]
 
 #### 新增页面时的链接默认规则
