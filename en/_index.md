@@ -36,8 +36,6 @@ tags: [index, moc, kos, navigation]
 
 |----------------------|--------|------------|
 
-| [[en/1 Projects/software-engineering-tickets/README\|SW Architecture Tickets]] | 004.4  | active |
-
 
 
 ### 2 — Areas

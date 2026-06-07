@@ -17,7 +17,7 @@ tags: [index, moc, kos, navigation]
 ### 1 — Projects（專案）
 | 笔记             | UDC    | 狀態     |
 |------------------|--------|----------|
-| [[1 Projects/軟體工程架构设计工单/README\|軟體工程架构设计工单]] | 004.4  | active |
+| [[1 Projects/Bug追踪/README\|Bug追踪]] | 004.4  | active |
 
 ### 2 — Areas（領域）
 | 笔记                                         | UDC    | 标签                        |
