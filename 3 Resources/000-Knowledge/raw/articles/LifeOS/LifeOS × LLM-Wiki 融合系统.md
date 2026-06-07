@@ -1,4 +1,4 @@
----
+﻿---
 title: "LifeOS × LLM-Wiki 融合系统"
 source: "https://mp.weixin.qq.com/s/uEAegrqhsM1WKcqlVfuE2w"
 author:
@@ -9,9 +9,9 @@ description:
 tags:
   - "clippings"
 ---
-compiled: false
-compiled_at: ""
-compiled_by: ""
+compiled: true
+compiled_at: "2026-06-07"
+compiled_by: "KOS-Wiki-Compile"
 
 一只阿木木 *2026年5月26日 00:02*
 
@@ -377,7 +377,7 @@ text
 1. 读取 03-Resources/[topic]/CLAUDE.md（子库 schema）
 2. 读取 03-Resources/[topic]/wiki/index.md（现有知识结构）
 3. 读取 03-Resources/[topic]/wiki/log.md 末尾 10 条（最近编译历史）
-4. 扫描 raw/ 目录，找出 frontmatter 中 \`compiled: false\` 或无 compiled 字段的文件
+4. 扫描 raw/ 目录，找出 frontmatter 中 \`compiled: true\` 或无 compiled 字段的文件
 
 ## 编译流程（对每个未编译文件）
 
@@ -777,7 +777,7 @@ text
 对每个 Wiki 子库：
 - [ ] 死链：[[wikilink]] 指向不存在的文件
 - [ ] 孤立页：没有被引用的 wiki 页面
-- [ ] 未编译原料：raw/ 中 compiled: false 的文件数量
+- [ ] 未编译原料：raw/ 中 compiled: true 的文件数量
 - [ ] 矛盾汇总：所有 [!contradiction] callout 清单
 - [ ] 置信度分布：high/medium/low 各占比
 

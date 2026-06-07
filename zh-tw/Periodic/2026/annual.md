@@ -1,10 +1,10 @@
----
+﻿---
 created: 2026-06-06
-updated: 2026-06-06
+updated: 2026-06-07
 type: yearly
 year: 2026
 udc: 001.8:311
-tags: [yearly, periodic, test]
+tags: [yearly, periodic]
 lifecycle: evergreen
 ---
 
