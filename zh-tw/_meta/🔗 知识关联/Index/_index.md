@@ -25,9 +25,9 @@ tags: [index, moc, kos, navigation]
 | [[2 Areas/知識管理\|知識管理]]              | 001.8  | #area/knowledge-management  |
 | [[2 Areas/LLM 研究\|LLM 研究]]              | 004.8  | #area/llm                   |
 | [[2 Areas/軟體工程架构设计\\|軟體工程架构设计]] | 004.4  | #area/software-engineering  |
-| [[2 Areas/生活/生活\\|生活]] | — | #area/life |
-| [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
-| [[2 Areas/工作/工作\\|工作]] | — | #area/work |
+| [[zh-tw/2 Areas/生活/生活\\|生活]] | — | #area/life |
+| [[zh-tw/2 Areas/學習/學習\\|學習]] | — | #area/learning |
+| [[zh-tw/2 Areas/工作/工作\\|工作]] | — | #area/work |
 
 ### _logs — Logs（日誌）
 | 笔记             | UDC    | 狀態     |
