@@ -74,5 +74,22 @@ Attention(Q, K, V) = softmax(Q × K^T / √d_k) × V
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
-- [[en/03-Resources/LLM-Wiki/training-and-fine-tuning|Training & Fine-tuning]]
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+- [[en/3 Resources/LLM-Wiki/training-and-fine-tuning|Training & Fine-tuning]]
+
+## Core Content
+
+The Transformer is the neural network architecture that underlies all modern LLMs.
+
+**Key Innovation:**
+The Transformer replaced recurrent (RNN) and convolutional (CNN) layers with **self-attention**, enabling parallel processing of all tokens in a sequence.
+
+**Core Components:**
+- **Self-Attention:** Each token computes attention weights for all other tokens
+- **Multi-Head Attention:** Multiple attention mechanisms in parallel capture different relationships
+- **Positional Encoding:** Adds sequence position information
+- **Feed-Forward Networks:** Non-linear transformations per token
+- **Layer Normalization:** Stabilizes training
+
+**Legacy:**
+The Transformer architecture enabled the scaling of language models from millions to hundreds of billions of parameters, powering GPT, BERT, Claude, and all major LLMs.

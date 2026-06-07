@@ -34,7 +34,7 @@ Capture → Projectize → Complete → Area-ize → Solidify → Archive
 | Navigation | Browse by category | Jump via links |
 | Best for | Project management, GTD | Academic research, writing |
 
-> This system **combines both**: uses PARA folder structure as the skeleton, and Obsidian's [[bidirectional links]] for Zettelkasten-style networked connections.
+> This system **combines both**: uses PARA folder structure as the skeleton, and Obsidian's bidirectional links for Zettelkasten-style networked connections.
 
 ## Comparison with GTD
 
@@ -58,5 +58,23 @@ Capture → Projectize → Complete → Area-ize → Solidify → Archive
 
 ## Related Notes
 
-- [[en/03-Resources/PARA/para-overview|PARA Method Overview]]
-- [[en/03-Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+- [[en/3 Resources/PARA/para-overview|PARA Method Overview]]
+- [[en/3 Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+
+## Core Content
+
+PARA integrates with knowledge management practices by providing a **workflow-oriented** alternative to topic-based organization.
+
+**Key Insights:**
+- Traditional folder hierarchies reflect how knowledge _was_ organized, not how it _will be used_
+- PARA flips this: organize for action, not for storage
+- The boundary between categories is fluid — a Resource can become a Project, and a Project can be archived
+
+**Knowledge Management Cycle with PARA:**
+1. **Capture** into Inbox
+2. **Process** into one of the four categories
+3. **Connect** through links and tags
+4. **Review** periodically (weekly, monthly)
+5. **Archive** when no longer active
+
+PARA's strength lies in its simplicity: only four folders, clear rules for each, and a bias toward action over taxonomy.

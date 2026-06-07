@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-06
 udc: 004.8
@@ -17,11 +17,11 @@ LLM（Large Language Model）是当前 AI 领域的核心技术方向。本领�
 
 ## 相关资源
 
-- [[3 Resources/LLM-Wiki/LLM 基础]]
-- [[3 Resources/LLM-Wiki/Transformer 架构]]
-- [[3 Resources/LLM-Wiki/训练与微调]]
-- [[3 Resources/LLM-Wiki/提示工程]]
-- [[3 Resources/LLM-Wiki/知识组织与大模型]]
+- [[3 Resources/000-Knowledge/004-LLM-Wiki/raw/LLM 基础]]
+- [[3 Resources/000-Knowledge/004-LLM-Wiki/raw/Transformer 架构]]
+- [[3 Resources/000-Knowledge/004-LLM-Wiki/raw/训练与微调]]
+- [[3 Resources/000-Knowledge/004-LLM-Wiki/raw/提示工程]]
+- [[3 Resources/000-Knowledge/004-LLM-Wiki/raw/知识组织与大模型]]
 
 ## 研究方向
 

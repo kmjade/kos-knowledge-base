@@ -75,6 +75,29 @@ This enables filtering notes by UDC number via Obsidian search or DataView queri
 
 ## Related Notes
 
-- [[en/03-Resources/UDC/udc-classification-index|UDC Classification Index]]
-- [[en/03-Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
-- [[en/03-Resources/PARA/para-overview|PARA Method Overview]]
+- [[en/3 Resources/UDC/udc-classification-index|UDC Classification Index]]
+- [[en/3 Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
+- [[en/3 Resources/PARA/para-overview|PARA Method Overview]]
+
+## Core Content
+
+The Universal Decimal Classification (UDC) is a comprehensive, multilingual classification system covering all fields of knowledge.
+
+**History:**
+- Developed by Paul Otlet and Henri La Fontaine in the early 1900s
+- Based on the Dewey Decimal Classification but extended for international use
+- First published in French between 1904-1907
+
+**Structure:**
+- **10 main classes** (0-9) covering the whole of knowledge
+- **Decimal subdivision** provides unlimited granularity
+- **Auxiliary tables** for form, place, language, time, and viewpoint
+- **Colon notation** enables faceted combination of concepts
+
+**Key Features:**
+- International in scope (not Anglo-American biased)
+- Synthetic (combines concepts via colon) vs. purely enumerative
+- Multilingual — maintained in multiple language editions
+- Flexible — accommodates new subjects through synthesis
+
+UDC is the backbone of KOS_LLM-Wiki's knowledge organization strategy.

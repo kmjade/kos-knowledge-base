@@ -70,6 +70,19 @@ Each note's frontmatter includes a `udc` field, combining PARA's folder structur
 
 ## Related Notes
 
-- [[en/03-Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
-- [[en/03-Resources/UDC/udc-overview|UDC Overview]]
+- [[en/3 Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
+- [[en/3 Resources/UDC/udc-overview|UDC Overview]]
 - [[en/_index|Master Index]]
+
+## Core Content
+
+The PARA method (Projects, Areas, Resources, Archives) is a personal knowledge management system developed by Tiago Forte. It organizes information into four top-level categories based on actionability:
+
+| Category | Purpose | Examples |
+|----------|---------|----------|
+| **P**rojects | Short-term outcomes with deadlines | Writing a report, planning a trip |
+| **A**reas | Long-term responsibilities | Health, finance, career development |
+| **R**esources | Topics of interest | Research notes, reference material |
+| **A**rchives | Inactive items | Completed or shelved work |
+
+**Core Principle:** Organize by actionability, not by topic. Projects are active, areas are ongoing, resources are reference, and archives are dormant. This keeps attention focused on what needs to be done now.

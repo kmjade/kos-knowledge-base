@@ -71,5 +71,21 @@ This system uses the following tag format for UDC relationships:
 
 ## Related Notes
 
-- [[en/03-Resources/UDC/udc-overview|UDC Overview]]
-- [[en/03-Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
+- [[en/3 Resources/UDC/udc-overview|UDC Overview]]
+- [[en/3 Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
+
+## Core Content
+
+The UDC Classification Index provides an alphabetical lookup tool for finding UDC numbers by subject.
+
+**Index Types:**
+- **Relative Index:** Lists subjects alphabetically with their UDC numbers
+- **Systematic Index:** Organized by UDC main class hierarchy
+- **Chain Index:** Shows hierarchical context for each entry
+
+**Usage:**
+- The index is the primary entry point for classifiers who know the subject but not the number
+- Each index entry typically includes: subject term, UDC number, and optional scope notes
+- Digital implementations support full-text search alongside structured indexing
+
+In KOS_LLM-Wiki, the UDC index is maintained as a reference table linking subjects to their classification numbers across all three languages.

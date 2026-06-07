@@ -62,5 +62,26 @@ Reinforcement Learning Alignment (RLHF / DPO)
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
-- [[en/03-Resources/LLM-Wiki/transformer-architecture|Transformer Architecture]]
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+- [[en/3 Resources/LLM-Wiki/transformer-architecture|Transformer Architecture]]
+
+## Core Content
+
+Training and fine-tuning are the processes by which LLMs learn and specialize.
+
+**Training Stages:**
+1. **Pre-training:** Learning from large-scale unlabeled data (next token prediction)
+2. **Supervised Fine-Tuning (SFT):** Training on labeled examples for specific tasks
+3. **Reinforcement Learning from Human Feedback (RLHF):** Aligning with human preferences
+
+**Fine-Tuning Approaches:**
+- **Full Fine-Tuning:** Updating all model parameters
+- **LoRA (Low-Rank Adaptation):** Training small adapter modules
+- **Adapter Layers:** Inserting small trainable layers between frozen layers
+- **Prompt Tuning:** Learning soft prompts without updating model weights
+
+**Key Considerations:**
+- Fine-tuning requires high-quality, task-specific data
+- Catastrophic forgetting — model may lose general capabilities
+- Compute cost varies significantly by approach
+- Data privacy implications of custom fine-tuning

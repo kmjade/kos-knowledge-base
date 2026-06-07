@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-06
 udc: 004.4
@@ -56,7 +56,7 @@ Software Engineering Architecture Design covers the full chain of architectural 
 
 ## Related Resources
 
-- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]] — LLM system architecture
+- [[en/3 Resources/000-Knowledge/004-LLM-Wiki/llm-fundamentals|LLM Fundamentals]] — LLM system architecture
 - [[en/_meta/architecture|KOS_LLM-Wiki Architecture Spec]] — Architecture practice of this system
 
 ## Research Directions

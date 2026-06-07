@@ -23,7 +23,7 @@ tags: [codex-log, operation, triage]
 - **处理详情**：
   | 源文件 | 目标 | 置信度 | 生命周期 | 操作 |
   |--------|------|--------|----------|------|
-  | Transformer-架构解读.md | 3 Resources/LLM-Wiki/ | high | reference | copy |
+  | Transformer-架构解读.md | 3 Resources/000-Knowledge/004-LLM-Wiki/ | high | reference | copy |
   | 季度报告提醒.md | Periodic/ (task) | high | ephemeral | append |
   | 架构模式概述-剪藏.md | 2 Areas/软件工程架构设计/ | high | reference | copy |
 - **路由分布**：

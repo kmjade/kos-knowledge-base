@@ -14,6 +14,16 @@ aliases:
 
 ---
 
+## 核心內容
+
+### 什麼是 LLM？
+
+大語言模型（Large Language Model）是基於海量文本數據訓練的神經網絡模型，能夠理解和生成人類語言。核心特點是：
+- 規模效應 — 參數規模達到數十億至數千億
+- 湧現能力 — 在規模突破後出現小模型不具備的能力
+- 上下文學習 — 無需微調即可通過示例完成新任務
+
+
 ## 什麼是 LLM？
 
 大型語言模型（Large Language Model）是基於海量文字資料訓練的神經網路模型，能夠理解和生成人類語言。核心特點：
@@ -67,8 +77,8 @@ aliases:
 
 ## 相關筆記
 
-- [[zh-tw/03-Resources/LLM-Wiki/Transformer 架構|Transformer 架構]]
-- [[zh-tw/03-Resources/LLM-Wiki/訓練與微調|訓練與微調]]
-- [[zh-tw/03-Resources/LLM-Wiki/提示工程|提示工程]]
-- [[zh-tw/03-Resources/LLM-Wiki/知識組織與大模型|知識組織與大模型]]
-- [[zh-tw/02-Areas/LLM 研究|LLM 研究]]
+- [[zh-tw/3 Resources/LLM-Wiki/Transformer 架構|Transformer 架構]]
+- [[zh-tw/3 Resources/LLM-Wiki/訓練與微調|訓練與微調]]
+- [[zh-tw/3 Resources/LLM-Wiki/提示工程|提示工程]]
+- [[zh-tw/3 Resources/LLM-Wiki/知識組織與大模型|知識組織與大模型]]
+- [[zh-tw/2 Areas/LLM 研究|LLM 研究]]

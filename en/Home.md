@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-06
 udc: 001.8
@@ -28,9 +28,9 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 ## Knowledge System Entry Points
 
 - [[en/_index|📖 Master Index]] — Complete content index & navigation
-- [[en/3 Resources/PARA/para-overview|PARA Method Overview]] — Projects-Areas-Resources-Archives
-- [[en/3 Resources/UDC/udc-overview|UDC Classification]] — Universal Decimal Classification
-- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Knowledge Base]] — Large Language Models
+- [[en/3 Resources/000-Knowledge/001-PARA/para-overview|PARA Method Overview]] — Projects-Areas-Resources-Archives
+- [[en/3 Resources/000-Knowledge/025-UDC/udc-overview|UDC Classification]] — Universal Decimal Classification
+- [[en/3 Resources/000-Knowledge/004-LLM-Wiki/llm-fundamentals|LLM Knowledge Base]] — Large Language Models
 
 ---
 
@@ -40,7 +40,7 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 ## Language Versions
 
 - **English** — [[en/Home|English]]
-- **简体中文** — [[Home|简体中文]]
+- **简体中文** — [[../_meta/🔗 知识关联/Dashboard/Home|简体中文]]
 - **繁體中文** — [[zh-tw/首頁|繁體中文]]
 
 

@@ -76,5 +76,25 @@ Prompt Engineering is the practice of designing input text (prompts) to guide LL
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
-- [[en/03-Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+- [[en/3 Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+
+## Core Content
+
+Prompt Engineering is the practice of designing and optimizing inputs to LLMs to achieve desired outputs.
+
+**Core Techniques:**
+- **Zero-shot:** Direct instruction without examples
+- **Few-shot:** Providing examples in the prompt
+- **Chain-of-Thought:** Step-by-step reasoning prompts
+- **Role Prompting:** Assigning a persona to the model
+- **Structured Output:** Specifying format (JSON, markdown tables)
+
+**Best Practices:**
+- Be specific and explicit about the desired output
+- Break complex tasks into steps
+- Provide context and constraints
+- Iterate and test systematically
+- Use temperature and other parameters to control creativity
+
+Prompt engineering is both an art and a science — effective prompting requires understanding both the model's capabilities and the task's requirements.

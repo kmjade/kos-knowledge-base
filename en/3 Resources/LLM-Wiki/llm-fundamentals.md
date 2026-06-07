@@ -67,8 +67,27 @@ A Large Language Model (LLM) is a neural network model trained on massive text d
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/transformer-architecture|Transformer Architecture]]
-- [[en/03-Resources/LLM-Wiki/training-and-fine-tuning|Training & Fine-tuning]]
-- [[en/03-Resources/LLM-Wiki/prompt-engineering|Prompt Engineering]]
-- [[en/03-Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
-- [[en/02-Areas/llm-research|LLM Research]]
+- [[en/3 Resources/LLM-Wiki/transformer-architecture|Transformer Architecture]]
+- [[en/3 Resources/LLM-Wiki/training-and-fine-tuning|Training & Fine-tuning]]
+- [[en/3 Resources/LLM-Wiki/prompt-engineering|Prompt Engineering]]
+- [[en/3 Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+- [[en/2 Areas/llm-research|LLM Research]]
+
+## Core Content
+
+Large Language Models (LLMs) are neural network models trained on vast text corpora to understand and generate human language.
+
+**Core Concepts:**
+- **Transformer Architecture:** The foundation of all modern LLMs
+- **Pre-training:** Learning language patterns from massive datasets
+- **Fine-tuning:** Specializing for specific tasks
+- **Prompt Engineering:** Crafting inputs to guide model outputs
+- **RAG (Retrieval-Augmented Generation):** Enhancing LLM responses with external knowledge
+
+**Key Capabilities:**
+- Text generation, summarization, translation
+- Code generation and explanation
+- Question answering and reasoning
+- Knowledge retrieval and synthesis
+
+LLMs are not databases — they model language patterns and can produce plausible but incorrect information (hallucination), making knowledge base integration essential for reliable use.

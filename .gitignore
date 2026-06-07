@@ -1,4 +1,4 @@
-# gitignore template for LangChain products, e.g., LangGraph, LangSmith
+﻿# gitignore template for LangChain products, e.g., LangGraph, LangSmith
 # website: https://www.langchain.com/
 # website: https://www.langchain.com/langgraph
 
@@ -6,4 +6,11 @@
 .langgraph_api/
 
 # Obsidian
-.Obsidian/
+.obsidian/
+
+# PARA - 4 Archives (archive directory, excluded from git)
+4 Archives/
+
+# Periodic notes (excluded from git)
+Periodic/
+

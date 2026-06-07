@@ -73,7 +73,23 @@ Traditional knowledge organization relies on **manually designed classification 
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
-- [[en/03-Resources/LLM-Wiki/prompt-engineering|Prompt Engineering]]
-- [[en/03-Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
-- [[en/03-Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+- [[en/3 Resources/LLM-Wiki/prompt-engineering|Prompt Engineering]]
+- [[en/3 Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
+- [[en/3 Resources/UDC/udc-and-digital-km|UDC & Digital KM]]
+
+## Core Content
+
+The intersection of Knowledge Organization Systems (KOS) and Large Language Models (LLMs) represents a powerful synergy.
+
+**Key Connections:**
+- KOS provides structured knowledge that LLMs can use for grounding
+- LLMs can assist in automated classification, tagging, and entity extraction
+- Well-organized knowledge bases improve RAG (Retrieval-Augmented Generation) quality
+- UDC/DDC classifications serve as cognitive scaffolds for LLM-powered search
+
+**In KOS_LLM-Wiki:**
+- UDC provides the top-level classification
+- PARA provides the workflow structure
+- LLM integration enables AI-assisted capture, categorization, and retrieval
+- The combination creates a system greater than the sum of its parts

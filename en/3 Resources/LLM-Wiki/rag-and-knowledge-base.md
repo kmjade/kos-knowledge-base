@@ -60,5 +60,23 @@ Query → Restrict to UDC class → Retrieve within class → More precise resul
 
 ## Related Notes
 
-- [[en/03-Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+- [[en/3 Resources/LLM-Wiki/kos-and-llm|KOS & LLM]]
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Fundamentals]]
+
+## Core Content
+
+Retrieval-Augmented Generation (RAG) combines LLMs with external knowledge retrieval to produce more accurate and contextually grounded outputs.
+
+**Architecture:**
+1. **Indexing:** Documents are chunked and embedded into a vector database
+2. **Retrieval:** User query retrieves relevant document chunks by semantic similarity
+3. **Generation:** LLM generates response conditioned on retrieved context
+
+**Benefits:**
+- Reduces hallucination by grounding responses in retrieved knowledge
+- Enables access to up-to-date or domain-specific information
+- Allows transparent attribution of sources
+- Scales knowledge without retraining the model
+
+**In KOS_LLM-Wiki:**
+The knowledge base is structured to support RAG workflows, with UDC providing a navigable hierarchy, PARA ensuring content freshness, and wiki links enabling rich context for retrieval.

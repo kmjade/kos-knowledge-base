@@ -1,4 +1,4 @@
-﻿# KOS_LLM-Wiki
+# KOS_LLM-Wiki
 
 **Knowledge Organization System + LLM-Wiki**
 
@@ -31,7 +31,7 @@ KOS_LLM-Wiki/
 | 语言 | 首页 | 索引 |
 |------|------|------|
 | English | [[en/Home\|Home]] | [[en/_index\|_index]] |
-| 简体中文 | [[Home\|首页]] | [[_索引\|_索引]] |
+| 简体中文 | [[_meta/🔗 知识关联/Dashboard/Home\|首页]] | [[_meta/🔗 知识关联/Index/_index\|_索引]] |
 | 繁體中文 | [[zh-tw/首頁\|首頁]] | [[zh-tw/_index\|_index]] |
 
 ## 核心特性
@@ -61,7 +61,7 @@ KOS_LLM-Wiki/
 | 001.8:005 | 知识管理方法（PARA） |
 | 001.8:004.8 | 知识组织与 AI |
 
-完整分类见 [[_索引]]。
+完整分类见 [[_meta/🔗 知识关联/Index/_index]]。
 
 ## 贡献
 

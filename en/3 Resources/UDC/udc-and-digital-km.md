@@ -41,7 +41,7 @@ Search `udc:004.8` in Obsidian to find all AI-related notes.
 ````markdown
 ```dataview
 TABLE udc, tags
-FROM "en/03-Resources"
+FROM "en/3 Resources"
 WHERE contains(udc, "004.8")
 SORT file.name
 ```
@@ -66,6 +66,25 @@ The two provide **orthogonal dimensions**: PARA answers "which lifecycle stage i
 
 ## Related Notes
 
-- [[en/03-Resources/UDC/udc-overview|UDC Overview]]
-- [[en/03-Resources/UDC/udc-classification-index|UDC Classification Index]]
-- [[en/03-Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
+- [[en/3 Resources/UDC/udc-overview|UDC Overview]]
+- [[en/3 Resources/UDC/udc-classification-index|UDC Classification Index]]
+- [[en/3 Resources/PARA/para-and-knowledge-management|PARA & Knowledge Management]]
+
+## Core Content
+
+UDC adapts naturally to digital knowledge management through its flexible, faceted structure.
+
+**Digital Advantages:**
+- **Colon notation (:)** enables compound classifications that digital systems can parse and query
+- **Auxiliary tables** provide multi-dimensional indexing without fixed hierarchies
+- **Universal scope** avoids the domain-specific limitations of other systems
+
+**In KOS_LLM-Wiki:**
+- UDC numbers serve as machine-readable metadata for every note
+- The classification supports both browsing (hierarchy) and searching (tags + UDC)
+- Digital tools enable automatic classification suggestions and cross-lingual UDC matching
+
+**Future Directions:**
+- AI-assisted UDC classification of new content
+- Linked Data integration with UDC as a vocabulary
+- Automated crosswalks between UDC and other classification systems
