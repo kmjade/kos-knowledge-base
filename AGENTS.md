@@ -1,4 +1,4 @@
-﻿# AGENTS — KOS_LLM-Wiki 维护指南
+# AGENTS — KOS_LLM-Wiki 维护指南
 
 本文件为 AI 助手（如 Codex）维护此知识库的操作规范。
 
@@ -565,6 +565,40 @@ ode_modules/ 目录
 今日笔记: [存在/不存在]
 最近操作: [摘要]
 -----------------
+```
+
+## Hooks
+
+### 会话开始协议
+
+参见 [[#Context 加载]] 章节的完整流程（Step 1-5）。会话开始时的自动操作：
+
+1. **Context 加载** — 读取核心文档、检查工单、检查今日日志、检查 Inbox、检查编译状态
+2. **状态摘要** — 输出结构化上下文块
+3. **Triage 检查** — 若 Inbox 有待处理文件，提示执行 Triage
+
+### 会话结束协议
+
+会话结束时自动执行以下收尾操作：
+
+1. **操作日志** — 将本次会话的关键操作写入 `_logs/operations/maintenance.md`
+2. **状态持久化** — 更新当日笔记中的 Agent 操作记录区块
+3. **清理** — 删除会话过程中创建的临时文件
+4. **提示** — 若有未完成的 Triage 或 Compile，提醒用户下次处理
+
+### Hooks 流程图
+
+```
+[Session Start]
+    -> Context Load
+    -> Daily Check
+    -> Status Summary
+    -> [User Interaction...]
+    -> [Optional: Triage / Compile / Lint...]
+[Session End]
+    -> Operation Log
+    -> Status Persist
+    -> Cleanup
 ```
 
 ## Daily Open
