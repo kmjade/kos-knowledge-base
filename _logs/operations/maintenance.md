@@ -385,4 +385,67 @@ tags: [codex-log, operation, maintenance]
 
 ### 状态
 - success
-- 工单已归档: 4 Archives/内容深化工单/ (status: complete)
+- 工单已归档: 4 Archives/内容深化工单/ (status: complete)## 2026-06-07 会话 — KOS 分支切换
+
+**状态:** completed
+
+### 操作摘要
+| # | 操作 | 涉及模块 |
+|---|------|---------|
+| 1 | UDC 自动建议全五阶段实施 | AGENTS.md / 映射表 / 模板 / Triage / Compile |
+| 2 | 批量写入 36 文件 UDC 建议值 | 2 Areas / 3 Resources / _meta |
+| 3 | 映射表增量优化 v1.0→v1.1 | _meta/udc-keywords.json (124→160 规则) |
+| 4 | UDC 索引补全 (L2 修复) | UDC 分类索引.md (14→24 类号) |
+| 5 | KOS-Wiki-Compile 状态检查 | 42 源文件全部处理 |
+| 6 | LifeOS 源文件编译 | 新建 Source 页 + 标记 compiled |
+| 7 | 断链修复工单完成 (P3) | 4 映射页 + _索引 修正 + KOS-Link 验证 |
+| 8 | 跨语言同步 (L4) | UDC 子库 29/29/29 三语对齐 |
+| 9 | 月度回顾创建 | _logs/reports/2026-06.md |
+| 10 | 10 个 raw 文件补充 compiled:false | raw/ 源文件状态标记 |
+
+### 文件变更统计
+- 新建文件: ~20（映射表 4×3语言 + Month Review + LifeOS Source + Compile Status Report）
+- 修改文件: ~50（AGENTS.md、模板、raw 标记、索引、tasks 等）
+- 系统指标: 518+ .md 文件, 98.1% UDC 覆盖率, 46 wiki 页面
+
+
+## 2026-06-07 会话 — 内容深化·知识空白填补
+
+**状态:** completed
+
+### 操作摘要
+| # | 操作 | 涉及模块 |
+|---|------|---------|
+| 1 | 新建概念页 computer (004) | wiki/concepts/ + en/ + zh-tw/ |
+| 2 | 新建概念页 rontmatter (025.3) | wiki/concepts/ + en/ + zh-tw/ |
+| 3 | 新建概念页 documentation (002) | wiki/concepts/ + en/ + zh-tw/ |
+| 4 | 新建概念页 claude-code (004.8) | wiki/concepts/ + en/ + zh-tw/ |
+| 5 | 新建概念页 YAML (004.6) | wiki/concepts/ + en/ + zh-tw/ |
+| 6 | 新建概念页 Unicode (003) | wiki/concepts/ + en/ + zh-tw/ |
+| 7 | 更新 CN wiki 索引 + EN/TW 子库索引 | wiki/index.md |
+| 8 | 更新主索引 _index.md (Resources + UDC 表) | _meta/🔗 知识关联/Index/ |
+
+### 文件变更统计
+- 新建文件: 18 (6 概念 x 3 语言)
+- 修改文件: 4 (wiki/index.md + _meta/Index/_index.md + en/ + zh-tw/ 索引)
+
+
+## 2026-06-07 会话 — 内容深化·第二批 stub 页
+
+**状态:** completed
+
+### 操作摘要
+| # | 操作 | 涉及模块 |
+|---|------|---------|
+| 1 | 新建 stub 页 MARC (025.3) | wiki/concepts/ + en/ + zh-tw/ |
+| 2 | 新建 stub 页 education (37) | wiki/concepts/ + en/ + zh-tw/ |
+| 3 | 新建 stub 页 Obsidian-uri (004.9) | wiki/concepts/ + en/ + zh-tw/ |
+| 4 | 新建 stub 页 File-format (004.6) | wiki/concepts/ + en/ + zh-tw/ |
+| 5 | 新建 stub 页 Agent-prompt (004.8) | wiki/concepts/ + en/ + zh-tw/ |
+| 6 | 新建 stub 页 GPT-5 (004.8) | wiki/concepts/ + en/ + zh-tw/ |
+| 7 | 更新 CN wiki 索引 (total_concepts: 10→16) | wiki/index.md |
+| 8 | 更新主索引 (新增 6 Resources 行 + 025.3/37 UDC 行) | _meta/🔗 知识关联/Index/_index.md |
+
+### 文件变更统计
+- 新建文件: 18 (6 stub x 3 语言)
+- 修改文件: 2 (wiki/index.md, _index.md)

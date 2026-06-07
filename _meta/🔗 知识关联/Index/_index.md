@@ -109,21 +109,34 @@ source/llm/transformer |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/AppliedSciences+LLM-Wiki整合系統架構設計\|Applied Sciences 架构设计]] | 004.8 | #resource/llm |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Knowledge+PARA+LLM-Wiki融合系統\|Knowledge+PARA+LLM-Wiki 融合系统]] | 004.8 | #resource/llm |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/PARA+LLM-WIKI架构，实现个人知识与生活管理的自动化革命\|PARA+LLM-WIKI 自动化革命]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/wiki/concepts/computer|computer]] | 004 | #resource/classification |
+| [[3 Resources/000-Knowledge/wiki/concepts/documentation|documentation]] | 002 | #resource/kos |
+| [[3 Resources/000-Knowledge/wiki/concepts/frontmatter|frontmatter]] | 025.3 | #resource/metadata |
+| [[3 Resources/000-Knowledge/wiki/concepts/YAML|YAML]] | 004.6 | #resource/data-formats |
+| [[3 Resources/000-Knowledge/wiki/concepts/Unicode|Unicode]] | 003 | #resource/standards |
+| [[3 Resources/000-Knowledge/wiki/concepts/claude-code|Claude Code]] | 004.8 | #resource/llm/tools |
+| [[3 Resources/000-Knowledge/wiki/concepts/MARC|MARC]] | 025.3 | #resource/metadata |
+| [[3 Resources/000-Knowledge/wiki/concepts/education|education]] | 37 | #resource/classification |
+| [[3 Resources/000-Knowledge/wiki/concepts/Obsidian-uri|Obsidian URI]] | 004.9 | #resource/knowledge-management |
+| [[3 Resources/000-Knowledge/wiki/concepts/File-format|File Format]] | 004.6 | #resource/data-formats |
+| [[3 Resources/000-Knowledge/wiki/concepts/Agent-prompt|Agent Prompt]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/wiki/concepts/GPT-5|GPT-5]] | 004.8 | #resource/llm |
 
 ---
-
 ## 按 UDC 分类
 
 | UDC 类号      | 类目             | 相关笔记                                                     |
 |---------------|------------------|--------------------------------------------------------------|
 | 001.8         | 知识组织与管理   | Home, _索引, 知识管理, PARA 方法概览, 知识组织与 LLM         |, AI与知识系统, 个人知识管理, 关联数据, 分类法, 叙词表, 本体论, 知識組織系統, 知识图谱, 知识管理, 知识组织系统概述 |
-| 004           | 计算机科学       | —                                                            |
+| 004           | 计算机科学       | computer, documentation, YAML, Unicode, File-format                 |
 | 004.4         | 软件工程         | 软件工程架构设计                                             |
-| 004.8         | 人工智能 / LLM   | LLM 基础, LLM 研究, Transformer 架构, Transformer-架构解读, 训练与微调, 提示工程, RAG 与知识库集成, 知识组织与 LLM, Applied Sciences, Knowledge+PARA+LLM-Wiki, PARA+LLM-WIKI 自动化 |
+| 004.8         | 人工智能 / LLM   | LLM 基础, LLM 研究, Transformer 架构, Transformer-架构解读, 训练与微调, 提示工程, RAG 与知识库集成, 知识组织与 LLM, Applied Sciences, Knowledge+PARA+LLM-Wiki, PARA+LLM-WIKI 自动化, Claude Code, GPT-5, Agent-prompt |
 | 004.8:519.6   | 计算智能 / 神经网络 | Transformer 架构, Transformer-架构解读                      |
 | 004.8:681.3   | 机器学习训练     | 训练与微调                                                   |
 | 004.8:159.9   | 认知与提示       | 提示工程                                                     |
-| 025.4         | 分类法 / 索引    | UDC 概述, UDC 分类索引                                       |, CLC中国图书馆分类法详解, DDC杜威十进制分类法详解, LCC美国国会图书馆分类法详解, UDC 概述, UDCIn-Depth详解, 元数据标准, 分类原理, 分类法原理, 分类法应用, 分类法概述, 分類法與元數據, 数字时代的分类 |
+| 025.3         | 元数据 / 编目    | MARC, frontmatter, 元数据                                         |
+| 37            | 教育             | education                                                          |
+| 025.4         | 分类法 / 索引    | UDC 概述, UDC 分类索引                                       |, CLC中国图书馆分类法详解, DDC杜威十进制分类法详解, LCC美国国会图书馆分类法详解, UDC 概述, UDCIn-Depth详解, 元数据标准, 分类原理, 分类法原理, 分类法应用, 分类法概述, 分類法與元數據, 数字时代的分类, frontmatter |
 | 025.4:001     | 分类理论         | UDC 分类索引                                                 |, UDC 分类索引 |
 | 025.4:004     | 数字分类         | UDC 与数字知识管理                                           |, UDC 与数字知识管理 |
 | 001.8:005     | 知识管理方法     | PARA 方法概览                                                |
