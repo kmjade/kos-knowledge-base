@@ -24,6 +24,9 @@ tags: [index, moc, kos, navigation]
 | [[en/2 Areas/knowledge-management\|Knowledge Management]] | 001.8  | #area/knowledge-management   |
 | [[en/2 Areas/llm-research\|LLM Research]]                | 004.8  | #area/llm                    |
 | [[en/2 Areas/software-engineering-architecture\\|Software Engineering Architecture]] | 004.4  | #area/software-engineering     |
+| [[2 Areas/生活/生活\\|生活]] | — | #area/life |
+| [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
+| [[2 Areas/工作/工作\\|工作]] | — | #area/work |
 
 ### _logs — Logs
 | Note                    | UDC    | Status     |
