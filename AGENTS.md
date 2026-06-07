@@ -510,6 +510,44 @@ _meta/queries/ 目录包含 6 个可直接使用的查询：
 | 日期范围 | WHERE created >= date("2026-01-01") AND created < date("2026-07-01") |
 | 组合条件 | WHERE udc LIKE "004%" AND contains(tags, "llm") |
 | 排序 + 限制 | SORT updated DESC LIMIT 10 |
+## 插件配置
+
+详细配置指南见 [[_meta/design/plugin-guide.md]]。
+
+### 必装插件
+
+| 插件 | 用途 | 配置要点 |
+|------|------|----------|
+| **Dataview** | 元数据查询与动态列表 | 启用 JavaScript 查询；自动刷新 |
+| **Templater** | 模板引擎（支持 `{{date:}}` 语法） | 模板目录设为 `_meta/Templates/`；触发快捷键 Alt+T |
+| **Obsidian Tasks** | 任务管理与查询 | 启用全局任务查询；日期格式 YYYY-MM-DD |
+| **Folder Notes** | 为文件夹创建索引页 | 自动创建与文件夹同名的索引文件 |
+
+### 推荐插件
+
+| 插件 | 适用场景 | 说明 |
+|------|----------|------|
+| **BRAT** | 测试社区新插件 | 已安装，用于接收 Beta 更新 |
+| **Flownote** | 思维导图式笔记 | 适合 brainstorming 和概念关联 |
+| **Ioto Update** | 插件更新管理 | 已安装，简化更新流程 |
+
+### 可选插件
+
+| 插件 | 场景 | 决策建议 |
+|------|------|----------|
+| Excalidraw | 手绘图形/图表 | 需要视觉笔记时启用 |
+| Kanban | 看板式项目管理 | 项目数量 > 5 时启用 |
+| Calendar | 日历视图查看笔记 | 日常使用 Daily Notes 时推荐 |
+| Graph Analysis | 关系图增强 | 图谱浏览频繁时启用 |
+| Pandoc Plugin | 导出 Word/PDF | 需要导出文档时启用 |
+| Omnisearch | 全文搜索增强 | Dataview 查询不满足需求时启用 |
+
+### 配置组合推荐
+
+- **轻量**（必装）：Dataview + Templater + Folder Notes
+- **标准**（轻量 + 推荐）：+ BRAT + Flownote
+- **完整**（标准 + 可选按需）：按需添加 Kanban / Calendar / Excalidraw
+
 ## Context 加载
 
 ### 会话开始协议
