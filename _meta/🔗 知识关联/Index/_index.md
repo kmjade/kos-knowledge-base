@@ -26,7 +26,7 @@ tags: [index, moc, kos, navigation]
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
 | [[2 Areas/生活/生活\|生活]] / [[2 Areas/生活/个人财务/个人财务\|个人财务]] | 336 | #area/life |
 | [[2 Areas/学习/学习\|学习]] / [[2 Areas/学习/体系/学习分类\|学习管理]] | 37 | #area/learning |
-| [[2 Areas/工作/工作\\|工作]] | — | #area/work |
+| [[2 Areas/工作/工作\|工作]] / [[2 Areas/工作/企业管理/企业管理\|企业管理]] | 334.7 | #area/work |
 =======
 | [[2 Areas/知识组织/知识组织\|知识组织]] | 001.8 | #area/knowledge-management |
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
@@ -132,6 +132,9 @@ source/llm/transformer |
 | [[_meta/design/学习管理-架构设计.md|学习管理-架构设计]] | 37 | #design/learning |
 | [[_meta/design/学习管理-原型设计.md|学习管理-原型设计]] | 37 | #design/learning |
 | [[_meta/design/学习管理-详细设计.md|学习管理-详细设计]] | 37 | #design/learning |
+| [[_meta/design/企业管理-架构设计.md|企业管理-架构设计]] | 334.7 | #design/business |
+| [[_meta/design/企业管理-原型设计.md|企业管理-原型设计]] | 334.7 | #design/business |
+| [[_meta/design/企业管理-详细设计.md|企业管理-详细设计]] | 334.7 | #design/business |
 
 ---
 ## 按 UDC 分类
@@ -154,6 +157,7 @@ source/llm/transformer |
 | 001.8:005     | 知识管理方法     | PARA 方法概览                                                |
 | 001.8:025.4   | 索引与分类       | _索引                                                        |
 | 336           | 个人财务         | 个人财务系统, 个人财务系统-架构设计                               |
+| 334.7         | 企业管理 / 个体户 | 企业管理, 企业管理-架构设计                                   |
 | 001.8:004.8   | 知识组织与 AI    | 知识组织与大模型, RAG 与知识库集成, Codex-logs 需求说明书 |
 
 | 929 | 人物传记 | Paul-Otlet-奥特勒 |
