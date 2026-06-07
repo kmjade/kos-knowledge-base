@@ -34,6 +34,16 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 
 ---
 
+## Three Pillars
+
+| Pillar | Description |
+|--------|-------------|
+| [[en/2 Areas/生活/生活\|🏠 Life]] | Health, finance, family, hobbies |
+| [[en/2 Areas/学习/学习\|📖 Learning]] | Reading, skills, knowledge |
+| [[en/2 Areas/工作/工作\|💼 Work]] | Projects, career, collaboration |
+
+---
+
 > [!info] Usage Tip
 > This Wiki is managed with Obsidian. Supports `[[bidirectional links]]`, tag system, property queries, and graph view.
 
