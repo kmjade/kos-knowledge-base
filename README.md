@@ -4,7 +4,7 @@
 
 一个融合 **PARA 方法**、**UDC 分类法** 与 **LLM 知识库** 的个人知识管理系统，支持三语言。
 
-![version](https://img.shields.io/badge/version-v1.2.0-blue)
+![version](https://img.shields.io/badge/version-v1.2.1-blue)
 
 ## 系统架构
 
