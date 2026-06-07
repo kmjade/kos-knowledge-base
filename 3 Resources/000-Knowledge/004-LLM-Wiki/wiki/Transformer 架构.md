@@ -1,8 +1,9 @@
----
+﻿---
 created: 2026-06-07
 updated: 2026-06-07
 udc: 004.8
-tags: [resource, llm]
+ddc: "006.3"
+tags: [resource, llm, #udc/004.8, #udc/004.8:519.6]
 ---
 
 # Transformer 架构

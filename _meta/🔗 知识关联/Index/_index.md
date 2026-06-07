@@ -22,10 +22,17 @@ tags: [index, moc, kos, navigation]
 ### 2 — Areas（领域）
 | 笔记                                         | UDC    | 标签                        |
 |----------------------------------------------|--------|-----------------------------|
+<<<<<<< HEAD
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
 | [[2 Areas/生活/生活\\|生活]] | — | #area/life |
 | [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
 | [[2 Areas/工作/工作\\|工作]] | — | #area/work |
+=======
+| [[2 Areas/知识组织/知识组织\|知识组织]] | 001.8 | #area/knowledge-management |
+| [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
+| [[2 Areas/知识组织/LLM 研究\|LLM 研究]]              | 004.8  | #area/llm                   |
+| [[2 Areas/知识组织/软件工程架构设计\\|软件工程架构设计]] | 004.4  | #area/software-engineering  |
+>>>>>>> main
 
 ### _logs — Logs（日志）
 | 笔记             | UDC    | 状态     |
