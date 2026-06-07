@@ -1,8 +1,9 @@
----
+﻿---
 created: 2026-06-07
 updated: 2026-06-07
 udc: 004.8
-tags: [resource, llm]
+ddc: "006.3"
+tags: [resource, llm, #udc/004.8]
 ---
 
 # LLM 基础

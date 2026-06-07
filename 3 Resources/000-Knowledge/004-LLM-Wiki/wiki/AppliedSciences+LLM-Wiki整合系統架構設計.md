@@ -1,4 +1,10 @@
-﻿---\ncreated: 2026-06-07\nupdated: 2026-06-07\nudc: 004.8\ntags: [resource, llm]\n---
+---
+created: 2026-06-07
+updated: 2026-06-07
+udc: 004.8
+ddc: "006.3"
+tags: [resource, llm, #udc/004.8]
+---
 
 # Applied Sciences + LLM-Wiki 系统架构
 
