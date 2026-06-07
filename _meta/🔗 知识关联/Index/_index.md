@@ -25,7 +25,7 @@ tags: [index, moc, kos, navigation]
 <<<<<<< HEAD
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
 | [[2 Areas/生活/生活\|生活]] / [[2 Areas/生活/个人财务/个人财务\|个人财务]] | 336 | #area/life |
-| [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
+| [[2 Areas/学习/学习\|学习]] / [[2 Areas/学习/体系/学习分类\|学习管理]] | 37 | #area/learning |
 | [[2 Areas/工作/工作\\|工作]] | — | #area/work |
 =======
 | [[2 Areas/知识组织/知识组织\|知识组织]] | 001.8 | #area/knowledge-management |
@@ -129,6 +129,9 @@ source/llm/transformer |
 | [[_meta/design/个人财务系统-架构设计.md|个人财务系统-架构设计]] | 336 | #design/finance |
 | [[_meta/design/个人财务系统-详细设计.md|个人财务系统-详细设计]] | 336 | #design/finance |
 | [[_meta/design/个人财务系统-原型设计.md|个人财务系统-原型设计]] | 336 | #design/finance |
+| [[_meta/design/学习管理-架构设计.md|学习管理-架构设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-原型设计.md|学习管理-原型设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-详细设计.md|学习管理-详细设计]] | 37 | #design/learning |
 
 ---
 ## 按 UDC 分类
@@ -147,6 +150,7 @@ source/llm/transformer |
 | 025.4         | 分类法 / 索引    | UDC 概述, UDC 分类索引                                       |, CLC中国图书馆分类法详解, DDC杜威十进制分类法详解, LCC美国国会图书馆分类法详解, UDC 概述, UDCIn-Depth详解, 元数据标准, 分类原理, 分类法原理, 分类法应用, 分类法概述, 分類法與元數據, 数字时代的分类, frontmatter |
 | 025.4:001     | 分类理论         | UDC 分类索引                                                 |, UDC 分类索引 |
 | 025.4:004     | 数字分类         | UDC 与数字知识管理                                           |, UDC 与数字知识管理 |
+| 37            | 教育 / 学习     | 学习管理, 学习分类                                                |
 | 001.8:005     | 知识管理方法     | PARA 方法概览                                                |
 | 001.8:025.4   | 索引与分类       | _索引                                                        |
 | 336           | 个人财务         | 个人财务系统, 个人财务系统-架构设计                               |
