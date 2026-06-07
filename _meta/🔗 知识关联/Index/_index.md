@@ -24,7 +24,7 @@ tags: [index, moc, kos, navigation]
 |----------------------------------------------|--------|-----------------------------|
 <<<<<<< HEAD
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
-| [[2 Areas/生活/生活\\|生活]] | — | #area/life |
+| [[2 Areas/生活/生活\|生活]] / [[2 Areas/生活/个人财务/个人财务\|个人财务]] | 336 | #area/life |
 | [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
 | [[2 Areas/工作/工作\\|工作]] | — | #area/work |
 =======
@@ -126,6 +126,9 @@ source/llm/transformer |
 | [[3 Resources/000-Knowledge/wiki/concepts/File-format|File Format]] | 004.6 | #resource/data-formats |
 | [[3 Resources/000-Knowledge/wiki/concepts/Agent-prompt|Agent Prompt]] | 004.8 | #resource/llm |
 | [[3 Resources/000-Knowledge/wiki/concepts/GPT-5|GPT-5]] | 004.8 | #resource/llm |
+| [[_meta/design/个人财务系统-架构设计.md|个人财务系统-架构设计]] | 336 | #design/finance |
+| [[_meta/design/个人财务系统-详细设计.md|个人财务系统-详细设计]] | 336 | #design/finance |
+| [[_meta/design/个人财务系统-原型设计.md|个人财务系统-原型设计]] | 336 | #design/finance |
 
 ---
 ## 按 UDC 分类
@@ -146,6 +149,7 @@ source/llm/transformer |
 | 025.4:004     | 数字分类         | UDC 与数字知识管理                                           |, UDC 与数字知识管理 |
 | 001.8:005     | 知识管理方法     | PARA 方法概览                                                |
 | 001.8:025.4   | 索引与分类       | _索引                                                        |
+| 336           | 个人财务         | 个人财务系统, 个人财务系统-架构设计                               |
 | 001.8:004.8   | 知识组织与 AI    | 知识组织与大模型, RAG 与知识库集成, Codex-logs 需求说明书 |
 
 | 929 | 人物传记 | Paul-Otlet-奥特勒 |
