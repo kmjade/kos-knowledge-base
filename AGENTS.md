@@ -1,4 +1,4 @@
-# AGENTS — KOS_LLM-Wiki 维护指南
+﻿# AGENTS — KOS_LLM-Wiki 维护指南
 
 本文件为 AI 助手（如 Codex）维护此知识库的操作规范。
 
@@ -69,7 +69,7 @@ tags: [tag1, tag2]
 
 - PARA 所属：`#area/*`（领域）、`#resource/*`（资源）、`#project`（项目）
 - 跨语言翻译：三语言版本保持相同标签
-- 新增标签需同时在 `_索引.md` 的标签分组中记录
+- 新增标签需同时在 `_meta/🔗 知识关联/Index/_index.md` 的标签分组中记录
 
 ### 5. 多语言同步
 
@@ -81,7 +81,7 @@ tags: [tag1, tag2]
 ### 6. 更新索引
 
 每次新增笔记后，同步更新以下索引文件：
-- `_索引.md`（简体）- PARA 表、UDC 表
+- `_meta/🔗 知识关联/Index/_index.md`（简体）- PARA 表、UDC 表
 - `en/_index.md`（英文）
 - `zh-tw/_index.md`（繁体）
 
@@ -112,7 +112,7 @@ tags: [tag1, tag2]
 #### 场景 C：共享内容（索引/模板/分类页）→ 指向 CN
 
 以下类型内容统一指向 CN 版本（不考虑同语言是否存在）：
-- 索引页（_索引.md / _index.md）→ 使用语言前缀：[[en/_index]] / [[zh-tw/_index]]
+- 索引页（_meta 索引）→ 使用语言前缀：[[en/_meta/index|索引]] / [[zh-tw/_meta/index|索引]]
 - 模板文件（_meta/Templates/）→ CN 路径
 - 分类法页（UDC/DDC 体系）→ CN 路径
 - 原始素材（`raw/` 目录）→ CN 路径
@@ -121,7 +121,7 @@ tags: [tag1, tag2]
 
 EN 页面中引用索引：[[en/_index|display text]]（前缀 en/）
 TW 页面中引用索引：[[zh-tw/_index|顯示文字]]（前缀 zh-tw/）
-CN 页面中引用索引：[[_索引]]（无前缀）
+CN 页面中引用索引：[[_meta/🔗 知识关联/Index/_index|索引]]
 
 #### 新增页面时的链接默认规则
 
@@ -273,7 +273,7 @@ eviewed: true → 跳过（不覆盖人工审核内容）
 | "基于 [[X]]" | 依赖关系 |
 
 **Step 5 — 索引更新**
-更新 _索引.md、en/_index.md、zh-tw/_index.md，新增条目。
+更新 _meta/🔗 知识关联/Index/_index.md（三语言版），新增条目。
 
 **Step 6 — 日志记录**
 写入 _logs/operations/compile.md。
