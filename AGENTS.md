@@ -1,4 +1,4 @@
-﻿# AGENTS — KOS_LLM-Wiki 维护指南
+# AGENTS — KOS_LLM-Wiki 维护指南
 
 本文件为 AI 助手（如 Codex）维护此知识库的操作规范。
 
@@ -20,17 +20,12 @@ KOS_LLM-Wiki 是一个融合 **PARA**、**UDC** 与 **LLM-Wiki** 的个人知识
 ├── 1 Projects/   # 项目笔记
 ├── 2 Areas/      # 领域笔记
 ├── 3 Resources/  # 资源笔记
-│   ├── PARA/
-│   ├── UDC/
-│   └── LLM-Wiki/
 ├── 4 Archives/   # 归档
 ├── _logs/       # 日志记录
 ├── _meta/         # 模板和系统文件
 ├── Periodic/       # 📅 周期笔记（年/月/日分层）
 ├── en/            # 英文版（镜像结构）
 ├── zh-tw/         # 繁体中文版（镜像结构）
-├── Home.md        # 首页
-├── _索引.md       # 总索引
 └── AGENTS.md      # 本文件
 ```
 
@@ -810,9 +805,9 @@ eviewed: true 的笔记
 - Tier 3：基础信息（来源 + 关联笔记）
 
 #### 模板使用
-- Tier 1：使用 `_meta/Templates/person-tier1.md`
-- Tier 2：使用 `_meta/Templates/person-tier2.md`
-- Tier 3：使用 `_meta/Templates/person-tier3.md`
+- Tier 1：使用 `_meta/Templates/person-核心人物.md`
+- Tier 2：使用 `_meta/Templates/person-重要联系人.md`
+- Tier 3：使用 `_meta/Templates/person-背景人物.md`
 
 #### 标签规则
 - 人物页标签：`#people/tier-{N}`

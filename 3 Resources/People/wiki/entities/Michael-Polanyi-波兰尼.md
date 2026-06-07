@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "120"
-udc: "929Polanyi"
-tags:
-  - #udc/929
-aliases: [Michael-Polanyi-波兰尼]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # Michael-Polanyi-波兰尼
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **Tacit knowledge concept**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

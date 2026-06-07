@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "006.3"
-udc: "929Karpathy"
-tags:
-  - #udc/929
-aliases: [Andrej-Karpathy]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # Andrej-Karpathy
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **AI researcher, former Tesla AI director**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

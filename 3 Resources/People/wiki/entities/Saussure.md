@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "410"
-udc: "929Saussure"
-tags:
-  - #udc/929
-aliases: [Saussure]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # Saussure
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **Ferdinand de Saussure — structural linguistics**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

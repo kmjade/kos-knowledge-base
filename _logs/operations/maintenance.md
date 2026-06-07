@@ -358,3 +358,31 @@ tags: [codex-log, operation, maintenance]
 
 - 所有工单已清理完毕，无活跃项
 - 知识库状态：38 个 wiki 页面全部含核心内容，三语言同步，零断链
+## 2026-06-07 — 内容深化工单 完成
+
+### Phase 1 — 索引补全 ✅
+- CN 索引: 25 UDC wiki + 30 People 条目全部收录
+- EN 索引: 25 UDC 条目路径修正 + 3 新增 + 1 移除 + People CRM 移除
+- ZH-TW 索引: 5 条路径修正 + 25 UDC 条目新增
+- 遗留: EN/ZH-TW 暂缺 People 页面文件，等待翻译后加入
+
+### Phase 2 — 人物页标准化 ✅
+- 28/28 Tier 3 人物使用 person-tier3.md 模板重建前件
+- Tier 1 (Paul-Otlet) 和 Tier 2 (Henri-La-Fontaine) 保留原有格式
+- 验证: frontmatter 字段完整, #people/tier-3 标签正确
+
+### Phase 3 — 验证 ✅
+- CN 索引 100% 覆盖 (LLM-Wiki 11/11, UDC 25/25, People 30/30)
+- EN/ZH-TW 索引 100% 覆盖现有文件
+- 跨语言一致性: LLM-Wiki CN=EN=ZH-TW=11, UDC CN=EN=ZH-TW=25
+- 无孤立页面, 无断裂链接
+
+### 产出文件
+- _meta/🔗 知识关联/Index/_index.md — 全量索引 (简体)
+- en/_meta/Knowledge-Links/Index/_index.md — 路径修正后索引 (EN)
+- zh-tw/_meta/🔗 知识关联/Index/_index.md — 补充后索引 (繁体)
+- 3 Resources/People/wiki/entities/ — 28 个标准化 Tier 3 人物页
+
+### 状态
+- success
+- 工单已归档: 4 Archives/内容深化工单/ (status: complete)

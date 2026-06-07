@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "004"
-udc: "929Berners-Lee"
-tags:
-  - #udc/929
-aliases: [Tim-Berners-Lee]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # Tim-Berners-Lee
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **World Wide Web, Semantic Web inventor**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

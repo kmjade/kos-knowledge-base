@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "410"
-udc: "929Chomsky"
-tags:
-  - #udc/929
-aliases: [Chomsky]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # Chomsky
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **Noam Chomsky — generative grammar**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

@@ -1,20 +1,15 @@
----
-type: wiki-entity
-entity_type: person
-tier: 3
+﻿---
 created: 2026-06-01
-ddc: "020"
-udc: "929Ranganathan"
-tags:
-  - #udc/929
-aliases: [SR-Ranganathan-阮冈纳赞]
-topic: people
+updated: 2026-06-07
+udc: 929
+tags: [people, tier-3, person]
+status: stub
 ---
 
 # SR-Ranganathan-阮冈纳赞
 
-> [!stub] Tier 3 Stub — auto-created from vault scan
-> **Colon Classification, Five Laws of Library Science**
+> [!stub] Tier 3 Stub — standardized from vault scan
+> **Knowledge base reference**
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment

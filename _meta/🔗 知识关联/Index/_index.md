@@ -41,7 +41,63 @@ tags: [index, moc, kos, navigation]
 | [[3 Resources/UDC/UDC 与数字知识管理\|UDC 与数字知识管理]]        | 025.4:004    | #resource/udc-digital         |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/LLM 基础\|LLM 基础]] | 004.8 | #resource/llm |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer 架构\|Transformer 架构]] | 004.8:519.6 | #resource/llm/transformer |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer-架构解读\|Transformer-架构解读]] | 004.8:519.6 | #resource/llm/transformer |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer-架构解读\|Transformer-架构解读]] | 004.8:519.6 | #re
+| [[3 Resources/000-Knowledge/025-UDC/wiki/0-总类|0-总类]] | 000 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/AI与知识系统|AI与知识系统]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/CLC中国图书馆分类法详解|CLC中国图书馆分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/DDC杜威十进制分类法详解|DDC杜威十进制分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/LCC美国国会图书馆分类法详解|LCC美国国会图书馆分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 与数字知识管理|UDC 与数字知识管理]] | 025.4:004 | #resource/udc |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 分类索引|UDC 分类索引]] | 025.4:001 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 概述|UDC 概述]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDCIn-Depth详解|UDCIn-Depth详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/个人知识管理|个人知识管理]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/元数据标准|元数据标准]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/关联数据|关联数据]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类原理|分类原理]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法|分类法]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法原理|分类法原理]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法应用|分类法应用]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法概述|分类法概述]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分類法與元數據|分類法與元數據]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/叙词表|叙词表]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/数字时代的分类|数字时代的分类]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/本体论|本体论]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知識組織系統|知識組織系統]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识图谱|知识图谱]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识管理|知识管理]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识组织系统概述|知识组织系统概述]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/People/wiki/entities/Alexander-Elder|Alexander-Elder]] | "929Elder" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Andrej-Karpathy|Andrej-Karpathy]] | "929Karpathy" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Bruno-Latour-拉图尔|Bruno-Latour-拉图尔]] | "929Latour" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Chomsky|Chomsky]] | "929Chomsky" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/David-Bloor-布鲁尔|David-Bloor-布鲁尔]] | "929Bloor" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Henri-La-Fontaine|Henri-La-Fontaine]] | "929Fontaine" | #resource/people/tier-2 |
+| [[3 Resources/People/wiki/entities/Imre-Lakatos-拉卡托斯|Imre-Lakatos-拉卡托斯]] | "929Lakatos" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/J.B.萊因|J.B.萊因]] | "929Rhine" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Karl-Popper-波普尔|Karl-Popper-波普尔]] | "929Popper" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Melvil-Dewey-杜威|Melvil-Dewey-杜威]] | "929Dewey" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Michael-Polanyi-波兰尼|Michael-Polanyi-波兰尼]] | "929Polanyi" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Paul-Feyerabend-费耶阿本德|Paul-Feyerabend-费耶阿本德]] | "929Feyerabend" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Paul-Otlet-奥特勒|Paul-Otlet-奥特勒]] | 929 | #resource/people/tier-1 |
+| [[3 Resources/People/wiki/entities/Robert-Merton-默顿|Robert-Merton-默顿]] | "929Merton" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/SR-Ranganathan-阮冈纳赞|SR-Ranganathan-阮冈纳赞]] | "929Ranganathan" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Saussure|Saussure]] | "929Saussure" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Thomas-Kuhn-库恩|Thomas-Kuhn-库恩]] | "929Kuhn" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Tim-Berners-Lee|Tim-Berners-Lee]] | "929Berners-Lee" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/佛洛伊德|佛洛伊德]] | "929Freud" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/安瑟倫|安瑟倫]] | "929Anselm" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/帕斯卡|帕斯卡]] | "929Pascal" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/張仲景|張仲景]] | "929Zhang" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/托馬斯·阿奎那|托馬斯·阿奎那]] | "929Aquinas" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/斯金納|斯金納]] | "929Skinner" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/李白|李白]] | "929Li" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/梵谷|梵谷]] | "929Gogh" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/皮亞傑|皮亞傑]] | "929Piaget" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/羅蘭·巴特|羅蘭·巴特]] | "929Barthes" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/達文西|達文西]] | "929Vinci" | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/馬斯洛|馬斯洛]] | "929Maslow" | #resource/people/tier-3 |
+source/llm/transformer |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/训练与微调\|训练与微调]] | 004.8:681.3 | #resource/llm |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/提示工程\|提示工程]] | 004.8:159.9 | #resource/llm/prompting |
 | [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/RAG 与知识库集成\|RAG 与知识库集成]] | 004.8 | #resource/llm/rag |
@@ -57,20 +113,21 @@ tags: [index, moc, kos, navigation]
 
 | UDC 类号      | 类目             | 相关笔记                                                     |
 |---------------|------------------|--------------------------------------------------------------|
-| 001.8         | 知识组织与管理   | Home, _索引, 知识管理, PARA 方法概览, 知识组织与 LLM         |
+| 001.8         | 知识组织与管理   | Home, _索引, 知识管理, PARA 方法概览, 知识组织与 LLM         |, AI与知识系统, 个人知识管理, 关联数据, 分类法, 叙词表, 本体论, 知識組織系統, 知识图谱, 知识管理, 知识组织系统概述 |
 | 004           | 计算机科学       | —                                                            |
 | 004.4         | 软件工程         | 软件工程架构设计                                             |
 | 004.8         | 人工智能 / LLM   | LLM 基础, LLM 研究, Transformer 架构, Transformer-架构解读, 训练与微调, 提示工程, RAG 与知识库集成, 知识组织与 LLM, Applied Sciences, Knowledge+PARA+LLM-Wiki, PARA+LLM-WIKI 自动化 |
 | 004.8:519.6   | 计算智能 / 神经网络 | Transformer 架构, Transformer-架构解读                      |
 | 004.8:681.3   | 机器学习训练     | 训练与微调                                                   |
 | 004.8:159.9   | 认知与提示       | 提示工程                                                     |
-| 025.4         | 分类法 / 索引    | UDC 概述, UDC 分类索引                                       |
-| 025.4:001     | 分类理论         | UDC 分类索引                                                 |
-| 025.4:004     | 数字分类         | UDC 与数字知识管理                                           |
+| 025.4         | 分类法 / 索引    | UDC 概述, UDC 分类索引                                       |, CLC中国图书馆分类法详解, DDC杜威十进制分类法详解, LCC美国国会图书馆分类法详解, UDC 概述, UDCIn-Depth详解, 元数据标准, 分类原理, 分类法原理, 分类法应用, 分类法概述, 分類法與元數據, 数字时代的分类 |
+| 025.4:001     | 分类理论         | UDC 分类索引                                                 |, UDC 分类索引 |
+| 025.4:004     | 数字分类         | UDC 与数字知识管理                                           |, UDC 与数字知识管理 |
 | 001.8:005     | 知识管理方法     | PARA 方法概览                                                |
 | 001.8:025.4   | 索引与分类       | _索引                                                        |
 | 001.8:004.8   | 知识组织与 AI    | 知识组织与大模型, RAG 与知识库集成, Codex-logs 需求说明书 |
 
+| 929 | 人物传记 | Paul-Otlet-奥特勒 |
 ---
 
 ## 按标签分组
