@@ -1,4 +1,4 @@
----
+﻿---
 created: 2026-06-06
 updated: 2026-06-06
 udc: 001.8
@@ -17,20 +17,20 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 
 | Area                        | Description                           |
 |-----------------------------|---------------------------------------|
-| [[en/00-Inbox/\|📥 00-Inbox]]        | Unprocessed notes & captured material |
-| [[en/01-Projects/\|📋 01-Projects]]  | Active projects with deadlines        |
-| [[en/02-Areas/\|📂 02-Areas]]        | Ongoing areas of responsibility       |
-| [[en/03-Resources/\|📚 03-Resources]]  | Reference materials & knowledge base  |
-| [[en/04-Archives/\|🗄️ 04-Archives]] | Archived inactive content             |
+| [[en/0 Inbox/\|📥 0 Inbox]]        | Unprocessed notes & captured material |
+| [[en/1 Projects/\|📋 1 Projects]]  | Active projects with deadlines        |
+| [[en/2 Areas/\|📂 2 Areas]]        | Ongoing areas of responsibility       |
+| [[en/3 Resources/\|📚 3 Resources]]  | Reference materials & knowledge base  |
+| [[en/4 Archives/\|🗄️ 4 Archives]] | Archived inactive content             |
 | [[en/_meta/\|⚙️ _meta]]              | Templates, scripts & attachments      |
-| [[en/06-Daily/\|📅 06-Daily]]        | Daily notes                           |
+| [[en/Periodic/2026/06/\|📅 2026-06]]          | This month |
 
 ## Knowledge System Entry Points
 
 - [[en/_index|📖 Master Index]] — Complete content index & navigation
-- [[en/03-Resources/PARA/para-overview|PARA Method Overview]] — Projects-Areas-Resources-Archives
-- [[en/03-Resources/UDC/udc-overview|UDC Classification]] — Universal Decimal Classification
-- [[en/03-Resources/LLM-Wiki/llm-fundamentals|LLM Knowledge Base]] — Large Language Models
+- [[en/3 Resources/PARA/para-overview|PARA Method Overview]] — Projects-Areas-Resources-Archives
+- [[en/3 Resources/UDC/udc-overview|UDC Classification]] — Universal Decimal Classification
+- [[en/3 Resources/LLM-Wiki/llm-fundamentals|LLM Knowledge Base]] — Large Language Models
 
 ---
 
@@ -42,3 +42,6 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 - **English** — [[en/Home|English]]
 - **简体中文** — [[Home|简体中文]]
 - **繁體中文** — [[zh-tw/首頁|繁體中文]]
+
+
+

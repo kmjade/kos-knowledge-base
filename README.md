@@ -1,4 +1,4 @@
-# KOS_LLM-Wiki
+﻿# KOS_LLM-Wiki
 
 **Knowledge Organization System + LLM-Wiki**
 
@@ -8,17 +8,17 @@
 
 ```
 KOS_LLM-Wiki/
-├── 01-Projects/          # 项目：有明确目标与截止日期
-├── 02-Areas/             # 领域：持续关注的长期主题
-├── 03-Resources/         # 资源：参考资料与知识库
+├── 1 Projects/          # 项目：有明确目标与截止日期
+├── 2 Areas/             # 领域：持续关注的长期主题
+├── 3 Resources/         # 资源：参考资料与知识库
 │   ├── PARA/             # PARA 方法论
 │   ├── UDC/              # 国际十进分类法
 │   └── LLM-Wiki/         # LLM 知识库
-├── 04-Archives/          # 归档：非活跃内容
+├── 4 Archives/          # 归档：非活跃内容
 ├── _meta/                # 元：系统自身
 │   ├── Templates/        # 笔记模板
 │   └── ...
-├── 06-Daily/             # 每日笔记
+├── Periodic/             # 周期笔记（年/月/日分层）
 ├── en/                   # English version
 ├── zh-tw/                # 繁體中文版
 ├── Home.md               # 主页
@@ -66,3 +66,7 @@ KOS_LLM-Wiki/
 ## 贡献
 
 见 LICENSE 文件。
+
+
+
+
