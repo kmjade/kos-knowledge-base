@@ -22,7 +22,7 @@ tags: [index, moc, kos, navigation]
 ### 2 — Areas（領域）
 | 笔记                                         | UDC    | 标签                        |
 |----------------------------------------------|--------|-----------------------------|
-| [[2 Areas/知識管理\|知識管理]]              | 001.8  | #area/knowledge-management  |
+| [[2 Areas/知識組織/知識管理\|知識管理]]              | 001.8  | #area/knowledge-management  |
 | [[2 Areas/LLM 研究\|LLM 研究]]              | 004.8  | #area/llm                   |
 | [[2 Areas/軟體工程架构设计\\|軟體工程架构设计]] | 004.4  | #area/software-engineering  |
 | [[zh-tw/2 Areas/生活/生活\\|生活]] | — | #area/life |

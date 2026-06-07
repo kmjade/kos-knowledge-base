@@ -1,4 +1,5 @@
 ---
+compiled: false
 origin: webclipper
 source_url: https://example.com/article
 triage:

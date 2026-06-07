@@ -23,8 +23,6 @@ tags: [index, moc, kos, navigation]
 | 笔记                                         | UDC    | 标签                        |
 |----------------------------------------------|--------|-----------------------------|
 | [[2 Areas/知识组织/知识管理\|知识管理]]              | 001.8  | #area/knowledge-management  |
-| [[2 Areas/LLM 研究\|LLM 研究]]              | 004.8  | #area/llm                   |
-| [[2 Areas/软件工程架构设计\\|软件工程架构设计]] | 004.4  | #area/software-engineering  |
 | [[2 Areas/生活/生活\\|生活]] | — | #area/life |
 | [[2 Areas/学习/学习\\|学习]] | — | #area/learning |
 | [[2 Areas/工作/工作\\|工作]] | — | #area/work |
@@ -129,8 +127,8 @@ source/llm/transformer |
 |---------------|------------------|--------------------------------------------------------------|
 | 001.8         | 知识组织与管理   | Home, _索引, 知识管理, PARA 方法概览, 知识组织与 LLM         |, AI与知识系统, 个人知识管理, 关联数据, 分类法, 叙词表, 本体论, 知識組織系統, 知识图谱, 知识管理, 知识组织系统概述 |
 | 004           | 计算机科学       | computer, documentation, YAML, Unicode, File-format                 |
-| 004.4         | 软件工程         | 软件工程架构设计                                             |
-| 004.8         | 人工智能 / LLM   | LLM 基础, LLM 研究, Transformer 架构, Transformer-架构解读, 训练与微调, 提示工程, RAG 与知识库集成, 知识组织与 LLM, Applied Sciences, Knowledge+PARA+LLM-Wiki, PARA+LLM-WIKI 自动化, Claude Code, GPT-5, Agent-prompt |
+| 004.4         | 软件工程         | —                                                            |
+| 004.8         | 人工智能 / LLM   | LLM 基础, Transformer 架构, Transformer-架构解读, 训练与微调, 提示工程, RAG 与知识库集成, 知识组织与 LLM, Applied Sciences, Knowledge+PARA+LLM-Wiki, PARA+LLM-WIKI 自动化, Claude Code, GPT-5, Agent-prompt |
 | 004.8:519.6   | 计算智能 / 神经网络 | Transformer 架构, Transformer-架构解读                      |
 | 004.8:681.3   | 机器学习训练     | 训练与微调                                                   |
 | 004.8:159.9   | 认知与提示       | 提示工程                                                     |

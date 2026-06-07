@@ -1,4 +1,7 @@
 ---
+compiled_at: "2026-06-07"
+compiled_by: "KOS-Wiki-Compile"
+compiled: true
 title: 六边形AI数字大脑 — 完整模板文件包
 aliases: [Hexagon AI Digital Brain Template]
 tags: [template, pkm, ai, starter-kit]
@@ -199,45 +202,4 @@ sources: []
 ```
 my-vault/
 ├── CLAUDE.md                  ✅ 根宪法
-├── 0 Inbox/                   📥 唯一入口
-├── 1 Projects/                🎯 有截止日期的任务
-├── 2 Areas/                   🧭 持续维护的责任
-│   ├── 01-Health/
-│   ├── 02-Career/
-│   ├── 03-Finance/
-│   ├── 04-Relationships/
-│   └── 05-Learning/
-├── 3 Resources/               📚 知识资源
-│   └── [topic]/
-│       ├── raw/               (人类写入)
-│       ├── wiki/              (AI 写入)
-│       └── outputs/
-├── 4 Archives/                🗄️ 归档
-├── _templates/                📋 模板库
-├── Periodic/                  📅 周期笔记
-│   └── daily/
-└── AI-Log/                    🤖 操作日志
-```
-
----
-
-## 30 分钟启动清单
-
-| 时间 | 任务 |
-|:---:|------|
-| 0-5min | 创建目录结构 |
-| 5-10min | 复制 CLAUDE.md |
-| 10-15min | 创建 6 个模板 |
-| 15-20min | 配置 Obsidian |
-| 20-30min | 写第一份日记 + 丢第一条 Inbox |
-
----
-
-## 六边形检查清单
-
-- [ ] 📥 捕获 — Inbox 是否唯一入口？
-- [ ] 🧭 组织 — PARA 四目录是否已建立？
-- [ ] 🔗 连接 — 是否开始使用 [[wikilink]]？
-- [ ] 📚 编译 — wiki/ 是否已有第一个概念页？
-- [ ] 🔍 检索 — 能否 3 秒内找到上周的笔记？
-- [ ] 🌱 生长 — AI Log 是否在持续记录？
+├── 0 I

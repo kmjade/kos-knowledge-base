@@ -21,7 +21,7 @@ tags: [index, moc, kos, navigation]
 ### 2 — Areas
 | Note                                                       | UDC    | Tags                         |
 |------------------------------------------------------------|--------|------------------------------|
-| [[en/2 Areas/knowledge-management\|Knowledge Management]] | 001.8  | #area/knowledge-management   |
+| [[en/2 Areas/knowledge-organization/knowledge-management\|Knowledge Management]] | 001.8  | #area/knowledge-management   |
 | [[en/2 Areas/llm-research\|LLM Research]]                | 004.8  | #area/llm                    |
 | [[en/2 Areas/software-engineering-architecture\\|Software Engineering Architecture]] | 004.4  | #area/software-engineering     |
 | [[en/2 Areas/life/life\\|Life]] | — | #area/life |
