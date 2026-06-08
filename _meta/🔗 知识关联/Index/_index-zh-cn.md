@@ -1,4 +1,4 @@
----
+﻿---
 created: 2026-06-06
 updated: 2026-06-08
 udc: 001.8:025.4
@@ -15,14 +15,16 @@ tags: [index, moc, kos, navigation]
 ## 按 PARA 分类
 
 ### 1 — Projects（项目）
-| 笔记 | UDC | 状态 |
-|------|-----|------|
-| [[1 Projects/Bug追踪/README|Bug追踪]] | 004.4 | active |
-| [[1 Projects/Life+AI 融合/README|Life+AI 融合]] | 001.8:004.8 | active |
-| [[1 Projects/UDC整合实施/README|UDC整合实施]] | 025.4 | active |
-| [[1 Projects/个人财务系统/README|个人财务系统]] | 336 | active |
-| [[1 Projects/企业管理/README|企业管理]] | 334.7 | active |
-| [[1 Projects/学习管理/README|学习管理]] | 37 | active |
+
+```dataview
+TABLE
+  udc AS "UDC",
+  status AS "状态",
+  priority AS "优先级"
+FROM "1 Projects"
+WHERE status = "active"
+SORT priority ASC
+```
 
 ### 2 — Areas（领域）
 | 笔记 | UDC | 标签 |
