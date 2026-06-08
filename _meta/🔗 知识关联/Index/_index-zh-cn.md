@@ -5,84 +5,85 @@ udc: 001.8:025.4
 tags: [index, moc, kos, navigation]
 ---
 
-# 鎬荤储寮?路 Master Index
+# 总索引 · Master Index
 
-> **PARA + UDC + LLM-Wiki 涓夌淮瀵艰埅**
-> 鏈储寮曞悓鏃舵寜 PARA 鍒嗙被鍜?UDC 鍒嗙被缁勭粐鎵€鏈夌瑪璁般€?
+> **PARA + UDC + LLM-Wiki 三维导航**
+> 本索引同时按 PARA 分类和 UDC 分类组织所有笔记。
+
 ---
 
-## 鎸?PARA 鍒嗙被
+## 按 PARA 分类
 
-### 1 鈥?Projects锛堥」鐩級
-| 绗旇 | UDC | 鐘舵€?|
+### 1 — Projects（项目）
+| 笔记 | UDC | 状态 |
 |------|-----|------|
-| [[1 Projects/Bug杩借釜/README\|Bug杩借釜]] | 004.4 | active |
-| [[1 Projects/Life+AI 铻嶅悎/README\|Life+AI 铻嶅悎]] | 001.8:004.8 | active |
-| [[1 Projects/UDC鏁村悎瀹炴柦/README\|UDC鏁村悎瀹炴柦]] | 025.4 | active |
-| [[1 Projects/涓汉璐㈠姟绯荤粺/README\|涓汉璐㈠姟绯荤粺]] | 336 | active |
-| [[1 Projects/浼佷笟绠＄悊/README\|浼佷笟绠＄悊]] | 334.7 | active |
-| [[1 Projects/瀛︿範绠＄悊/README\|瀛︿範绠＄悊]] | 37 | active |
+| [[1 Projects/Bug追踪/README\|Bug追踪]] | 004.4 | active |
+| [[1 Projects/Life+AI 融合/README\|Life+AI 融合]] | 001.8:004.8 | active |
+| [[1 Projects/UDC整合实施/README\|UDC整合实施]] | 025.4 | active |
+| [[1 Projects/个人财务系统/README\|个人财务系统]] | 336 | active |
+| [[1 Projects/企业管理/README\|企业管理]] | 334.7 | active |
+| [[1 Projects/学习管理/README\|学习管理]] | 37 | active |
 
-### 2 鈥?Areas锛堥鍩燂級
-| 绗旇 | UDC | 鏍囩 |
+### 2 — Areas（领域）
+| 笔记 | UDC | 标签 |
 |------|-----|------|
-| [[2 Areas/鐭ヨ瘑缁勭粐/鐭ヨ瘑缁勭粐\|鐭ヨ瘑缁勭粐]] | 001.8 | #area/knowledge-management |
-| [[2 Areas/鐭ヨ瘑缁勭粐/鐭ヨ瘑绠＄悊\|鐭ヨ瘑绠＄悊]] | 001.8 | #area/knowledge-management |
-| [[2 Areas/鐭ヨ瘑缁勭粐/LLM 鐮旂┒\|LLM 鐮旂┒]] | 004.8 | #area/llm |
-| [[2 Areas/鐭ヨ瘑缁勭粐/杞欢宸ョ▼鏋舵瀯璁捐\|杞欢宸ョ▼鏋舵瀯璁捐]] | 004.4 | #area/software-engineering |
-| [[2 Areas/鐢熸椿/鐢熸椿\|鐢熸椿]] / [[2 Areas/鐢熸椿/涓汉璐㈠姟/涓汉璐㈠姟|涓汉璐㈠姟]] | 336 | #area/life |
-| [[2 Areas/瀛︿範/瀛︿範\|瀛︿範]] / [[2 Areas/瀛︿範/浣撶郴/瀛︿範鍒嗙被|瀛︿範绠＄悊]] | 37 | #area/learning |
-| [[2 Areas/宸ヤ綔/宸ヤ綔\|宸ヤ綔]] / [[2 Areas/宸ヤ綔/浼佷笟绠＄悊/浼佷笟绠＄悊|浼佷笟绠＄悊]] | 334.7 | #area/work |
+| [[2 Areas/知识组织/知识组织\|知识组织]] | 001.8 | #area/knowledge-management |
+| [[2 Areas/知识组织/知识管理\|知识管理]] | 001.8 | #area/knowledge-management |
+| [[2 Areas/知识组织/LLM 研究\|LLM 研究]] | 004.8 | #area/llm |
+| [[2 Areas/知识组织/软件工程架构设计\|软件工程架构设计]] | 004.4 | #area/software-engineering |
+| [[2 Areas/生活/生活\|生活]] / [[2 Areas/生活/个人财务/个人财务|个人财务]] | 336 | #area/life |
+| [[2 Areas/学习/学习\|学习]] / [[2 Areas/学习/体系/学习分类|学习管理]] | 37 | #area/learning |
+| [[2 Areas/工作/工作\|工作]] / [[2 Areas/工作/企业管理/企业管理|企业管理]] | 334.7 | #area/work |
 
-### _logs 鈥?Logs锛堟棩蹇楋級
-| 绗旇 | UDC | 鐘舵€?|
+### _logs — Logs（日志）
+| 笔记 | UDC | 状态 |
 |------|-----|------|
-| [[_logs/_index.md\|Codex-logs 闇€姹傝鏄庝功]] | 001.8:004.8 | draft |
+| [[_logs/_index.md\|Codex-logs 需求说明书]] | 001.8:004.8 | draft |
 
-### 3 鈥?Resources锛堣祫婧愶級
-| 绗旇 | UDC | 鏍囩 |
+### 3 — Resources（资源）
+| 笔记 | UDC | 标签 |
 |------|-----|------|
-| [[3 Resources/PARA/PARA 鏂规硶姒傝\|PARA 鏂规硶姒傝]] | 001.8:005 | #resource/paras |
-| [[3 Resources/PARA/PARA 涓庣煡璇嗙鐞唡PARA 涓庣煡璇嗙鐞哴] | 001.8 | #resource/knowledge-management |
-| [[3 Resources/UDC/UDC 姒傝堪\|UDC 姒傝堪]] | 025.4 | #resource/udc |
-| [[3 Resources/UDC/UDC 鍒嗙被绱㈠紩\|UDC 鍒嗙被绱㈠紩]] | 025.4:001 | #resource/classification |
-| [[3 Resources/UDC/UDC 涓庢暟瀛楃煡璇嗙鐞唡UDC 涓庢暟瀛楃煡璇嗙鐞哴] | 025.4:004 | #resource/udc-digital |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/LLM 鍩虹\|LLM 鍩虹]] | 004.8 | #resource/llm |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer 鏋舵瀯\|Transformer 鏋舵瀯]] | 004.8:519.6 | #resource/llm/transformer |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer-鏋舵瀯瑙ｈ\|Transformer-鏋舵瀯瑙ｈ]] | 004.8:519.6 | #resource/llm/transformer |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/璁粌涓庡井璋億璁粌涓庡井璋僝] | 004.8:681.3 | #resource/llm |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/鎻愮ず宸ョ▼\|鎻愮ず宸ョ▼]] | 004.8:159.9 | #resource/llm/prompting |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/RAG 涓庣煡璇嗗簱闆嗘垚\|RAG 涓庣煡璇嗗簱闆嗘垚]] | 004.8 | #resource/llm/rag |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/鐭ヨ瘑缁勭粐涓庡ぇ妯″瀷\|鐭ヨ瘑缁勭粐涓?LLM]] | 001.8:004.8 | #resource/llm/kos |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/AppliedSciences+LLM-Wiki鏁村悎绯荤当\|Applied Sciences 鏁村悎绯荤粺]] | 004.8 | #resource/llm |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/AppliedSciences+LLM-Wiki鏁村悎绯荤当鏋舵瑷▓\|Applied Sciences 鏋舵瀯璁捐]] | 004.8 | #resource/llm |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Knowledge+PARA+LLM-Wiki铻嶅悎绯荤当\|Knowledge+PARA+LLM-Wiki 铻嶅悎绯荤粺]] | 004.8 | #resource/llm |
-| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/PARA+LLM-WIKI鏋舵瀯锛屽疄鐜颁釜浜虹煡璇嗕笌鐢熸椿绠＄悊鐨勮嚜鍔ㄥ寲闈╁懡|PARA+LLM-WIKI 鑷姩鍖栭潻鍛絔] | 004.8 | #resource/llm |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/0-鎬荤被\|0-鎬荤被]] | 000 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/AI涓庣煡璇嗙郴缁焲AI涓庣煡璇嗙郴缁焆] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/CLC涓浗鍥句功棣嗗垎绫绘硶璇﹁В\|CLC涓浗鍥句功棣嗗垎绫绘硶璇﹁В]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/DDC鏉滃▉鍗佽繘鍒跺垎绫绘硶璇﹁В\|DDC鏉滃▉鍗佽繘鍒跺垎绫绘硶璇﹁В]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/LCC缇庡浗鍥戒細鍥句功棣嗗垎绫绘硶璇﹁В\|LCC缇庡浗鍥戒細鍥句功棣嗗垎绫绘硶璇﹁В]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 涓庢暟瀛楃煡璇嗙鐞唡UDC 涓庢暟瀛楃煡璇嗙鐞哴] | 025.4:004 | #resource/udc |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 鍒嗙被绱㈠紩\|UDC 鍒嗙被绱㈠紩]] | 025.4:001 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 姒傝堪\|UDC 姒傝堪]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/UDCIn-Depth璇﹁В\|UDCIn-Depth璇﹁В]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/涓汉鐭ヨ瘑绠＄悊\|涓汉鐭ヨ瘑绠＄悊]] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍏冩暟鎹爣鍑唡鍏冩暟鎹爣鍑哴] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍏宠仈鏁版嵁\|鍏宠仈鏁版嵁]] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗙被鍘熺悊\|鍒嗙被鍘熺悊]] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗙被娉晐鍒嗙被娉昡] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗙被娉曞師鐞唡鍒嗙被娉曞師鐞哴] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗙被娉曞簲鐢▅鍒嗙被娉曞簲鐢╙] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗙被娉曟杩皘鍒嗙被娉曟杩癩] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍒嗛娉曡垏鍏冩暩鎿殀鍒嗛娉曡垏鍏冩暩鎿歖] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鍙欒瘝琛▅鍙欒瘝琛╙] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鏁板瓧鏃朵唬鐨勫垎绫粅鏁板瓧鏃朵唬鐨勫垎绫籡] | 025.4 | #resource/classification |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鏈綋璁簗鏈綋璁篯] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鐭ヨ瓨绲勭箶绯荤当\|鐭ヨ瓨绲勭箶绯荤当]] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鐭ヨ瘑鍥捐氨\|鐭ヨ瘑鍥捐氨]] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鐭ヨ瘑绠＄悊\|鐭ヨ瘑绠＄悊]] | 001.8 | #resource/knowledge-organization |
-| [[3 Resources/000-Knowledge/025-UDC/wiki/鐭ヨ瘑缁勭粐绯荤粺姒傝堪\|鐭ヨ瘑缁勭粐绯荤粺姒傝堪]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/PARA/PARA 方法概览\|PARA 方法概览]] | 001.8:005 | #resource/paras |
+| [[3 Resources/PARA/PARA 与知识管理\|PARA 与知识管理]] | 001.8 | #resource/knowledge-management |
+| [[3 Resources/UDC/UDC 概述\|UDC 概述]] | 025.4 | #resource/udc |
+| [[3 Resources/UDC/UDC 分类索引\|UDC 分类索引]] | 025.4:001 | #resource/classification |
+| [[3 Resources/UDC/UDC 与数字知识管理\|UDC 与数字知识管理]] | 025.4:004 | #resource/udc-digital |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/LLM 基础\|LLM 基础]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer 架构\|Transformer 架构]] | 004.8:519.6 | #resource/llm/transformer |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Transformer-架构解读\|Transformer-架构解读]] | 004.8:519.6 | #resource/llm/transformer |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/训练与微调\|训练与微调]] | 004.8:681.3 | #resource/llm |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/提示工程\|提示工程]] | 004.8:159.9 | #resource/llm/prompting |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/RAG 与知识库集成\|RAG 与知识库集成]] | 004.8 | #resource/llm/rag |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/知识组织与大模型\|知识组织与 LLM]] | 001.8:004.8 | #resource/llm/kos |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/AppliedSciences+LLM-Wiki整合系統\|Applied Sciences 整合系统]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/AppliedSciences+LLM-Wiki整合系統架構設計\|Applied Sciences 架构设计]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Knowledge+PARA+LLM-Wiki融合系統\|Knowledge+PARA+LLM-Wiki 融合系统]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/004-LLM-Wiki/wiki/PARA+LLM-WIKI架构，实现个人知识与生活管理的自动化革命\|PARA+LLM-WIKI 自动化革命]] | 004.8 | #resource/llm |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/0-总类\|0-总类]] | 000 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/AI与知识系统\|AI与知识系统]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/CLC中国图书馆分类法详解\|CLC中国图书馆分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/DDC杜威十进制分类法详解\|DDC杜威十进制分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/LCC美国国会图书馆分类法详解\|LCC美国国会图书馆分类法详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 与数字知识管理\|UDC 与数字知识管理]] | 025.4:004 | #resource/udc |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 分类索引\|UDC 分类索引]] | 025.4:001 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 概述\|UDC 概述]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/UDCIn-Depth详解\|UDCIn-Depth详解]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/个人知识管理\|个人知识管理]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/元数据标准\|元数据标准]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/关联数据\|关联数据]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类原理\|分类原理]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法\|分类法]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法原理\|分类法原理]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法应用\|分类法应用]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分类法概述\|分类法概述]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/分類法與元數據\|分類法與元數據]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/叙词表\|叙词表]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/数字时代的分类\|数字时代的分类]] | 025.4 | #resource/classification |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/本体论\|本体论]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知識組織系統\|知識組織系統]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识图谱\|知识图谱]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识管理\|知识管理]] | 001.8 | #resource/knowledge-organization |
+| [[3 Resources/000-Knowledge/025-UDC/wiki/知识组织系统概述\|知识组织系统概述]] | 001.8 | #resource/knowledge-organization |
 | [[3 Resources/000-Knowledge/wiki/concepts/computer\|computer]] | 004 | #resource/classification |
 | [[3 Resources/000-Knowledge/wiki/concepts/documentation\|documentation]] | 002 | #resource/kos |
 | [[3 Resources/000-Knowledge/wiki/concepts/frontmatter\|frontmatter]] | 025.3 | #resource/metadata |
@@ -97,84 +98,88 @@ tags: [index, moc, kos, navigation]
 | [[3 Resources/000-Knowledge/wiki/concepts/GPT-5\|GPT-5]] | 004.8 | #resource/llm |
 | [[3 Resources/People/wiki/entities/Alexander-Elder\|Alexander-Elder]] | 929 | #resource/people/tier-3 |
 | [[3 Resources/People/wiki/entities/Andrej-Karpathy\|Andrej-Karpathy]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Bruno-Latour-鎷夊浘灏攟Bruno-Latour-鎷夊浘灏擼] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Bruno-Latour-拉图尔\|Bruno-Latour-拉图尔]] | 929 | #resource/people/tier-3 |
 | [[3 Resources/People/wiki/entities/Chomsky\|Chomsky]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/David-Bloor-甯冮瞾灏攟David-Bloor-甯冮瞾灏擼] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/David-Bloor-布鲁尔\|David-Bloor-布鲁尔]] | 929 | #resource/people/tier-3 |
 | [[3 Resources/People/wiki/entities/Henri-La-Fontaine\|Henri-La-Fontaine]] | 929 | #resource/people/tier-2 |
-| [[3 Resources/People/wiki/entities/Imre-Lakatos-鎷夊崱鎵樻柉\|Imre-Lakatos-鎷夊崱鎵樻柉]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/J.B.钀婂洜\|J.B.钀婂洜]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Karl-Popper-娉㈡櫘灏攟Karl-Popper-娉㈡櫘灏擼] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Melvil-Dewey-鏉滃▉\|Melvil-Dewey-鏉滃▉]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Michael-Polanyi-娉㈠叞灏紎Michael-Polanyi-娉㈠叞灏糫] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Paul-Feyerabend-璐硅€堕樋鏈痉\|Paul-Feyerabend-璐硅€堕樋鏈痉]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Paul-Otlet-濂ョ壒鍕抾Paul-Otlet-濂ョ壒鍕抅] | 929 | #resource/people/tier-1 |
-| [[3 Resources/People/wiki/entities/Robert-Merton-榛橀】\|Robert-Merton-榛橀】]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/SR-Ranganathan-闃唸绾宠禐\|SR-Ranganathan-闃唸绾宠禐]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Imre-Lakatos-拉卡托斯\|Imre-Lakatos-拉卡托斯]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/J.B.萊因\|J.B.萊因]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Karl-Popper-波普尔\|Karl-Popper-波普尔]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Melvil-Dewey-杜威\|Melvil-Dewey-杜威]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Michael-Polanyi-波兰尼\|Michael-Polanyi-波兰尼]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Paul-Feyerabend-费耶阿本德\|Paul-Feyerabend-费耶阿本德]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Paul-Otlet-奥特勒\|Paul-Otlet-奥特勒]] | 929 | #resource/people/tier-1 |
+| [[3 Resources/People/wiki/entities/Robert-Merton-默顿\|Robert-Merton-默顿]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/SR-Ranganathan-阮冈纳赞\|SR-Ranganathan-阮冈纳赞]] | 929 | #resource/people/tier-3 |
 | [[3 Resources/People/wiki/entities/Saussure\|Saussure]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/Thomas-Kuhn-搴撴仼\|Thomas-Kuhn-搴撴仼]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/Thomas-Kuhn-库恩\|Thomas-Kuhn-库恩]] | 929 | #resource/people/tier-3 |
 | [[3 Resources/People/wiki/entities/Tim-Berners-Lee\|Tim-Berners-Lee]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/浣涙礇浼婂痉\|浣涙礇浼婂痉]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/瀹夌憻鍊珅瀹夌憻鍊玗] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/甯曟柉鍗甯曟柉鍗] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/寮典徊鏅瘄寮典徊鏅痌] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/鎵橀Μ鏂烽樋濂庨偅\|鎵橀Μ鏂烽樋濂庨偅]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/鏂噾绱峾鏂噾绱峕] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/鏉庣櫧\|鏉庣櫧]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/姊佃胺\|姊佃胺]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/鐨簽鍌憒鐨簽鍌慮] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/缇呰槶路宸寸壒\|缇呰槶路宸寸壒]] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/閬旀枃瑗縷閬旀枃瑗縘] | 929 | #resource/people/tier-3 |
-| [[3 Resources/People/wiki/entities/棣柉娲泑棣柉娲沒] | 929 | #resource/people/tier-3 |
-| [[_meta/design/涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐.md\|涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐]] | 336 | #design/finance |
-| [[_meta/design/涓汉璐㈠姟绯荤粺-璇︾粏璁捐.md\|涓汉璐㈠姟绯荤粺-璇︾粏璁捐]] | 336 | #design/finance |
-| [[_meta/design/涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐.md\|涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐]] | 336 | #design/finance |
-| [[_meta/design/瀛︿範绠＄悊-鏋舵瀯璁捐.md\|瀛︿範绠＄悊-鏋舵瀯璁捐]] | 37 | #design/learning |
-| [[_meta/design/瀛︿範绠＄悊-鍘熷瀷璁捐.md\|瀛︿範绠＄悊-鍘熷瀷璁捐]] | 37 | #design/learning |
-| [[_meta/design/瀛︿範绠＄悊-璇︾粏璁捐.md\|瀛︿範绠＄悊-璇︾粏璁捐]] | 37 | #design/learning |
-| [[_meta/design/浼佷笟绠＄悊-鏋舵瀯璁捐.md\|浼佷笟绠＄悊-鏋舵瀯璁捐]] | 334.7 | #design/business |
-| [[_meta/design/浼佷笟绠＄悊-鍘熷瀷璁捐.md\|浼佷笟绠＄悊-鍘熷瀷璁捐]] | 334.7 | #design/business |
-| [[_meta/design/浼佷笟绠＄悊-璇︾粏璁捐.md\|浼佷笟绠＄悊-璇︾粏璁捐]] | 334.7 | #design/business |
+| [[3 Resources/People/wiki/entities/佛洛伊德\|佛洛伊德]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/安瑟倫\|安瑟倫]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/帕斯卡\|帕斯卡]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/張仲景\|張仲景]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/托馬斯·阿奎那\|托馬斯·阿奎那]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/斯金納\|斯金納]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/李白\|李白]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/梵谷\|梵谷]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/皮亞傑\|皮亞傑]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/羅蘭·巴特\|羅蘭·巴特]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/達文西\|達文西]] | 929 | #resource/people/tier-3 |
+| [[3 Resources/People/wiki/entities/馬斯洛\|馬斯洛]] | 929 | #resource/people/tier-3 |
+| [[_meta/design/个人财务系统-架构设计.md\|个人财务系统-架构设计]] | 336 | #design/finance |
+| [[_meta/design/个人财务系统-详细设计.md\|个人财务系统-详细设计]] | 336 | #design/finance |
+| [[_meta/design/个人财务系统-原型设计.md\|个人财务系统-原型设计]] | 336 | #design/finance |
+| [[_meta/design/学习管理-架构设计.md\|学习管理-架构设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-原型设计.md\|学习管理-原型设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-详细设计.md\|学习管理-详细设计]] | 37 | #design/learning |
+| [[_meta/design/企业管理-架构设计.md\|企业管理-架构设计]] | 334.7 | #design/business |
+| [[_meta/design/企业管理-原型设计.md\|企业管理-原型设计]] | 334.7 | #design/business |
+| [[_meta/design/企业管理-详细设计.md\|企业管理-详细设计]] | 334.7 | #design/business |
 
 ---
 
-## 鎸?UDC 鍒嗙被
+## 按 UDC 分类
 
-| UDC 绫诲彿 | 绫荤洰 | 鐩稿叧绗旇 |
+| UDC 类号 | 类目 | 相关笔记 |
 |----------|------|----------|
-| 000 | 鎬荤被 | 0-鎬荤被 |
-| 001.8 | 鐭ヨ瘑缁勭粐涓庣鐞?| Home, _绱㈠紩, 鐭ヨ瘑绠＄悊, 鐭ヨ瘑缁勭粐, PARA 鏂规硶姒傝, 鐭ヨ瘑缁勭粐涓?LLM, AI涓庣煡璇嗙郴缁? 涓汉鐭ヨ瘑绠＄悊, 鍏宠仈鏁版嵁, 鍒嗙被娉? 鍙欒瘝琛? 鏈綋璁? 鐭ヨ瓨绲勭箶绯荤当, 鐭ヨ瘑鍥捐氨, 鐭ヨ瘑缁勭粐绯荤粺姒傝堪 |
-| 001.8:005 | 鐭ヨ瘑绠＄悊鏂规硶 | PARA 鏂规硶姒傝 |
-| 001.8:025.4 | 绱㈠紩涓庡垎绫?| _绱㈠紩 |
-| 001.8:004.8 | 鐭ヨ瘑缁勭粐涓?AI | 鐭ヨ瘑缁勭粐涓庡ぇ妯″瀷, RAG 涓庣煡璇嗗簱闆嗘垚, Codex-logs 闇€姹傝鏄庝功 |
-| 002 | 鏂囩尞瀛?| documentation |
-| 003 | 缂栫爜鏍囧噯 | Unicode |
-| 004 | 璁＄畻鏈虹瀛?| computer |
-| 004.4 | 杞欢宸ョ▼ | 杞欢宸ョ▼鏋舵瀯璁捐 |
-| 004.6 | 鏁版嵁鏍煎紡 | YAML, File-format |
-| 004.8 | 浜哄伐鏅鸿兘 / LLM | LLM 鍩虹, 璁粌涓庡井璋? RAG 涓庣煡璇嗗簱闆嗘垚, Applied Sciences 鏁村悎绯荤粺, Applied Sciences 鏋舵瀯璁捐, Knowledge+PARA+LLM-Wiki 铻嶅悎绯荤粺, PARA+LLM-WIKI 鑷姩鍖栭潻鍛? Claude Code, GPT-5, Agent-prompt |
-| 004.8:519.6 | 璁＄畻鏅鸿兘 / 绁炵粡缃戠粶 | Transformer 鏋舵瀯, Transformer-鏋舵瀯瑙ｈ |
-| 004.8:681.3 | 鏈哄櫒瀛︿範璁粌 | 璁粌涓庡井璋?|
-| 004.8:159.9 | 璁ょ煡涓庢彁绀?| 鎻愮ず宸ョ▼ |
-| 004.9 | 杞欢宸ュ叿 | Obsidian URI |
-| 025.3 | 鍏冩暟鎹?/ 缂栫洰 | frontmatter, MARC, 鍏冩暟鎹爣鍑?|
-| 025.4 | 鍒嗙被娉?/ 绱㈠紩 | UDC 姒傝堪, UDC 鍒嗙被绱㈠紩, CLC涓浗鍥句功棣嗗垎绫绘硶璇﹁В, DDC鏉滃▉鍗佽繘鍒跺垎绫绘硶璇﹁В, LCC缇庡浗鍥戒細鍥句功棣嗗垎绫绘硶璇﹁В, UDCIn-Depth璇﹁В, 鍒嗙被鍘熺悊, 鍒嗙被娉曞師鐞? 鍒嗙被娉曞簲鐢? 鍒嗙被娉曟杩? 鍒嗛娉曡垏鍏冩暩鎿? 鏁板瓧鏃朵唬鐨勫垎绫?|
-| 025.4:001 | 鍒嗙被鐞嗚 | UDC 鍒嗙被绱㈠紩 |
-| 025.4:004 | 鏁板瓧鍒嗙被 | UDC 涓庢暟瀛楃煡璇嗙鐞?|
-| 37 | 鏁欒偛 / 瀛︿範 | education, 瀛︿範绠＄悊, 瀛︿範鍒嗙被 |
-| 336 | 涓汉璐㈠姟 | 涓汉璐㈠姟绯荤粺, 涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐, 涓汉璐㈠姟绯荤粺-璇︾粏璁捐, 涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐 |
-| 334.7 | 浼佷笟绠＄悊 / 涓綋鎴?| 浼佷笟绠＄悊, 浼佷笟绠＄悊-鏋舵瀯璁捐, 浼佷笟绠＄悊-鍘熷瀷璁捐, 浼佷笟绠＄悊-璇︾粏璁捐 |
-| 929 | 浜虹墿浼犺 | Paul-Otlet-濂ョ壒鍕? Alexander-Elder, Andrej-Karpathy, Bruno-Latour-鎷夊浘灏? Chomsky, David-Bloor-甯冮瞾灏? Henri-La-Fontaine, Imre-Lakatos-鎷夊崱鎵樻柉, J.B.钀婂洜, Karl-Popper-娉㈡櫘灏? Melvil-Dewey-鏉滃▉, Michael-Polanyi-娉㈠叞灏? Paul-Feyerabend-璐硅€堕樋鏈痉, Robert-Merton-榛橀】, SR-Ranganathan-闃唸绾宠禐, Saussure, Thomas-Kuhn-搴撴仼, Tim-Berners-Lee, 浣涙礇浼婂痉, 瀹夌憻鍊? 甯曟柉鍗? 寮典徊鏅? 鎵橀Μ鏂烽樋濂庨偅, 鏂噾绱? 鏉庣櫧, 姊佃胺, 鐨簽鍌? 缇呰槶路宸寸壒, 閬旀枃瑗? 棣柉娲?|
+| 000 | 总类 | 0-总类 |
+| 001.8 | 知识组织与管理 | Home, _索引, 知识管理, 知识组织, PARA 方法概览, 知识组织与 LLM, AI与知识系统, 个人知识管理, 关联数据, 分类法, 叙词表, 本体论, 知識組織系統, 知识图谱, 知识组织系统概述 |
+| 001.8:005 | 知识管理方法 | PARA 方法概览 |
+| 001.8:025.4 | 索引与分类 | _索引 |
+| 001.8:004.8 | 知识组织与 AI | 知识组织与大模型, RAG 与知识库集成, Codex-logs 需求说明书 |
+| 002 | 文献学 | documentation |
+| 003 | 编码标准 | Unicode |
+| 004 | 计算机科学 | computer |
+| 004.4 | 软件工程 | 软件工程架构设计 |
+| 004.6 | 数据格式 | YAML, File-format |
+| 004.8 | 人工智能 / LLM | LLM 基础, 训练与微调, RAG 与知识库集成, Applied Sciences 整合系统, Applied Sciences 架构设计, Knowledge+PARA+LLM-Wiki 融合系统, PARA+LLM-WIKI 自动化革命, Claude Code, GPT-5, Agent-prompt |
+| 004.8:519.6 | 计算智能 / 神经网络 | Transformer 架构, Transformer-架构解读 |
+| 004.8:681.3 | 机器学习训练 | 训练与微调 |
+| 004.8:159.9 | 认知与提示 | 提示工程 |
+| 004.9 | 软件工具 | Obsidian URI |
+| 025.3 | 元数据 / 编目 | frontmatter, MARC, 元数据标准 |
+| 025.4 | 分类法 / 索引 | UDC 概述, UDC 分类索引, CLC中国图书馆分类法详解, DDC杜威十进制分类法详解, LCC美国国会图书馆分类法详解, UDCIn-Depth详解, 分类原理, 分类法原理, 分类法应用, 分类法概述, 分類法與元數據, 数字时代的分类 |
+| 025.4:001 | 分类理论 | UDC 分类索引 |
+| 025.4:004 | 数字分类 | UDC 与数字知识管理 |
+| 37 | 教育 / 学习 | education, 学习管理, 学习分类 |
+| 336 | 个人财务 | 个人财务系统, 个人财务系统-架构设计, 个人财务系统-详细设计, 个人财务系统-原型设计 |
+| 334.7 | 企业管理 / 个体户 | 企业管理, 企业管理-架构设计, 企业管理-原型设计, 企业管理-详细设计 |
+| 929 | 人物传记 | Paul-Otlet-奥特勒, Alexander-Elder, Andrej-Karpathy, Bruno-Latour-拉图尔, Chomsky, David-Bloor-布鲁尔, Henri-La-Fontaine, Imre-Lakatos-拉卡托斯, J.B.萊因, Karl-Popper-波普尔, Melvil-Dewey-杜威, Michael-Polanyi-波兰尼, Paul-Feyerabend-费耶阿本德, Robert-Merton-默顿, SR-Ranganathan-阮冈纳赞, Saussure, Thomas-Kuhn-库恩, Tim-Berners-Lee, 佛洛伊德, 安瑟倫, 帕斯卡, 張仲景, 托馬斯·阿奎那, 斯金納, 李白, 梵谷, 皮亞傑, 羅蘭·巴特, 達文西, 馬斯洛 |
 
 ---
 
-## 鎸夋爣绛惧垎缁?
-- `#kos` 鈥?鎵€鏈夌郴缁熸牳蹇冪瑪璁?- `#area/*` 鈥?棰嗗煙绗旇锛堢敓娲?瀛︿範/宸ヤ綔/KOS锛?- `#resource/*` 鈥?璧勬簮绗旇
-- `#udc/*` 鈥?UDC 鍒嗙被鏍囩
-- `#template` 鈥?妯℃澘绗旇
-- `#daily` 鈥?姣忔棩绗旇锛圥eriodic 鐩綍涓嬶級
-- `#codex-log` 鈥?Codex 鎿嶄綔鏃ュ織
+## 按标签分组
+
+- `#kos` — 所有系统核心笔记
+- `#area/*` — 领域笔记（生活/学习/工作/KOS）
+- `#resource/*` — 资源笔记
+- `#udc/*` — UDC 分类标签
+- `#template` — 模板笔记
+- `#daily` — 每日笔记（Periodic 目录下）
+- `#codex-log` — Codex 操作日志
 
 ---
 
-> [!tip] 缁存姢鎻愮ず
-> 娣诲姞鏂扮瑪璁版椂锛岃鍚屾鏇存柊鏈储寮曠殑 PARA 琛ㄣ€乁DC 琛ㄥ拰鏍囩缁勩€?
+> [!tip] 维护提示
+> 添加新笔记时，请同步更新本索引的 PARA 表、UDC 表和标签组。
+
