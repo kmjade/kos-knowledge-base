@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-08
 udc: 001.8:025.4
@@ -18,24 +18,24 @@ tags: [index, moc, kos, navigation]
 
 ```dataview
 TABLE
+  file.link AS "笔记",
   udc AS "UDC",
-  status AS "状态",
-  priority AS "优先级"
+  tags AS "标签"
 FROM "1 Projects"
 WHERE status = "active"
 SORT priority ASC
 ```
 
 ### 2 — Areas（领域）
-| 笔记 | UDC | 标签 |
-|------|-----|------|
-| [[2 Areas/知识组织/知识组织|知识组织]] | 001.8 | #area/knowledge-management |
-| [[2 Areas/知识组织/知识管理|知识管理]] | 001.8 | #area/knowledge-management |
-| [[2 Areas/知识组织/LLM 研究|LLM 研究]] | 004.8 | #area/llm |
-| [[2 Areas/知识组织/软件工程架构设计|软件工程架构设计]] | 004.4 | #area/software-engineering |
-| [[2 Areas/生活/生活|生活]] / [[2 Areas/生活/个人财务/个人财务|个人财务]] | 336 | #area/life |
-| [[2 Areas/学习/学习|学习]] / [[2 Areas/学习/体系/学习分类|学习管理]] | 37 | #area/learning |
-| [[2 Areas/工作/工作|工作]] / [[2 Areas/工作/企业管理/企业管理|企业管理]] | 334.7 | #area/work |
+| 笔记                      | UDC                           | 标签     |                            |                |
+| ----------------------- | ----------------------------- | ------ | -------------------------- | -------------- |
+| [[2 Areas/知识组织/知识组织     | 知识组织]]                        | 001.8  | #area/knowledge-management |                |
+| [[2 Areas/知识组织/知识管理     | 知识管理]]                        | 001.8  | #area/knowledge-management |                |
+| [[2 Areas/知识组织/LLM 研究   | LLM 研究]]                      | 004.8  | #area/llm                  |                |
+| [[2 Areas/知识组织/软件工程架构设计 | 软件工程架构设计]]                    | 004.4  | #area/software-engineering |                |
+| [[2 Areas/生活/生活         | 生活]] / [[2 Areas/生活/个人财务/个人财务 | 个人财务]] | 336                        | #area/life     |
+| [[2 Areas/学习/学习         | 学习]] / [[2 Areas/学习/体系/学习分类   | 学习管理]] | 37                         | #area/learning |
+| [[2 Areas/工作/工作         | 工作]] / [[2 Areas/工作/企业管理/企业管理 | 企业管理]] | 334.7                      | #area/work     |
 
 ### _logs — Logs（日志）
 | 笔记 | UDC | 状态 |
