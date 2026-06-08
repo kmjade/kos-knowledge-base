@@ -1,0 +1,25 @@
+{
+  "id": "conv-1780944808501-4kp77od50",
+  "providerId": "codex",
+  "title": "Discuss wiki-lock.sh architecture",
+  "titleGenerationStatus": "success",
+  "createdAt": 1780944808502,
+  "updatedAt": 1780960361990,
+  "lastResponseAt": 1780960361990,
+  "sessionId": "019ea895-2c5f-79b1-a4d0-5d13b1646278",
+  "providerState": {
+    "threadId": "019ea895-2c5f-79b1-a4d0-5d13b1646278",
+    "sessionFilePath": "C:\\Users\\Administrator\\.codex\\sessions\\2026\\06\\09\\rollout-2026-06-09T02-53-34-019ea895-2c5f-79b1-a4d0-5d13b1646278.jsonl",
+    "transcriptRootPath": "C:\\Users\\Administrator\\.codex\\sessions"
+  },
+  "usage": {
+    "inputTokens": 185,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 129664,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 185,
+    "percentage": 0,
+    "model": "gpt-5.4-mini"
+  }
+}

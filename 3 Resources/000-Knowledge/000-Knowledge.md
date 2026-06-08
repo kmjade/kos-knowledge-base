@@ -1,6 +1,6 @@
 ---
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-09
 udc: 000
 tags: [resource, knowledge, general, index]
 ---
@@ -16,10 +16,10 @@ tags: [resource, knowledge, general, index]
 
 | 笔记                                                                          | UDC   | 说明         |
 |-------------------------------------------------------------------------------|-------|--------------|
-| [[3 Resources/000-Knowledge/CLAUDE\|CLAUDE 宪法文件]]                         | 001.8 | 知识库操作规则 |
-| [[3 Resources/000-Knowledge/tasks\|任务清单]]                                 | 004.4 | 项目管理     |
+| [[3 Resources/000-Knowledge/CLAUDE\|CLAUDE 知识库指南]]                         | 001.8 | 知识库结构与编译规则 |
+| [[../../4 Archives/tasks\|任务清单]]                                 | 004.4 | 项目管理     |
 | [[3 Resources/000-Knowledge/哥德尔不完备定理\|哥德尔不完备定理]]               | 510   | 数学逻辑     |
-| [[3 Resources/000-Knowledge/复利与72法则\|复利与 72 法则]]                    | 030   | 通识常识     |
+| [[raw/articles/复利与72法则\|复利与 72 法则]]                    | 030   | 通识常识     |
 | [[3 Resources/000-Knowledge/范式转移\|人类文明史上的范式转移]]                | 930   | 历史         |
 
 ## 原始资料（raw/）
@@ -28,7 +28,7 @@ tags: [resource, knowledge, general, index]
 |------------------------------------------------|-----------------------------------------------|
 | raw/articles/025-Knowledge-Organization/       | 知识组织（KOS、叙词表、本体论、知识图谱）     |
 | raw/articles/025-Classification-Metadata/      | 分类法（DDC、UDC、CLC、LCC、元数据）          |
-| raw/articles/通识                              | 知识管理、AI 系统、个人KM                     |
+| raw/articles/LifeOS/                           | LifeOS × LLM-Wiki 融合系统                   |
 
 ## 编译知识（wiki/）
 
@@ -67,6 +67,6 @@ tags: [resource, knowledge, general, index]
 
 ## 关联子库
 
-- [[3 Resources/000-Knowledge/004-LLM-Wiki/004-LLM-Wiki|004-LLM-Wiki]] — AI 与 LLM 专题
-- [[3 Resources/000-Knowledge/001-PARA/001-PARA|001-PARA]] — 知识管理方法
-[[025-UDC/025-UDC|025-UDC]]]] — 分类法体系
+- [[004-人工智能/raw/004-LLM-Wiki/004-LLM-Wiki|004-LLM-Wiki]] — AI 与 LLM 专题
+- [[raw/articles/001-PARA/001-PARA|001-PARA]] — 知识管理方法
+- [[raw/articles/025-Classification-Metadata/025-UDC/025-UDC|025-UDC]] — 分类法体系

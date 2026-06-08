@@ -18,14 +18,14 @@ cssclasses:
 
 ```dataviewjs
 const cfg = {
-  daily: "01-捕获层/每日笔记",
-  highlights: "01-捕获层/划线笔记",
+  daily: "Periodic/2026/06",
+  highlights: "0 Index",
   permanent: "02-培养层/永久笔记",
   literature: "02-培养层/文献笔记",
   topics: "02-培养层/主题笔记",
-  domains: "03-连接层",
-  projects: "04-创造层/项目",
-  archives: "04-创造层/归档",
+  domains: "2 Areas",
+  projects: "1 Projects",
+  archives: "4 Archives",
   memory: "_meta/ai-memory"
 };
 
@@ -51,16 +51,16 @@ if (openTasks.length) {
 
 ```dataviewjs
 const folders = [
-  ["捕获", "每日笔记", "01-捕获层/每日笔记"],
-  ["捕获", "划线笔记", "01-捕获层/划线笔记"],
-  ["捕获", "周记", "01-捕获层/周记"],
-  ["捕获", "月记", "01-捕获层/月记"],
+  ["捕获", "每日笔记", "Periodic/2026/06"],
+  ["捕获", "划线笔记", "0 Index"],
+  ["捕获", "周记", "Periodic/2026/06"],
+  ["捕获", "月记", "Periodic/2026/06"],
   ["培养", "永久笔记", "02-培养层/永久笔记"],
   ["培养", "文献笔记", "02-培养层/文献笔记"],
   ["培养", "主题笔记", "02-培养层/主题笔记"],
-  ["连接", "领域页", "03-连接层"],
-  ["创造", "项目", "04-创造层/项目"],
-  ["创造", "归档", "04-创造层/归档"]
+  ["连接", "领域页", "2 Areas"],
+  ["创造", "项目", "1 Projects"],
+  ["创造", "归档", "4 Archives"]
 ];
 
 function pageCount(folder) {
@@ -81,7 +81,7 @@ dv.table(
 ## 进行中的项目
 
 ```dataviewjs
-const projectRoot = "04-创造层/项目";
+const projectRoot = "1 Projects";
 const overviewNames = new Set(["📍 项目总览", "Project Overview"]);
 
 function projectFolderName(page) {
@@ -118,7 +118,7 @@ if (!projects.length) {
 ## 最近活动
 
 ```dataviewjs
-const hiddenPrefixes = [".", "_meta/ai-memory", "_meta/.ai-memory", "Clippings/", "04-创造层/归档/"];
+const hiddenPrefixes = [".", "_meta/ai-memory", "_meta/.ai-memory", "Clippings/", "4 Archives/"];
 const pages = dv.pages()
   .where(p => p.file.ext === "md")
   .where(p => !hiddenPrefixes.some(prefix => p.file.path.startsWith(prefix)))
@@ -133,13 +133,13 @@ dv.list(pages.map(p => `${p.file.link} · ${p.file.mtime.toFormat("MM-dd HH:mm")
 
 ```dataviewjs
 const cfg = {
-  daily: "01-捕获层/每日笔记",
-  highlights: "01-捕获层/划线笔记",
+  daily: "Periodic/2026/06",
+  highlights: "0 Index",
   permanent: "02-培养层/永久笔记",
   literature: "02-培养层/文献笔记",
   topics: "02-培养层/主题笔记",
-  domains: "03-连接层",
-  projects: "04-创造层/项目"
+  domains: "2 Areas",
+  projects: "1 Projects"
 };
 
 const overviewNames = new Set(["📍 项目总览", "Project Overview"]);

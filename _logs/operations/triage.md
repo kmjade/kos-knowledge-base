@@ -56,3 +56,22 @@ tags: [codex-log, operation, triage]
   | TC-10 | 无匹配 → Periodic fleeting | PASS |
 - **结论**：10/10 通过
 - **状态**：success
+
+## 2026-06-09
+
+- **操作**：KOS-Triage
+- **触发方式**：manual
+- **处理文件数**：4
+- **成功路由**：4
+- **待确认**：0
+- **处理详情**：
+  | 源文件 | 目标 | UDC | 生命周期 | 操作 |
+  |--------|------|-----|----------|------|
+  | 五维分类框架-5D-Framework.md | 3 Resources/000-Knowledge/wiki/concepts/ | 025.4 | evergreen | copy |
+  | 系统架构.md | 3 Resources/000-Knowledge/wiki/concepts/ | 004.8:005.1 | reference | copy |
+  | 隔离区架构全流程设计.md | _meta/design/ | 001.8:004.8 | operational | copy |
+  | 隔离区架构闪念.md | _meta/design/ | 001.8:004.8 | fleeting | copy |
+- **路由分布**：
+  - 3 Resources：2 个（概念页）
+  - _meta/design：2 个（设计文档）
+- **状态**：success

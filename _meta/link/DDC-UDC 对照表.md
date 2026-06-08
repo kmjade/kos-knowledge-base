@@ -71,5 +71,5 @@ tags: [reference, udc, ddc, mapping, classification]
 
 ## 相关链接
 
-- [[3 Resources/000-Knowledge/025-UDC/wiki/UDC 分类索引]]
+-[[../../3 Resources/000-Knowledge/raw/articles/025-Classification-Metadata/025-UDC/wiki/UDC 分类索引]]]
 - [[_meta/design/UDC+LLM-Wiki 整合可行性分析]]

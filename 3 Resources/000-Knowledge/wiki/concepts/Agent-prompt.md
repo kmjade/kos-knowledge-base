@@ -30,7 +30,7 @@ Agent Prompt（代理提示）是专门为 AI 代理（能执行多步操作、�
 ## 关联概念
 
 - [[claude-code]] — 采用 Agent Prompt 设计的编码代理
-- [[提示工程|提示工程]] — Agent Prompt 的上位方法论
+- [[../../../../zh-tw/3 Resources/LLM-Wiki/提示工程|提示工程]] — Agent Prompt 的上位方法论
 - [[GPT-5]] — 大语言模型代理能力对比
 
 ## 外部链接

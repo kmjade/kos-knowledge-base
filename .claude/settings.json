@@ -1,0 +1,10 @@
+{
+  "ignorePatterns": [
+    ".idea/",
+    ".flownote/",
+    ".opencode/",
+    "node_modules/",
+    ".obsidian/",
+    ".git/"
+  ]
+}

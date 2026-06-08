@@ -32,7 +32,7 @@ Claude Code 是 Anthropic 开发的命令行（CLI）编码代理工具，允许
 
 - [[Agent-prompt]] — AI 代理的提示策略
 - [[GPT-5]] — 同期的大语言模型对比
-- [[提示工程]] — 与 AI 编码代理交互的提示技术
+- [[../../../../zh-tw/3 Resources/LLM-Wiki/提示工程]] — 与 AI 编码代理交互的提示技术
 
 ## 定位
 

@@ -1,0 +1,26 @@
+{
+  "id": "conv-1780922771044-7102euchr",
+  "providerId": "codex",
+  "title": "Respond to Chinese greeting",
+  "titleGenerationStatus": "success",
+  "createdAt": 1780922771045,
+  "updatedAt": 1780935750201,
+  "lastResponseAt": 1780923923192,
+  "sessionId": "019ea755-c262-7983-a627-b8f991d56ad7",
+  "providerState": {
+    "threadId": "019ea755-c262-7983-a627-b8f991d56ad7",
+    "sessionFilePath": "C:\\Users\\Administrator\\.codex\\sessions\\2026\\06\\08\\rollout-2026-06-08T21-04-40-019ea755-c262-7983-a627-b8f991d56ad7.jsonl",
+    "transcriptRootPath": "C:\\Users\\Administrator\\.codex\\sessions"
+  },
+  "currentNote": "3 Resources/000-Knowledge/004-人工智能/raw/Claudian 配置.md",
+  "usage": {
+    "inputTokens": 304,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 19840,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 304,
+    "percentage": 0,
+    "model": "gpt-5.4-mini"
+  }
+}

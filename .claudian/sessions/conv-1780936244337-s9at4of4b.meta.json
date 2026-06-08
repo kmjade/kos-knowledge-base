@@ -1,0 +1,24 @@
+{
+  "id": "conv-1780936244337-s9at4of4b",
+  "providerId": "opencode",
+  "title": "Analyze Claude-Obsidian setup",
+  "titleGenerationStatus": "success",
+  "createdAt": 1780936244338,
+  "updatedAt": 1780960737296,
+  "lastResponseAt": 1780960737296,
+  "sessionId": "ses_157ed717fffeBvkC65zRQkOGK9",
+  "providerState": {
+    "databasePath": "C:\\Users\\Administrator\\AppData\\Roaming\\opencode\\opencode.db"
+  },
+  "currentNote": "_meta/design/claude-obsidian分析-codex.md",
+  "usage": {
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 93952,
+    "contextTokens": 94008,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "inputTokens": 56,
+    "model": "opencode:opencode/big-pickle",
+    "percentage": 47
+  }
+}

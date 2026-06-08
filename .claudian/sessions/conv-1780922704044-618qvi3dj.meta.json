@@ -1,0 +1,34 @@
+{
+  "id": "conv-1780922704044-618qvi3dj",
+  "providerId": "claude",
+  "title": "Greet user in Chinese",
+  "titleGenerationStatus": "success",
+  "createdAt": 1780922704096,
+  "updatedAt": 1780946551700,
+  "lastResponseAt": 1780946242993,
+  "sessionId": "644ddd92-33a0-4a1c-8706-bb008b73eea4",
+  "providerState": {
+    "providerSessionId": "644ddd92-33a0-4a1c-8706-bb008b73eea4",
+    "subagentData": {
+      "call_00_U7gwW5QITDGSA93AykGK1897": {
+        "id": "call_00_U7gwW5QITDGSA93AykGK1897",
+        "description": "探索 vault skills 配置",
+        "prompt": "Explore the vault at J:\\KOS_LLM-Wiki to find all skills-related configuration. Specifically:\n\n1. Read ALL files in the `_agents/` directory (list directory, then read each file)\n2. Search for any files mentioning \"skill\" or \"skills\" pattern in the vault (grep for `skill` in `_agents/` and `_meta/` directories)\n3. Check `_meta/` for any workflow or agent configuration files\n4. Look for any `settings.json` or `.claude/` configuration in the vault root\n5. Check if there's a `_agents/` directory structure and what role definitions exist\n\nReturn the full contents and structure you find.",
+        "status": "completed",
+        "toolCalls": [],
+        "isExpanded": false,
+        "result": "API Error: 400 thinking options type cannot be disabled when reasoning_effort is set"
+      }
+    }
+  },
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 315,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 94080,
+    "contextWindow": 200000,
+    "contextTokens": 94395,
+    "percentage": 47,
+    "contextWindowIsAuthoritative": true
+  }
+}

@@ -13,7 +13,7 @@ tags: [meta, link, dashboard]
 
 | 区域 | 链接 | 用途 |
 |------|------|------|
-| 总索引 | [[../Index/_index]] | 全库导航 |
+| 总索引 | [[../Index/_index-zh-cn]] | 全库导航 |
 | 首页 | [[Home]] | 起始页面 |
 | 收件箱 | [[00-Inbox]] | 待处理文件 |
 | 项目 | [[1 Projects]] | 活跃工单 |

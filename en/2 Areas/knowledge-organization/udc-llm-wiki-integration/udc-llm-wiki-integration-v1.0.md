@@ -56,4 +56,4 @@ tags: ["#udc/tech/ai"]  # UDC tags
 ## Related
 
 - [[kos-llm-wiki-architecture|KOS+LLM-Wiki Architecture]]
-- [[../../../../_meta/🔗 知识关联/Index/_index|Master Index]]
+- [[../../../../_meta/🔗 知识关联/Index/_index-zh-cn|Master Index]]

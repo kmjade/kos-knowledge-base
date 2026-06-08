@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "created": "2026-06-09",
+  "updated": "2026-06-09",
+  "description": "KOS-LLM-Wiki Delta 追踪清单。由 KOS 引擎维护，请勿手工编辑。",
+  "schema": "https://kos-llm-wiki/schemas/manifest-v1",
+  "sources": {
+    "<vault-relative-path>": {
+      "hash": "<sha256-hex64>",
+      "first_seen": "YYYY-MM-DD",
+      "last_seen": "YYYY-MM-DD",
+      "triage": {
+        "status": "processed",
+        "routed_at": "YYYY-MM-DD",
+        "routed_to": "3 Resources/.../raw/file.md",
+        "udc_suggested": "004.8"
+      },
+      "compile": {
+        "compiled_at": "YYYY-MM-DD",
+        "pages_created": ["wiki/concepts/Foo.md"],
+        "pages_updated": ["_index.md"]
+      }
+    }
+  },
+  "engines": {
+    "link": {
+      "last_run": "YYYY-MM-DDThh:mm:ssZ",
+      "files_scanned": 0,
+      "issues_found": 0,
+      "result": "clean"
+    },
+    "daily": {
+      "last_daily": "YYYY-MM-DD",
+      "last_weekly": "YYYY-WW",
+      "last_monthly": "YYYY-MM"
+    }
+  }
+}
