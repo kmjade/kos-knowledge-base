@@ -299,7 +299,7 @@ tags: [codex-log, operation, maintenance]
 
 | 类别 | 数量 | 示例 | 处理方式 |
 |------|------|------|----------|
-| A: wiki/ 前缀错误 | 100+ | [[wiki/分类法概述]] | 移除 wiki/ 前缀，改为 basename |
+| A: wiki/ 前缀错误 | 100+ |[[../../3 Resources/000-Knowledge/raw/articles/025-Classification-Metadata/025-UDC/wiki/分类法概述]]] | 移除 wiki/ 前缀，改为 basename |
 | B: wiki/concepts/ 前缀错误 | 30+ | [[wiki/concepts/KOS|Wiki: KOS]] | 移除 wiki/concepts/ 前缀，唯一名用 basename，重名用 vault 根绝对路径 |
 | C: 分类学原则.md 不存在 | 21 处 | [[wiki/分类学原则]] | 链接行删除（文件在库中不存在） |
 | D: ../ 相对路径错误 | 7 处 | [[../000 Knowledge.md]] | 替换为 basename 或 vault 根绝对路径 |
@@ -307,7 +307,7 @@ tags: [codex-log, operation, maintenance]
 | F:  3-Resources/ 路径错误 | 2 处 | [[03-Resources/...]] | 替换为 basename |
 | G: 3 Resources 无目标页 | 1 处 | [[3 Resources]] | 替换为 [[_索引]] |
 | H: _meta/...⚠️ 无目标页 | 1 处 | [[_meta/⚙️ 系统配置/知识库结构概览]] | 转为纯文本说明 |
-| I: 自引用链接 | 4 处 | [[LLM 基础]] 在 LLM 基础.md 中 | 从相关笔记段中删除 |
+| I: 自引用链接 | 4 处 [[../../3 Resources/000-Knowledge/004-人工智能/raw/004-LLM-Wiki/raw/LLM 基础]]]] 在 LLM 基础.md 中 | 从相关笔记段中删除 |
 | J: 源文件导入的短名称链接 | 约 30 处 | [[01-KOS-Overview]] | 已验证 — 通过库级 basename 搜索可找到，**无需修复** |
 
 ### 修复统计
@@ -449,3 +449,76 @@ tags: [codex-log, operation, maintenance]
 ### 文件变更统计
 - 新建文件: 18 (6 stub x 3 语言)
 - 修改文件: 2 (wiki/index.md, _index.md)
+
+## 2026-06-08T11:45 — _index-zh-cn.md 完整填充
+
+- **操作**：将空壳 `_index-zh-cn.md`（仅 7 行 frontmatter）填充为 182 行完整 Dataview 主索引
+- **关联 BUG**：BUG-004（已关闭）
+- **输出**：
+  - `_meta/🔗 知识关联/Index/_index-zh-cn.md` — 10 个 Dataview 查询块，覆盖 Projects/Areas/Resources/People/Concepts/Design/UDC/Tags/Link-Network
+  - `1 Projects/Bug追踪/bugs/BUG-004-*.md` — status: closed + 分辨率记录
+  - `_meta/🔗 知识关联/🔗 知识关联.md` — 修复断链 `-[[Index/_index-zh-cn|总索引]]]` → `- [[Index/_index-zh-cn|总索引]]`
+- **验证**：11/11 wiki 链接全部分辨成功，0 断链
+- **状态**：completed
+- **备注**：需在 Obsidian 中运行 `Dataview: Re-index Vault` 以刷新索引缓存
+- **2026-06-09** | _meta/design/claude-obsidian分析-claude.md 已更新
+  - 操作: 深度分析更新（15-Skill 体系、Hooks 机制、检索系统、版本演进、生态对比、借鉴建议）
+  - 会话: claude-obsidian 深度分析
+- **2026-06-09** | KOS LLM-Wiki 技能文件生成
+  - 操作: 创建三平台 KOS 技能文件 (5 skill x 3 platform = 15 文件)
+  - 文件清单:
+    - _meta/design/claude-obsidian分析-codex.md — Codex CLI 视角分析
+    - _meta/design/claude-obsidian分析-opencode.md — OpenCode 视角分析
+    - .claude/skills/kos{,-triage,-compile,-link,-daily}/SKILL.md — Claude Code 技能
+    - .codex/skills/kos{,-triage,-compile,-link,-daily}/SKILL.md — Codex CLI 技能
+    - .opencode/skills/kos{,-triage,-compile,-link,-daily}/SKILL.md — OpenCode 技能
+  - 状态: completed
+- **2026-06-09** | KOS-LLM-Wiki架构说明 v3.0 创建
+  - 操作: 综合 claude-obsidian 三平台分析 + 原架构 v2.0 + Skills 体系分析
+  - 输出: _meta/design/KOS-LLM-Wiki架构说明.md
+  - 内容: 13 章节（系统概述、四层模型、目录结构、技能全景、借鉴机制、UDC、多语言、三平台集成、问题清单、技术栈、模板、生命周期、参考资料）
+  - 状态: current
+- **2026-06-09** | 热缓存设计研讨
+  - 操作: 基于架构说明 §5.2 待实现特性，研讨 hot.md 热缓存机制的设计方案
+  - 讨论要点:
+    1. 文件位置 — `_meta/hot.md` vs `_hot.md`
+    2. 跨平台兼容 — 双轨制（hooks.json + AGENTS.md 协议）
+    3. 更新粒度 — 仅重大 KOS 操作 + 会话结束
+    4. 与日志关系 — 三分定位（hot/叙事 vs logs/结构 vs ai-memory/状态）
+    5. 初始状态 — 种子文件 vs 空文件
+  - 输出: _meta/design/热缓存设计研讨.md
+  - 待定决策: 5 项（见设计文档 §八）
+  - 状态: draft
+
+---
+
+### 2026-06-09 — Canvas 可视层实现（claude-obsidian 借鉴系列收尾）
+
+**操作：** 设计 + 实现 + 三平台部署
+**触发：** 研讨系列收尾
+**内容：**
+  - 创建设计文档 `_meta/design/canvas-可视层设计.md`
+  - 三平台 `canvas` 工作流 SKILL.md 部署
+  - json-canvas 参考补齐（Claude Code + Codex CLI）
+  - 创建 `_attachments/canvases/` + `_attachments/media/` 目录结构
+  - 创建默认 `_index.canvas` 画布
+  - 更新 KOS 统一入口 kos/SKILL.md 加入 Canvas 路由
+  - 更新架构文档 v3.0，标记 Canvas 为 ✅
+  - 更新 .gitignore 排除 `_attachments/media/`
+  - 更新 hot.md 记录收尾
+**状态：** ✅ 完成（claude-obsidian 借鉴 9/9 全部实现）
+
+---
+
+### 2026-06-09 — 架构文档 v3.0 修复（审核后全面恢复）
+
+**操作：** 文档修复
+**触发：** 审核发现 13 项问题（3 关键 + 6 中度 + 3 轻微 + 1 格式）
+**修复内容：**
+  - §6 UDC 分类体系：恢复 14 条映射表 + 跨语言一致性规则
+  - §7 多语言架构：恢复目录映射 + 同步规则 + 链接策略
+  - §8 AI Agent 集成：恢复平台对比 + 操作矩阵 + 流程表
+  - §2 ASCII art：修复 Unicode 边框 + 消除 `middot;` 泄漏
+  - §4 技能体系：补全 kos-query（7引擎）、5个Obsidian参考技能
+  - §9/§10/§11/§12/§13：补全条目、修正数字、恢复参考链接
+**状态：** ✅ 全部 13 项修复完成
