@@ -522,3 +522,14 @@ tags: [codex-log, operation, maintenance]
   - §4 技能体系：补全 kos-query（7引擎）、5个Obsidian参考技能
   - §9/§10/§11/§12/§13：补全条目、修正数字、恢复参考链接
 **状态：** ✅ 全部 13 项修复完成
+
+
+### 2026-06-09 — KOS-Init：第 8 个引擎（知识库初始化与健康检查）
+
+**操作：** 设计 + 三平台部署
+**触发：** ah-init 分析 → 方向 B 实现
+**内容：**
+  - 创建设计文档 _meta/design/kos-init-设计.md
+  - 三平台 kos-init SKILL.md 部署
+  - 更新 KOS 统一入口 kos/SKILL.md 加入 KOS-Init 路由
+**状态：** ✅ KOS 引擎总数 8

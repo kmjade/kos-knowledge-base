@@ -15,9 +15,10 @@ status: live
 
 ## 关键进展 | Key Recent Facts
 - **Canvas 可视层**：第三个知识捕获层设计完成（设计文档 + 三平台 SKILL.md + _attachments/ 目录结构）
+- **KOS-Init**：第 8 个引擎—知识库初始化与健康检查（对应 ah-init）
 - **json-canvas 参考补齐**：Claude Code + Codex CLI 部署，三平台全覆盖
 - **claude-obsidian 借鉴系列全部完成**：9 个特性全部实现 ✅
-- KOS 引擎总数增至 7（kos + triage + compile + link + daily + query + canvas）
+- KOS 引擎总数增至 8（kos + triage + compile + link + daily + query + canvas）
 - 架构文档 v3.0 更新：Canvas 标记为 ✅ 已实现
 
 ## 变更摘要 | Recent Changes
@@ -45,4 +46,4 @@ status: live
 - Inbox: 0 条待处理 ✅
 - §5.2 claude-obsidian 借鉴: 9/9 ✅ **全部实现**
   - 文件锁 P0 | 热缓存 P0 | 三级查询 P1 | Delta 追踪 P1 | wiki-fold P2 | Life Agent P2 | Think P3 | **Canvas P3 ✅ 新增**
-- KOS 引擎总数: 7
+- KOS 引擎总数: 8
