@@ -18,7 +18,7 @@ status: live
 - **KOS-Init**：第 8 个引擎—知识库初始化与健康检查（对应 ah-init）
 - **json-canvas 参考补齐**：Claude Code + Codex CLI 部署，三平台全覆盖
 - **claude-obsidian 借鉴系列全部完成**：9 个特性全部实现 ✅
-- KOS 引擎总数增至 8（kos + triage + compile + link + daily + query + canvas）
+- KOS 引擎总数增至 8（kos + triage + compile + link + daily + query + canvas + kos-init）
 - 架构文档 v3.0 更新：Canvas 标记为 ✅ 已实现
 
 ## 变更摘要 | Recent Changes
