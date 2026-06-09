@@ -18,7 +18,7 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 | 3 | `/kos-link` | 校验 frontmatter / UDC / 断链 / 跨语言一致性 |
 | 4 | `/kos-daily` | 创建每日笔记 / 周期回顾 |
 | 5 | **Canvas** | **可视化参考层 — 创建/管理 Obsidian Canvas 画布** |
-| 6 | **KOS-Init** | **知识库初始化与健康检查 — 一键检查/修复 vault 结构** | — 创建/管理 Obsidian Canvas 画布** |
+| 6 | **KOS-Init** | **知识库初始化与健康检查 — 一键检查/修复 vault 结构** |
 
 ---
 
