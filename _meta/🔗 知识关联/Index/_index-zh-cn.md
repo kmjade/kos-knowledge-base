@@ -24,12 +24,12 @@ SORT status ASC
 
 | 椤圭洰 | UDC | 鐘舵€?|
 |------|-----|------|
-| [[1 Projects/Bug杩借釜/README\|Bug杩借釜]] | 004.4 | active |
-| [[1 Projects/Life+AI 铻嶅悎/README\|Life+AI 铻嶅悎]] | 001.8:004.8 | active |
-| [[1 Projects/UDC鏁村悎瀹炴柦/README\|UDC鏁村悎瀹炴柦]] | 025.4 | active |
-| [[1 Projects/涓汉璐㈠姟绯荤粺/README\|涓汉璐㈠姟绯荤粺]] | 336 | active |
-| [[1 Projects/浼佷笟绠＄悊/README\|浼佷笟绠＄悊]] | 334.7 | active |
-| [[1 Projects/26-10 学习管理/README|26-10 学习管理]] | 37 | active |
+| [[1 Projects/26-02 Bug追踪/26-02 Bug追踪|26-02 Bug追踪]] | 004.4 | active |
+| [[1 Projects/26-07 Life+AI 融合/26-07 Life+AI 融合|26-07 Life+AI 融合]] | 001.8:004.8 | active |
+| [[4 Archives/26-04 UDC整合实施/README|26-04 UDC整合实施]] | 025.4 | archived |
+| [[4 Archives/26-08 个人财务系统/README|26-08 个人财务系统]] | 336 | archived |
+| [[4 Archives/26-09 企业管理/README|26-09 企业管理]] | 334.7 | archived |
+| [[4 Archives/26-10 学习管理/README|26-10 学习管理]] | 37 | archived |
 
 > Dataview 鏌ヨ宸插祵鍏ヤ笂鏂广€傚鍦?Obsidian 涓槄璇伙紝鍔ㄦ€佽〃鑷姩鏇存柊锛涢潤鎬佽〃渚?AI Agent 璇诲彇銆?
 ### 2 鈥?Areas锛堥鍩燂級

@@ -24,12 +24,12 @@ SORT status ASC
 
 | 绛嗚 | UDC | 鐙€鎱?|
 |------|-----|------|
-| [[zh-tw/1 Projects/Bug杩借工/README\|Bug杩借工]] | 004.4 | active |
-| [[zh-tw/1 Projects/Life+AI 铻嶅悎/README\|Life+AI 铻嶅悎]] | 001.8:004.8 | active |
-| [[zh-tw/1 Projects/UDC鏁村悎瀵︽柦/README\|UDC鏁村悎瀵︽柦]] | 025.4 | active |
-| [[zh-tw/1 Projects/鍊嬩汉璨″嫏绯荤当/README\|鍊嬩汉璨″嫏绯荤当]] | 336 | active |
-| [[zh-tw/1 Projects/浼佹キ绠＄悊/README\|浼佹キ绠＄悊]] | 334.7 | active |
-| [[zh-tw/1 Projects/26-10 学习管理/README|26-10 学习管理]] | 37 | active |
+| [[zh-tw/1 Projects/26-02 Bug追踪/26-02 Bug追踪|26-02 Bug追踪]] | 004.4 | active |
+| [[zh-tw/1 Projects/26-07 Life+AI 融合/26-07 Life+AI 融合|26-07 Life+AI 融合]] | 001.8:004.8 | active |
+| [[zh-tw/4 Archives/26-04 UDC整合实施/README|26-04 UDC整合实施]] | 025.4 | archived |
+| [[zh-tw/4 Archives/26-08 个人财务系统/README|26-08 个人财务系统]] | 336 | archived |
+| [[zh-tw/4 Archives/26-09 企业管理/README|26-09 企业管理]] | 334.7 | archived |
+| [[zh-tw/4 Archives/26-10 学习管理/README|26-10 学习管理]] | 37 | archived |
 
 > Dataview 鏌ヨ宸插祵鍏ヤ笂鏂广€傚鍦?Obsidian 涓柋璁€锛屽嫊鎱嬭〃鑷嫊鏇存柊锛涢潨鎱嬭〃渚?AI Agent 璁€鍙栥€?
 ### 2 鈥?Areas锛堥牁鍩燂級

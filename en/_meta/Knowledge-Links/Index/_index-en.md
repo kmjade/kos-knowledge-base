@@ -26,12 +26,12 @@ SORT status ASC
 
 | Note | UDC | Status |
 |------|-----|------|
-| [[en/1 Projects/Bug追踪/README\|Bug Tracking]] | 004.4 | active |
-| [[en/1 Projects/Life+AI 融合/README\|Life+AI Integration]] | 001.8:004.8 | active |
-| [[en/1 Projects/UDC整合实施/README\|UDC Integration]] | 025.4 | active |
-| [[en/1 Projects/Personal Finance系统/README\|Personal Finance]] | 336 | active |
-| [[en/1 Projects/企业管理/README\|Business Management]] | 334.7 | active |
-| [[en/1 Projects/26-10 学习管理/README|Learning Management]] | 37 | active |
+| [[en/1 Projects/26-02 Bug追踪/26-02 Bug追踪|Bug Tracking]] | 004.4 | active |
+| [[en/1 Projects/26-07 Life+AI 融合/26-07 Life+AI 融合|Life+AI Integration]] | 001.8:004.8 | active |
+| [[en/4 Archives/26-04 UDC整合实施/README|UDC Integration]] | 025.4 | archived |
+| [[en/4 Archives/26-08 个人财务系统/README|Personal Finance]] | 336 | archived |
+| [[en/4 Archives/26-09 企业管理/README|Business Management]] | 334.7 | archived |
+| [[en/4 Archives/26-10 学习管理/README|Learning Management]] | 37 | archived |
 
 > Dataview query embedded above. Dynamic table auto-updates in Obsidian; static table for AI Agent reading.
 
