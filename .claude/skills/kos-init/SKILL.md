@@ -42,7 +42,7 @@ allowed-tools: Read Write Edit Glob Grep
 ### Step 1：目录检查
 
 1. 检查 PARA 目录：`0 Inbox/` `1 Projects/` `2 Areas/` `3 Resources/` `4 Archives/`
-2. 检查系统目录：`_meta/` `_logs/` `_attachments/` `scripts/` `tests/`
+2. 检查系统目录：`_meta/` `_logs/` `_attachments/` `_meta/scripts/` `tests/`
 3. 检查 `_logs/` 子目录：`sessions/` `operations/` `tasks/` `reports/`
 4. 检查 `_meta/` 子目录：`Templates/` `design/` `adr/` `queries/`
 5. 检查 `_attachments/` 子目录：`canvases/` `media/images/` `media/pdfs/`
@@ -118,7 +118,7 @@ KOS-Init Status Report
 [OK]  _meta/            — 存在
 [OK]  _logs/            — 存在（4/4 子目录）
 [OK]  _attachments/     — 存在（3/3 子目录）
-[OK]  scripts/          — 存在
+[OK]  _meta/scripts/    — 存在
 [OK]  tests/            — 存在
 [OK]  Dashboard/Home.md  — 存在
 [WARN] 模板检查           — 缺少 概念模板.md

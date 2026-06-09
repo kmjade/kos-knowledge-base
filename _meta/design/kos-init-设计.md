@@ -42,7 +42,7 @@ status: draft
 | # | 检查项 | 自动修复 | 说明 |
 |:-:|--------|:--------:|------|
 | L1 | PARA 目录完整性 | ✅ | `0 Inbox/` `1 Projects/` `2 Areas/` `3 Resources/` `4 Archives/` |
-| L2 | 系统目录完整性 | ✅ | `_meta/` `_logs/` `_attachments/` `scripts/` `tests/` |
+| L2 | 系统目录完整性 | ✅ | `_meta/` `_logs/` `_attachments/` `_meta/scripts/` `tests/` |
 | L3 | `_logs/` 子目录 | ✅ | sessions/ operations/ tasks/ reports/ |
 | L4 | `_meta/` 子目录 | ✅ | Templates/ design/ adr/ queries/ |
 | L5 | `_attachments/` 子目录 | ✅ | canvases/ media/images/ media/pdfs/ |
@@ -101,7 +101,7 @@ KOS-Init Status Report
 [OK]  _meta/            — 存在
 [OK]  _logs/            — 存在（4/4 子目录）
 [OK]  _attachments/     — 存在（3/3 子目录）
-[OK]  scripts/          — 存在
+[OK]  _meta/scripts/    — 存在
 [OK]  tests/            — 存在
 [OK]  Dashboard/Home.md  — 存在
 [WARN] _meta/Templates/ — 缺少 概念模板.md
