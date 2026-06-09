@@ -4,8 +4,8 @@
   "title": "Analyze hot cache architecture",
   "titleGenerationStatus": "success",
   "createdAt": 1780946609050,
-  "updatedAt": 1781003813356,
-  "lastResponseAt": 1781003813356,
+  "updatedAt": 1781007738328,
+  "lastResponseAt": 1781007738328,
   "sessionId": "de52618e-c8d3-47ce-8a78-bf8dc1ce45c9",
   "providerState": {
     "providerSessionId": "de52618e-c8d3-47ce-8a78-bf8dc1ce45c9",
@@ -23,11 +23,11 @@
   },
   "usage": {
     "model": "haiku",
-    "inputTokens": 205,
+    "inputTokens": 160,
     "cacheCreationInputTokens": 0,
-    "cacheReadInputTokens": 287744,
+    "cacheReadInputTokens": 302464,
     "contextWindow": 200000,
-    "contextTokens": 287949,
+    "contextTokens": 302624,
     "percentage": 100,
     "contextWindowIsAuthoritative": true
   }
