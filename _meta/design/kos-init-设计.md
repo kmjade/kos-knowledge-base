@@ -46,7 +46,7 @@ status: draft
 | L3 | `_logs/` 子目录 | ✅ | sessions/ operations/ tasks/ reports/ |
 | L4 | `_meta/` 子目录 | ✅ | Templates/ design/ adr/ queries/ |
 | L5 | `_attachments/` 子目录 | ✅ | canvases/ media/images/ media/pdfs/ |
-| L6 | Home 页存在性 | ✅ | 检查 `🏠Home.md` → 不存在则用模板创建 |
+| L6 | Home 页存在性 | ✅ | 检查 `_meta/🔗 知识关联/Dashboard/Home.md`（或 `🏠Home.md`）→ 不存在则用模板创建 |
 | L7 | 模板完整性 | ❌ | 列出 `_meta/Templates/` 下应有模板，报告缺失 |
 | L8 | 索引存在性 | ❌ | 三语言 `_index.md` 存在性检查 |
 | L9 | 三平台技能目录 | ❌ | 报告各平台缺失的关键技能 |
@@ -55,7 +55,7 @@ status: draft
 ### 2.2 自动修复规则（--fix 模式）
 
 - 缺失目录 → 创建（幂等）
-- 缺失 `🏠Home.md` → 用模板创建
+- 缺失 `_meta/🔗 知识关联/Dashboard/Home.md` → 用模板创建
 - 缺失 `_meta/hot.md` → 创建骨架（不含具体内容）
 - 缺失 `.gitkeep` 占位 → 创建
 - **不改动**：已有内容、模板内容、索引内容、技能文件
@@ -103,7 +103,7 @@ KOS-Init Status Report
 [OK]  _attachments/     — 存在（3/3 子目录）
 [OK]  scripts/          — 存在
 [OK]  tests/            — 存在
-[OK]  🏠Home.md         — 存在
+[OK]  Dashboard/Home.md  — 存在
 [WARN] _meta/Templates/ — 缺少 概念模板.md
 [OK]  索引 (CN/EN/TW)   — 完整
 [OK]  hot.md            — 存在
