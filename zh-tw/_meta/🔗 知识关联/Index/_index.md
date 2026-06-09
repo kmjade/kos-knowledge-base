@@ -17,14 +17,14 @@ tags: [index, moc, kos, navigation]
 ### 1 — Projects（專案）
 
 ```dataview
-TABLE file.link as 專案, status
+TABLE file.link as 專案, priority, status
 FROM "zh-tw/1 Projects"
 WHERE contains(file.path, "zh-tw/1 Projects")
 SORT status ASC
 ```
 
-| 專案 | 狀態 |
-|:-----|:----:|
+| 專案 | 優先級 | 狀態 |
+|:-----|:------:|:----:|
 | [[zh-tw/4 Archives/26-04 UDC整合實施/26-04 UDC整合實施\|26-04 UDC整合實施]] | archived |
 | [[zh-tw/4 Archives/26-07 Life+AI 融合/26-07 Life+AI 融合\|26-07 Life+AI 融合]] | archived |
 | [[zh-tw/4 Archives/26-08 個人財務系統/26-08 個人財務系統\|26-08 個人財務系統]] | archived |

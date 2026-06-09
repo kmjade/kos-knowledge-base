@@ -17,14 +17,14 @@ tags: [index, moc, kos, navigation]
 ### 1 — Projects
 
 ```dataview
-TABLE file.link as Project, status
+TABLE file.link as Project, priority, status
 FROM "en/1 Projects"
 WHERE contains(file.path, "en/1 Projects")
 SORT status ASC
 ```
 
-| Project | Status |
-|:--------|:------:|
+| Project | Priority | Status |
+|:--------|:--------:|:------:|
 | [[en/1 Projects/26-02 Bug追踪/26-02 Bug追踪\|26-02 Bug Tracking]] | active |
 | [[en/4 Archives/26-03 文件锁实现/26-03 文件锁实现\|26-03 File Lock]] | archived |
 | [[en/4 Archives/26-04 UDC整合实施/26-04 UDC整合实施\|26-04 UDC Integration]] | archived |

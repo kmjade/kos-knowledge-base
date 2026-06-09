@@ -1,4 +1,4 @@
-# AGENTS �?KOS_LLM-Wiki 维护指南
+﻿# AGENTS �?KOS_LLM-Wiki 维护指南
 - `_meta/ai-memory/全局状�?md` �?跨会话状�?- `_agents/life/` �?Life+AI 三支柱角色定�?
 # AGENTS �?KOS_LLM-Wiki 维护指南
 
@@ -236,7 +236,7 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 
 ## 会话协议
 
-**开始：** 加载 AGENTS.md -> 读取 `_meta/hot.md` 恢复最近上下文 -> **读取 `_meta/ai-memory/STATE.md` 恢复引擎状态** -> 扫描 `1 Projects/` 活跃工单 -> 检查 Inbox 待处理文件 -> 检查编译状态 -> **检查 `_meta/.locks/` 残留锁（如有则 `python3 _meta/scripts/wiki-lock.py clear-stale --max-age 3600` 清理并记录）** -> 检查当日笔记 -> **Life-Brief 晨间简报**（昨日三支柱速写 + 今日任务提示）-> **Life-Check 目标检查**（时间过半且完成 < 50% 时提醒）-> 输出状态摘要。
+**开始：** 加载 AGENTS.md -> 读取 `_meta/hot.md` 恢复最近上下文 -> **读取 `_meta/ai-memory/STATE.md` 恢复引擎状态** -> 扫描 `1 Projects/` 活跃工单 -> 检查 Inbox 待处理文件 -> 检查编译状态 -> **检查 `_meta/.locks/` 残留锁（如有则 `python3 _meta/scripts/wiki-lock.py clear-stale --max-age 3600` 清理并记录）** -> **读取 `_meta/queries/迭代看板.md` 获取当前迭代焦点** -> 检查当日笔记 -> **Life-Brief 晨间简报**（昨日三支柱速写 + 今日任务提示）-> **Life-Check 目标检查**（时间过半且完成 < 50% 时提醒）-> 输出状态摘要。
 **运行中：** KOS-Triage / KOS-Compile / 周期回顾 / KOS-Project / KOS-Archive 完成后，更新 `_meta/hot.md` + `_meta/ai-memory/STATE.md` 记录最新上下文。仅记录对 vault 知识状态有实质改变的操作。
 **结束：** 更新 `_meta/hot.md`（本会话摘要、关键进展、活跃线程、当前状态）-> **Life-Brief 傍晚回顾**（检查今日三支柱是否有更新，有则提示）-> **检查 `_meta/.locks/` 确认所有锁已释放（如有则 `python3 _meta/scripts/wiki-lock.py clear-stale --max-age 0` 强制清理并记录）** -> 操作日志写入 `_logs/operations/maintenance.md` -> 有未完成 Triage/Compile 时提醒用户。
 ---

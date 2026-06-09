@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-09
 udc: 001.8:025.4
@@ -18,14 +18,14 @@ tags: [index, moc, kos, navigation]
 ### 1 — Projects（项目）
 
 ```dataview
-TABLE file.link as 项目, status
+TABLE WITHOUT ID file.link as 项目, priority, status
 FROM "1 Projects"
 WHERE contains(file.path, "1 Projects")
 SORT status ASC
 ```
 
-| 项目 | 状态 |
-|------|:----:|
+| 项目 | 优先级 | 状态 |
+|------|:------:|:----:|
 | [[1 Projects/26-02 Bug追踪/26-02 Bug追踪\|26-02 Bug追踪]] | active |
 | [[1 Projects/26-11 KOS 功能吸收/26-11 KOS 功能吸收\|26-11 KOS 功能吸收]] | active |
 | [[4 Archives/26-03 文件锁实现/26-03 文件锁实现\|26-03 文件锁实现]] | archived |
@@ -46,12 +46,12 @@ SORT status ASC
 
 ### 3 — Resources（资源入口）
 
-| 子库 | 入口页 |
-|:----|:-------|
+| 子库          | 入口页                                               |
+| :---------- | :------------------------------------------------ |
 | LLM-Wiki 概念 | [[3 Resources/000-Knowledge/wiki/_index\|_index]] |
-| PARA 方法 | [[3 Resources/PARA/PARA 方法概览\|PARA 方法概览]] |
-| UDC 分类 | [[3 Resources/UDC/UDC 概述\|UDC 概述]] |
-| 人物 | 见下方 People 列表 |
+| PARA 方法     | [[3 Resources/PARA/PARA 方法概览\|PARA 方法概览]]         |
+| UDC 分类      | [[3 Resources/UDC/UDC 概述\|UDC 概述]]                |
+| 人物          | 见下方 People 列表                                     |
 
 #### People（人物）
 

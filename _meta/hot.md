@@ -1,4 +1,4 @@
----
+﻿---
 type: meta
 title: "热缓存 | Hot Cache"
 udc: 004.8:005.1
@@ -36,6 +36,15 @@ status: live
 | 项目 | 进度 |
 |------|------|
 | 26-09 企业管理 | WP-10~11 done, WP-12/13 待 git |
+
+
+## 🎯 本迭代建议 (2026-06-2)
+
+| 项目 | 优先级 | 建议动作 |
+|:-----|:------:|:---------|
+| [[1 Projects/26-02 Bug追踪/26-02 Bug追踪\\|26-02 Bug追踪]] | **P1** | 建立Bug上报流程 |
+| [[1 Projects/26-11 KOS 功能吸收/26-11 KOS 功能吸收\\|26-11 KOS 功能吸收]] | high | 确认 README 缺失 |
+| [[1 Projects/26-06 FLOWnot测试项目/26-06 FLOWnot测试项目\\|26-06 FLOWnot]] | P3 | 暂缓（下迭代） |
 
 ## 当前状态 | Session State
 - Inbox: 已清空 ✅
