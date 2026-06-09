@@ -29,7 +29,7 @@ SORT status ASC
 | [[1 Projects/UDC鏁村悎瀹炴柦/README\|UDC鏁村悎瀹炴柦]] | 025.4 | active |
 | [[1 Projects/涓汉璐㈠姟绯荤粺/README\|涓汉璐㈠姟绯荤粺]] | 336 | active |
 | [[1 Projects/浼佷笟绠＄悊/README\|浼佷笟绠＄悊]] | 334.7 | active |
-| [[1 Projects/瀛︿範绠＄悊/README\|瀛︿範绠＄悊]] | 37 | active |
+| [[1 Projects/26-10 学习管理/README|26-10 学习管理]] | 37 | active |
 
 > Dataview 鏌ヨ宸插祵鍏ヤ笂鏂广€傚鍦?Obsidian 涓槄璇伙紝鍔ㄦ€佽〃鑷姩鏇存柊锛涢潤鎬佽〃渚?AI Agent 璇诲彇銆?
 ### 2 鈥?Areas锛堥鍩燂級
@@ -41,7 +41,7 @@ SORT status ASC
 | [[2 Areas/鐭ヨ瘑缁勭粐/LLM 鐮旂┒\|LLM 鐮旂┒]] | 004.8 | #area/llm |
 | [[2 Areas/鐭ヨ瘑缁勭粐/杞欢宸ョ▼鏋舵瀯璁捐\|杞欢宸ョ▼鏋舵瀯璁捐]] | 004.4 | #area/software-engineering |
 | [[2 Areas/鐢熸椿/鐢熸椿\|鐢熸椿]] / [[2 Areas/鐢熸椿/涓汉璐㈠姟/涓汉璐㈠姟\|涓汉璐㈠姟]] | 336 | #area/life |
-| [[2 Areas/瀛︿範/瀛︿範\|瀛︿範]] / [[2 Areas/瀛︿範/浣撶郴/瀛︿範鍒嗙被\|瀛︿範绠＄悊]] | 37 | #area/learning |
+| [[2 Areas/学习/学习|学习]] / [[2 Areas/学习/体系/学习分类|学习管理]] | 37 | #area/learning |
 | [[2 Areas/宸ヤ綔/宸ヤ綔\|宸ヤ綔]] / [[2 Areas/宸ヤ綔/浼佷笟绠＄悊/浼佷笟绠＄悊\|浼佷笟绠＄悊]] | 334.7 | #area/work |
 
 ### _logs 鈥?Logs锛堟棩蹇楋級
@@ -165,9 +165,9 @@ SORT tags ASC
 | [[_meta/design/涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐.md\|涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐]] | 336 | #design/finance |
 | [[_meta/design/涓汉璐㈠姟绯荤粺-璇︾粏璁捐.md\|涓汉璐㈠姟绯荤粺-璇︾粏璁捐]] | 336 | #design/finance |
 | [[_meta/design/涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐.md\|涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐]] | 336 | #design/finance |
-| [[_meta/design/瀛︿範绠＄悊-鏋舵瀯璁捐.md\|瀛︿範绠＄悊-鏋舵瀯璁捐]] | 37 | #design/learning |
-| [[_meta/design/瀛︿範绠＄悊-鍘熷瀷璁捐.md\|瀛︿範绠＄悊-鍘熷瀷璁捐]] | 37 | #design/learning |
-| [[_meta/design/瀛︿範绠＄悊-璇︾粏璁捐.md\|瀛︿範绠＄悊-璇︾粏璁捐]] | 37 | #design/learning |
+| [[_meta/design/学习管理-架构设计.md|学习管理-架构设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-原型设计.md|学习管理-原型设计]] | 37 | #design/learning |
+| [[_meta/design/学习管理-详细设计.md|学习管理-详细设计]] | 37 | #design/learning |
 | [[_meta/design/浼佷笟绠＄悊-鏋舵瀯璁捐.md\|浼佷笟绠＄悊-鏋舵瀯璁捐]] | 334.7 | #design/business |
 | [[_meta/design/浼佷笟绠＄悊-鍘熷瀷璁捐.md\|浼佷笟绠＄悊-鍘熷瀷璁捐]] | 334.7 | #design/business |
 | [[_meta/design/浼佷笟绠＄悊-璇︾粏璁捐.md\|浼佷笟绠＄悊-璇︾粏璁捐]] | 334.7 | #design/business |
@@ -206,7 +206,7 @@ SORT tags ASC
 | 025.4 | 鍒嗙被娉?/ 绱㈠紩 | UDC 姒傝堪, UDC 鍒嗙被绱㈠紩, CLC涓浗鍥句功棣嗗垎绫绘硶璇﹁В, DDC鏉滃▉鍗佽繘鍒跺垎绫绘硶璇﹁В, LCC缇庡浗鍥戒細鍥句功棣嗗垎绫绘硶璇﹁В, UDCIn-Depth璇﹁В, 鍒嗙被鍘熺悊, 鍒嗙被娉曞師鐞? 鍒嗙被娉曞簲鐢? 鍒嗙被娉曟杩? 鍒嗛娉曡垏鍏冩暩鎿? 鏁板瓧鏃朵唬鐨勫垎绫? 浜旂淮鍒嗙被妗嗘灦 |
 | 025.4:001 | 鍒嗙被鐞嗚 | UDC 鍒嗙被绱㈠紩 |
 | 025.4:004 | 鏁板瓧鍒嗙被 | UDC 涓庢暟瀛楃煡璇嗙鐞?|
-| 37 | 鏁欒偛 / 瀛︿範 | education, 瀛︿範绠＄悊, 瀛︿範鍒嗙被 |
+| 37 | 教育 / 学习 | education, 学习管理, 学习分类 |
 | 336 | 涓汉璐㈠姟 | 涓汉璐㈠姟绯荤粺, 涓汉璐㈠姟绯荤粺-鏋舵瀯璁捐, 涓汉璐㈠姟绯荤粺-璇︾粏璁捐, 涓汉璐㈠姟绯荤粺-鍘熷瀷璁捐 |
 | 334.7 | 浼佷笟绠＄悊 / 涓綋鎴?| 浼佷笟绠＄悊, 浼佷笟绠＄悊-鏋舵瀯璁捐, 浼佷笟绠＄悊-鍘熷瀷璁捐, 浼佷笟绠＄悊-璇︾粏璁捐 |
 | 929 | 浜虹墿浼犺 | Paul-Otlet-濂ョ壒鍕? Alexander-Elder, Andrej-Karpathy, Bruno-Latour-鎷夊浘灏? Chomsky, David-Bloor-甯冮瞾灏? Henri-La-Fontaine, Imre-Lakatos-鎷夊崱鎵樻柉, J.B.钀婂洜, Karl-Popper-娉㈡櫘灏? Melvil-Dewey-鏉滃▉, Michael-Polanyi-娉㈠叞灏? Paul-Feyerabend-璐硅€堕樋鏈痉, Robert-Merton-榛橀】, SR-Ranganathan-闃唸绾宠禐, Saussure, Thomas-Kuhn-搴撴仼, Tim-Berners-Lee, 浣涙礇浼婂痉, 瀹夌憻鍊? 甯曟柉鍗? 寮典徊鏅? 鎵橀Μ鏂烽樋濂庨偅, 鏂噾绱? 鏉庣櫧, 姊佃胺, 鐨簽鍌? 缇呰槶路宸寸壒, 閬旀枃瑗? 棣柉娲?|

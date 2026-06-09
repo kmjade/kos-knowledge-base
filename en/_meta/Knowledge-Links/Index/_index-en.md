@@ -31,7 +31,7 @@ SORT status ASC
 | [[en/1 Projects/UDC整合实施/README\|UDC Integration]] | 025.4 | active |
 | [[en/1 Projects/Personal Finance系统/README\|Personal Finance]] | 336 | active |
 | [[en/1 Projects/企业管理/README\|Business Management]] | 334.7 | active |
-| [[en/1 Projects/学习管理/README\|Learning Management]] | 37 | active |
+| [[en/1 Projects/26-10 学习管理/README|Learning Management]] | 37 | active |
 
 > Dataview query embedded above. Dynamic table auto-updates in Obsidian; static table for AI Agent reading.
 

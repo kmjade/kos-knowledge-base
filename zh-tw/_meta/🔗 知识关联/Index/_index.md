@@ -29,7 +29,7 @@ SORT status ASC
 | [[zh-tw/1 Projects/UDC鏁村悎瀵︽柦/README\|UDC鏁村悎瀵︽柦]] | 025.4 | active |
 | [[zh-tw/1 Projects/鍊嬩汉璨″嫏绯荤当/README\|鍊嬩汉璨″嫏绯荤当]] | 336 | active |
 | [[zh-tw/1 Projects/浼佹キ绠＄悊/README\|浼佹キ绠＄悊]] | 334.7 | active |
-| [[zh-tw/1 Projects/瀛哥繏绠＄悊/README\|瀛哥繏绠＄悊]] | 37 | active |
+| [[zh-tw/1 Projects/26-10 学习管理/README|26-10 学习管理]] | 37 | active |
 
 > Dataview 鏌ヨ宸插祵鍏ヤ笂鏂广€傚鍦?Obsidian 涓柋璁€锛屽嫊鎱嬭〃鑷嫊鏇存柊锛涢潨鎱嬭〃渚?AI Agent 璁€鍙栥€?
 ### 2 鈥?Areas锛堥牁鍩燂級
@@ -41,7 +41,7 @@ SORT status ASC
 | [[zh-tw/2 Areas/鐭ヨ瓨绲勭箶/LLM 鐮旂┒\|LLM 鐮旂┒]] | 004.8 | #area/llm |
 | [[zh-tw/2 Areas/鐭ヨ瓨绲勭箶/杌熼珨宸ョ▼鏋舵瑷▓\|杌熼珨宸ョ▼鏋舵瑷▓]] | 004.4 | #area/software-engineering |
 | [[zh-tw/2 Areas/鐢熸椿/鐢熸椿\|鐢熸椿]] / [[zh-tw/2 Areas/鐢熸椿/鍊嬩汉璨″嫏/鍊嬩汉璨″嫏\|鍊嬩汉璨″嫏]] | 336 | #area/life |
-| [[zh-tw/2 Areas/瀛哥繏/瀛哥繏\|瀛哥繏]] / [[zh-tw/2 Areas/瀛哥繏/楂旂郴/瀛哥繏鍒嗛\|瀛哥繏绠＄悊]] | 37 | #area/learning |
+| [[zh-tw/2 Areas/學習/學習|學習]] / [[zh-tw/2 Areas/學習/體系/學習分類|學習管理]] | 37 | #area/learning |
 | [[zh-tw/2 Areas/宸ヤ綔/宸ヤ綔\|宸ヤ綔]] / [[zh-tw/2 Areas/宸ヤ綔/浼佹キ绠＄悊/浼佹キ绠＄悊\|浼佹キ绠＄悊]] | 334.7 | #area/work |
 
 ### _logs 鈥?Logs锛堟棩瑾岋級
@@ -110,7 +110,7 @@ SORT status ASC
 | 004.8:681.3 | 姗熷櫒瀛哥繏瑷撶反 | 瑷撶反鑸囧井瑾?|
 | 004.8:159.9 | 瑾嶇煡鑸囨彁绀?| 鎻愮ず宸ョ▼ |
 | 025.4 | 鍒嗛娉?| UDC 姒傝堪, UDC 鍒嗛绱㈠紩 |
-| 37 | 鏁欒偛 / 瀛哥繏 | 瀛哥繏绠＄悊, 瀛哥繏鍒嗛 |
+| 37 | 教育 / 學習 | 學習管理, 學習分類 |
 | 336 | 鍊嬩汉璨″嫏 | 鍊嬩汉璨″嫏绯荤当 |
 | 334.7 | 浼佹キ绠＄悊 | 浼佹キ绠＄悊 |
 | 929 | 浜虹墿鍌宠 | Paul-Otlet-濂х壒鍕?|
