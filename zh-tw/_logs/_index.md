@@ -56,8 +56,8 @@ _logs/
 │   └── 2026/
 │       └── 06.md            # 月度任務執行記錄
 ├── reports/                 # 報告與統計
-│   ├── weekly.md            # 週報
-│   └── monthly.md           # 月報
+│   ├── YYYY-WW.md            # 週報
+│   └── YYYY-MM.md           # 月報
 └── archive/                 # 歸檔日誌（超過 6 個月的舊日誌）
     └── ...
 ```

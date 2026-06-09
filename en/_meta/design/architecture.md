@@ -1,4 +1,4 @@
-# KOS_LLM-Wiki Integrated System
+﻿# KOS_LLM-Wiki Integrated System
 
 > **架构说明书 v2.0 — English**
 > **Document Status:** v2.0 · 2026-06-06
@@ -271,7 +271,7 @@ _logs/
 │   ├── compile.md    #   Compile operation records
 │   └── maintenance.md #  Maintenance operation records
 ├── tasks/            # Cross-session task tracking (YYYY/MM.md)
-└── reports/          # Periodic reports (weekly.md, monthly.md)
+└── reports/          # Periodic reports (YYYY-WW.md, YYYY-MM.md)
 ```
 
 ### 8.3 Relationship with Content Layer

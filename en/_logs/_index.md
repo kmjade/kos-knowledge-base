@@ -56,8 +56,8 @@ _logs/
 │   └── 2026/
 │       └── 06.md            # Monthly task execution records
 ├── reports/                 # Reports & statistics
-│   ├── weekly.md            # Weekly report
-│   └── monthly.md           # Monthly report
+│   ├── YYYY-WW.md            # Weekly report
+│   └── YYYY-MM.md           # Monthly report
 └── archive/                 # Archived logs (> 6 months old)
     └── ...
 ```

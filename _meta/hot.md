@@ -11,14 +11,14 @@ status: live
 # 最近上下文 | Recent Context
 
 ## 最后更新 | Last Updated
-2026-06-09 — 本会话完成多项工作：BUG修复、归档、项目管理
+2026-06-09 — 本会话完成：WP-05~07 Life+AI 融合全包完成、归档、26-07 已迁移
 
 ## 关键进展 | Key Recent Facts
-- **脚本迁移**：scripts/ -> _meta/scripts/，30+ 文件引用全部更新 ✅
-- **KOS 引擎 9 个**：triage/compile/link/daily/canvas/init/project/archive/life
-- **BUG-006 复发**：4 文件空文档/乱码，已修复并追回复发记录
-- **错误处理流程**：[[_meta/design/错误处理流程]] 已建立
-- **规则**：README 标题 = 目录名、BUG 复用追加记录
+- **26-07 Life+AI 融合**：7 个 WP 全部 completed，已归档至 4 Archives/
+- **WP-05**：Life+AI 数据迁移至 KOS STATE.md
+- **WP-06**：KOS 三支柱报告引擎对接（AGENTS.md + 桥接文档）
+- **WP-07**：en/zh-tw 三语言镜像创建
+- **三支柱角色**：简报员/分析师/协作者，CN/EN/TW 三语言同步
 
 ## 已完成并归档
 
@@ -27,6 +27,7 @@ status: live
 | 26-01 kos-project验证 | completed |
 | 26-03 文件锁实现 | archived |
 | 26-04 UDC整合实施 | archived |
+| 26-07 Life+AI 融合 | archived |
 | 26-08 个人财务系统 | archived |
 | 26-11 KOS 功能吸收 | completed |
 
