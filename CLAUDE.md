@@ -1,122 +1,82 @@
-# CLAUDE.md
+﻿# CLAUDE.md
 
-本文件为 Claude Code（claude.ai/code）提供使用此仓库的指引。
+鏈枃浠朵负 Claude Code锛坈laude.ai/code锛夋彁渚涗娇鐢ㄦ浠撳簱鐨勬寚寮曘€?
+## 浠撳簱姒傝堪
 
-## 仓库概述
-
-KOS_LLM-Wiki 是一个**个人知识管理系统**——非软件项目。它融合了 PARA 方法论、UDC 分类法和 LLM-Wiki 概念，通过 Obsidian 管理并辅以 AI Agent 驱动。没有构建系统、测试套件或应用代码。
-
-规范行为参考为 `AGENTS.md`——本文未覆盖的任何操作请先阅读该文件。本文覆盖的是 AI Agent 快速上手所需的信息。
-
-## 核心架构
+KOS_LLM-Wiki 鏄竴涓?*涓汉鐭ヨ瘑绠＄悊绯荤粺**鈥斺€旈潪杞欢椤圭洰銆傚畠铻嶅悎浜?PARA 鏂规硶璁恒€乁DC 鍒嗙被娉曞拰 LLM-Wiki 姒傚康锛岄€氳繃 Obsidian 绠＄悊骞惰緟浠?AI Agent 椹卞姩銆傛病鏈夋瀯寤虹郴缁熴€佹祴璇曞浠舵垨搴旂敤浠ｇ爜銆?
+瑙勮寖琛屼负鍙傝€冧负 `AGENTS.md`鈥斺€旀湰鏂囨湭瑕嗙洊鐨勪换浣曟搷浣滆鍏堥槄璇昏鏂囦欢銆傛湰鏂囪鐩栫殑鏄?AI Agent 蹇€熶笂鎵嬫墍闇€鐨勪俊鎭€?
+## 鏍稿績鏋舵瀯
 
 ```
 KOS_LLM-Wiki/
-├── 0 Inbox/          # 待分拣笔记
-├── 1 Projects/       # 有目标和截止日期的项目
-├── 2 Areas/          # 持续关注的领域（生活/学习/工作）
-├── 3 Resources/      # 参考资料库（LLM-Wiki, PARA, UDC, People）
-│   └── 000-Knowledge/wikis/ → concepts/ entities/ sources/
-├── 4 Archives/       # 已完成项目（gitignored）
-├── Periodic/         # 日/周/月/季/年笔记（gitignored）
-├── _meta/            # 系统配置：模板、ADR、查询、索引、ai-memory
-│   └── hot.md        # 热缓存：会话上下文摘要（~500 字）
-├── en/               # English mirror
-├── zh-tw/            # 繁體中文鏡像
-├── _agents/          # AI 角色定义（简报员, 分析师, 协作者）
-├── _logs/            # 操作日志（triage, compile, maintenance, reports）
-├── .claude/          # Claude Code 配置
-│   └── hooks.json    # 生命周期 hooks（SessionStart, PostCompact, PostToolUse, Stop）
-├── scripts/          # 工具脚本
-│   └── wiki-lock.sh  # 文件锁（多 agent 安全写入）
-├── AGENTS.md         # AI 行为规范（主）
-└── CLAUDE.md         # 本文件
-```
+鈹溾攢鈹€ 0 Inbox/          # 寰呭垎鎷ｇ瑪璁?鈹溾攢鈹€ 1 Projects/       # 鏈夌洰鏍囧拰鎴鏃ユ湡鐨勯」鐩?鈹溾攢鈹€ 2 Areas/          # 鎸佺画鍏虫敞鐨勯鍩燂紙鐢熸椿/瀛︿範/宸ヤ綔锛?鈹溾攢鈹€ 3 Resources/      # 鍙傝€冭祫鏂欏簱锛圠LM-Wiki, PARA, UDC, People锛?鈹?  鈹斺攢鈹€ 000-Knowledge/wikis/ 鈫?concepts/ entities/ sources/
+鈹溾攢鈹€ 4 Archives/       # 宸插畬鎴愰」鐩紙gitignored锛?鈹溾攢鈹€ Periodic/         # 鏃?鍛?鏈?瀛?骞寸瑪璁帮紙gitignored锛?鈹溾攢鈹€ _meta/            # 绯荤粺閰嶇疆锛氭ā鏉裤€丄DR銆佹煡璇€佺储寮曘€乤i-memory
+鈹?  鈹斺攢鈹€ hot.md        # 鐑紦瀛橈細浼氳瘽涓婁笅鏂囨憳瑕侊紙~500 瀛楋級
+鈹溾攢鈹€ en/               # English mirror
+鈹溾攢鈹€ zh-tw/            # 绻侀珨涓枃閺″儚
+鈹溾攢鈹€ _agents/          # AI 瑙掕壊瀹氫箟锛堢畝鎶ュ憳, 鍒嗘瀽甯? 鍗忎綔鑰咃級
+鈹溾攢鈹€ _logs/            # 鎿嶄綔鏃ュ織锛坱riage, compile, maintenance, reports锛?鈹溾攢鈹€ .claude/          # Claude Code 閰嶇疆
+鈹?  鈹斺攢鈹€ hooks.json    # 鐢熷懡鍛ㄦ湡 hooks锛圫essionStart, PostCompact, PostToolUse, Stop锛?鈹溾攢鈹€ _meta/scripts/ # 宸ュ叿鑴氭湰
+鈹?  鈹斺攢鈹€ wiki-lock.sh  # 鏂囦欢閿侊紙澶?agent 瀹夊叏鍐欏叆锛?鈹溾攢鈹€ AGENTS.md         # AI 琛屼负瑙勮寖锛堜富锛?鈹斺攢鈹€ CLAUDE.md         # 鏈枃浠?```
 
-## 语言与命名规范
+## 璇█涓庡懡鍚嶈鑼?
+- **绠€浣撲腑鏂囷紙CN锛?*锛氭牴鐩綍锛屼腑鏂囨枃浠跺悕鍔犵┖鏍硷紙濡?`鎻愮ず宸ョ▼.md`锛?- **English锛圗N锛?*锛歚en/` 鐩綍锛宬ebab-case 鏂囦欢鍚嶏紙濡?`prompt-engineering.md`锛?- **绻侀珨涓枃锛圱W锛?*锛歚zh-tw/` 鐩綍锛屼腑鏂囨枃浠跺悕鍔犵┖鏍?
+涓夎瑷€鐗堟湰蹇呴』淇濇寔鍚屾銆侰N 涓烘潈濞佹潵婧愶紱褰?EN/TW 涓嶅瓨鍦ㄥ搴旈〉闈㈡椂锛岃法璇█閾炬帴鍥為€€鍒?CN 瀹屾暣璺緞銆?
+## AI 寮曟搸鍛戒护
 
-- **简体中文（CN）**：根目录，中文文件名加空格（如 `提示工程.md`）
-- **English（EN）**：`en/` 目录，kebab-case 文件名（如 `prompt-engineering.md`）
-- **繁體中文（TW）**：`zh-tw/` 目录，中文文件名加空格
-
-三语言版本必须保持同步。CN 为权威来源；当 EN/TW 不存在对应页面时，跨语言链接回退到 CN 完整路径。
-
-## AI 引擎命令
-
-| 命令 | 功能 |
+| 鍛戒护 | 鍔熻兘 |
 |------|------|
-| `KOS-Triage [--file <path>] [--status]` | Inbox 四维分拣：时效性、主题、类型、复杂度；路由到目标目录 |
-| `KOS-Wiki-Compile [--topic <name>] [--file <path>] [--status]` | raw/ 编译为 wiki/ 页面（六步管道） |
-| `KOS-Link [--path <dir>] [--file <path>] [--fix] [--status]` | 校验 frontmatter、UDC 索引、断链、跨语言一致性 |
-| `KOS-Query [quick\|standard\|deep] <问题>` | 三级知识库查询（Quick/Standard/Deep） |
-| `Day-Review` / `Week-Review` / `Month-Review` / `Quarter-Review` / `Year-Review` | 周期回顾 |
-| `Daily Open` | 创建今日笔记 |
+| `KOS-Triage [--file <path>] [--status]` | Inbox 鍥涚淮鍒嗘嫞锛氭椂鏁堟€с€佷富棰樸€佺被鍨嬨€佸鏉傚害锛涜矾鐢卞埌鐩爣鐩綍 |
+| `KOS-Wiki-Compile [--topic <name>] [--file <path>] [--status]` | raw/ 缂栬瘧涓?wiki/ 椤甸潰锛堝叚姝ョ閬擄級 |
+| `KOS-Link [--path <dir>] [--file <path>] [--fix] [--status]` | 鏍￠獙 frontmatter銆乁DC 绱㈠紩銆佹柇閾俱€佽法璇█涓€鑷存€?|
+| `KOS-Query [quick\|standard\|deep] <闂>` | 涓夌骇鐭ヨ瘑搴撴煡璇紙Quick/Standard/Deep锛?|
+| `Day-Review` / `Week-Review` / `Month-Review` / `Quarter-Review` / `Year-Review` | 鍛ㄦ湡鍥為【 |
+| `Daily Open` | 鍒涘缓浠婃棩绗旇 |
 
-所有引擎**幂等**——已处理的内容不重复操作，绝不覆盖 `reviewed: true` 的内容。
+鎵€鏈夊紩鎿?*骞傜瓑**鈥斺€斿凡澶勭悊鐨勫唴瀹逛笉閲嶅鎿嶄綔锛岀粷涓嶈鐩?`reviewed: true` 鐨勫唴瀹广€?
+## 绗旇 Frontmatter锛堝繀濉級
 
-## 笔记 Frontmatter（必填）
-
-每篇笔记必须包含 YAML frontmatter：
-
+姣忕瘒绗旇蹇呴』鍖呭惈 YAML frontmatter锛?
 ```yaml
 ---
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-udc: <UDC 类号>
+udc: <UDC 绫诲彿>
 tags: [tag1, tag2]
 ---
 ```
 
-UDC 类号遵循 `\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*` 模式。常用 UDC 前缀：`004.8`（AI/LLM）、`001.8`（知识组织）、`025.4`（分类法）、`929`（人物/传记）。UDC 建议遵循四层管道：模板默认值 → 目录启发式 → 关键词匹配 → AI 分析。
+UDC 绫诲彿閬靛惊 `\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*` 妯″紡銆傚父鐢?UDC 鍓嶇紑锛歚004.8`锛圓I/LLM锛夈€乣001.8`锛堢煡璇嗙粍缁囷級銆乣025.4`锛堝垎绫绘硶锛夈€乣929`锛堜汉鐗?浼犺锛夈€俇DC 寤鸿閬靛惊鍥涘眰绠￠亾锛氭ā鏉块粯璁ゅ€?鈫?鐩綍鍚彂寮?鈫?鍏抽敭璇嶅尮閰?鈫?AI 鍒嗘瀽銆?
+## 琛ㄦ牸鏍煎紡
 
-## 表格格式
+鎵€鏈?Markdown 琛ㄦ牸蹇呴』浣跨敤瀵归綈鍒嗛殧琛屻€侽bsidian wikilink 涓殑 `|` 椤昏浆涔変负 `\|`銆?
+## 璺ㄨ瑷€閾炬帴瑙勫垯
 
-所有 Markdown 表格必须使用对齐分隔行。Obsidian wikilink 中的 `|` 须转义为 `\|`。
+- **A 鈥?鍚岃瑷€瀛樺湪瀵瑰簲椤甸潰** 鈫?鎸囧悜鍚岃瑷€锛圗N鈫扙N锛孴W鈫扵W锛?- **B 鈥?涓嶅瓨鍦ㄧ炕璇?* 鈫?鍥為€€鍒?CN 骞跺甫瀹屾暣璺緞锛堝 `[[3 Resources/000-Knowledge/xxx\|鏄剧ず鍚峕]`锛?- **C 鈥?鍏变韩鍐呭**锛堢储寮曘€佹ā鏉裤€佸垎绫婚〉闈級 鈫?濮嬬粓鎸囧悜 CN
 
-## 跨语言链接规则
+绱㈠紩閾炬帴锛堟寜璇█锛夛細
+- CN 鈫?`[[_meta/馃敆 鐭ヨ瘑鍏宠仈/Index/_index-zh-cn\|绱㈠紩]]`
+- EN 鈫?`[[en/_meta/Knowledge-Links/Index/_index-en\|Index]]`
+- TW 鈫?`[[zh-tw/_meta/馃敆 鐭ヨ瘑鍏宠仈/Index/_index\|绱㈠紩]]`
 
-- **A — 同语言存在对应页面** → 指向同语言（EN→EN，TW→TW）
-- **B — 不存在翻译** → 回退到 CN 并带完整路径（如 `[[3 Resources/000-Knowledge/xxx\|显示名]]`）
-- **C — 共享内容**（索引、模板、分类页面） → 始终指向 CN
+## 鐑紦瀛?
+`_meta/hot.md` 鏄竴涓害 500 瀛楃殑鏈€鏂颁細璇濅笂涓嬫枃鎽樿銆備换浣曚細璇濋兘鍙互閫氳繃瀹冭幏鍙栨渶杩戜笂涓嬫枃锛岃€屾棤闇€鐖彇鏁翠釜 vault銆?
+- **浼氳瘽鍚姩**锛欳laude Code 閫氳繃 `hooks.json` SessionStart hook 鑷姩璇诲彇
+- **鍘嬬缉鍚?*锛氶€氳繃 PostCompact hook 鑷姩閲嶆柊璇诲彇
+- **杩愯涓?*锛氶噸澶?KOS 鎿嶄綔锛圱riage/Compile/Review锛夊悗鏇存柊
+- **浼氳瘽缁撴潫**锛氬啓鍏ユ湰娆″彉鏇存憳瑕?
+## 浼氳瘽鍗忚
 
-索引链接（按语言）：
-- CN → `[[_meta/🔗 知识关联/Index/_index-zh-cn\|索引]]`
-- EN → `[[en/_meta/Knowledge-Links/Index/_index-en\|Index]]`
-- TW → `[[zh-tw/_meta/🔗 知识关联/Index/_index\|索引]]`
+**寮€濮?*锛氬姞杞?AGENTS.md 鈫?璇诲彇 `_meta/hot.md`锛圕laude Code 閫氳繃 hooks 鑷姩瀹屾垚锛夆啋 妫€鏌ユ椿璺冨伐鍗?鈫?妫€鏌?Inbox 鈫?妫€鏌ョ紪璇戠姸鎬?鈫?妫€鏌ュ綋鏃ョ瑪璁?鈫?杈撳嚭鐘舵€佹憳瑕併€?
+**杩愯涓?*锛氶噸澶?KOS 鎿嶄綔鍚庢洿鏂?`_meta/hot.md`銆傚叾浠栧彉鏇撮€氳繃 `hooks.json` PostToolUse 鑷姩杩借釜銆?
+**缁撴潫**锛氭洿鏂?`_meta/hot.md`锛堜細璇濇憳瑕侊級鈫?鎿嶄綔鏃ュ織鍐欏叆 `_logs/operations/maintenance.md` 鈫?璁板綍 Agent 娲诲姩鍒板綋鏃ョ瑪璁?鈫?娓呯悊涓存椂鏂囦欢銆?
+## AI 璁板繂
 
-## 热缓存
-
-`_meta/hot.md` 是一个约 500 字的最新会话上下文摘要。任何会话都可以通过它获取最近上下文，而无需爬取整个 vault。
-
-- **会话启动**：Claude Code 通过 `hooks.json` SessionStart hook 自动读取
-- **压缩后**：通过 PostCompact hook 自动重新读取
-- **运行中**：重大 KOS 操作（Triage/Compile/Review）后更新
-- **会话结束**：写入本次变更摘要
-
-## 会话协议
-
-**开始**：加载 AGENTS.md → 读取 `_meta/hot.md`（Claude Code 通过 hooks 自动完成）→ 检查活跃工单 → 检查 Inbox → 检查编译状态 → 检查当日笔记 → 输出状态摘要。
-
-**运行中**：重大 KOS 操作后更新 `_meta/hot.md`。其他变更通过 `hooks.json` PostToolUse 自动追踪。
-
-**结束**：更新 `_meta/hot.md`（会话摘要）→ 操作日志写入 `_logs/operations/maintenance.md` → 记录 Agent 活动到当日笔记 → 清理临时文件。
-
-## AI 记忆
-
-`_meta/ai-memory/全局状态.md` 追踪初始化状态、阅读队列、卡片笔记、活跃项目和跨会话的回顾状态。
-
-## 关键参考文件
-
-- `AGENTS.md` — AI 完整行为规范（引擎、规则、模板）
-- `_meta/hot.md` — 热缓存：最近会话上下文（~500 字）
-- `_meta/🔗 知识关联/Index/_index-zh-cn.md` — 主索引（CN）
-- `en/_meta/Knowledge-Links/Index/_index-en.md` — 主索引（EN）
-- `zh-tw/_meta/🔗 知识关联/Index/_index.md` — 主索引（TW）
-- `_meta/Templates/` — 笔记模板（全部类型）
-- `_meta/queries/` — Dataview 查询库（6 个预定义查询）
-- `_meta/adr/` — 架构决策记录
-- `_meta/design/KOS-LLM-Wiki架构说明.md` — 架构说明书 v3.0
-- `.claude/hooks.json` — 生命周期 hooks（SessionStart, PostCompact, PostToolUse, Stop）
-- `.claude/skills/kos-query/SKILL.md` — 三级查询技能定义
-- `scripts/wiki-lock.sh` — 文件锁（多 agent 安全写入）
-- `1 Projects/UDC 自动建议/build_keyword_map.py` — 从标注笔记生成 UDC 关键词映射
+`_meta/ai-memory/鍏ㄥ眬鐘舵€?md` 杩借釜鍒濆鍖栫姸鎬併€侀槄璇婚槦鍒椼€佸崱鐗囩瑪璁般€佹椿璺冮」鐩拰璺ㄤ細璇濈殑鍥為【鐘舵€併€?
+## 鍏抽敭鍙傝€冩枃浠?
+- `AGENTS.md` 鈥?AI 瀹屾暣琛屼负瑙勮寖锛堝紩鎿庛€佽鍒欍€佹ā鏉匡級
+- `_meta/hot.md` 鈥?鐑紦瀛橈細鏈€杩戜細璇濅笂涓嬫枃锛垀500 瀛楋級
+- `_meta/馃敆 鐭ヨ瘑鍏宠仈/Index/_index-zh-cn.md` 鈥?涓荤储寮曪紙CN锛?- `en/_meta/Knowledge-Links/Index/_index-en.md` 鈥?涓荤储寮曪紙EN锛?- `zh-tw/_meta/馃敆 鐭ヨ瘑鍏宠仈/Index/_index.md` 鈥?涓荤储寮曪紙TW锛?- `_meta/Templates/` 鈥?绗旇妯℃澘锛堝叏閮ㄧ被鍨嬶級
+- `_meta/queries/` 鈥?Dataview 鏌ヨ搴擄紙6 涓瀹氫箟鏌ヨ锛?- `_meta/adr/` 鈥?鏋舵瀯鍐崇瓥璁板綍
+- `_meta/design/KOS-LLM-Wiki鏋舵瀯璇存槑.md` 鈥?鏋舵瀯璇存槑涔?v3.0
+- `.claude/hooks.json` 鈥?鐢熷懡鍛ㄦ湡 hooks锛圫essionStart, PostCompact, PostToolUse, Stop锛?- `.claude/skills/kos-query/SKILL.md` 鈥?涓夌骇鏌ヨ鎶€鑳藉畾涔?- `_meta/scripts/wiki-lock.sh` 鈥?鏂囦欢閿侊紙澶?agent 瀹夊叏鍐欏叆锛?- `1 Projects/UDC 鑷姩寤鸿/build_keyword_map.py` 鈥?浠庢爣娉ㄧ瑪璁扮敓鎴?UDC 鍏抽敭璇嶆槧灏?

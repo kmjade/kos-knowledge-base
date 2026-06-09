@@ -1,6 +1,6 @@
 ---
 name: kos
-description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，分发给 KOS-Triage / KOS-Compile / KOS-Link / KOS-Daily / KOS-Query / Canvas / KOS-Init 子技能。
+description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，分发给 KOS-Triage / KOS-Compile / KOS-Link / KOS-Daily / KOS-Query / Canvas / KOS-Init / KOS-Project 子技能。
 ---
 
 # KOS LLM-Wiki 知识组织引擎
@@ -19,6 +19,8 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 | 4 | `/kos-daily` | 创建每日笔记 / 周期回顾 |
 | 5 | **Canvas** | **可视化参考层 — 创建/管理 Obsidian Canvas 画布** |
 | 6 | **KOS-Init** | **知识库初始化与健康检查 — 一键检查/修复 vault 结构** |
+| 7 | **KOS-Project** | **项目管理 — 自动编号/目录/主页/领域关联** |
+| 8 | **KOS-Archive** | **项目归档 — 完成度核查/复盘/目录迁移/领域同步** |
 
 ---
 
@@ -32,6 +34,8 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 | 今日笔记、日回顾、周报、月报、年报 | **kos-daily** |
 | canvas、画布、可视、visual、visualize、展示 | **Canvas** |
 | 初始化、检查、修复、健康、init、setup、一键初始化 | **KOS-Init** |
+| 项目、新建、立项、创建项目 | **kos-project** |
+| 归档、结项、完成项目、项目收尾 | **kos-archive** |
 | 状态、进度、当前情况 | 显示各技能状态 |
 
 ---
@@ -49,7 +53,7 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 
 ```yaml
 name: kos
-version: 1.0.0
+version: 1.1.0
 description: KOS LLM-Wiki 知识组织引擎统一入口
 dependencies:
   - kos-triage
@@ -58,4 +62,6 @@ dependencies:
   - kos-daily
   - canvas
   - kos-init
+  - kos-project
+  - kos-archive
 ```

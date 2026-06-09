@@ -95,7 +95,7 @@
   },
   "savedProviderPermissionMode": {
     "claude": "yolo",
-    "codex": "yolo",
+    "codex": "normal",
     "opencode": "yolo"
   },
   "lastCustomModel": "",

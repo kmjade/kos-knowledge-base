@@ -1,4 +1,4 @@
-﻿---
+---
 title: "LifeOS × LLM-Wiki 融合系统"
 source: "https://mp.weixin.qq.com/s/uEAegrqhsM1WKcqlVfuE2w"
 author:
@@ -127,7 +127,7 @@ text
 │   ├── assets/                ← 图片、附件
 │   ├── templates/             ← Templater 模板文件
 │   ├── bases/                 ← Obsidian Bases 数据库视图
-│   ├── scripts/               ← Python/Shell 辅助脚本
+│   ├── _meta/scripts/               ← Python/Shell 辅助脚本
 │   └── graphs/                ← 自定义 D3 图谱（可选）
 │
 └── AI-Log/                    ← 🤖 Agent 操作日志（审计追踪）

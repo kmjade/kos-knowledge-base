@@ -22,52 +22,13 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 
 ---
 
-## Delta 追踪（v1.4+）
-
-> 每次创建周期笔记后更新 `_meta/.manifest.json`，追踪各周期的最新状态。
-
-### 更新 Manifest
-
-```bash
-REVIEW_TYPE="$1"  # daily | week | month | quarter | year
-REVIEW_DATE="$2"  # YYYY-MM-DD 或 YYYY-WW 或 YYYY-MM 等
-
-python3 -c "
-import json, os, sys
-mf = '_meta/.manifest.json'
-m = json.load(open(mf)) if os.path.exists(mf) else {'sources':{}, 'engines':{}}
-m.setdefault('engines', {})
-m['engines'].setdefault('daily', {})
-
-review_type = sys.argv[1]
-review_date = sys.argv[2]
-
-mapping = {
-    'daily': 'last_daily',
-    'week': 'last_weekly',
-    'month': 'last_monthly',
-    'quarter': 'last_quarter',
-    'year': 'last_year'
-}
-key = mapping.get(review_type)
-if key:
-    m['engines']['daily'][key] = review_date
-
-json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
-print(f'Updated manifest: engines.daily.{key} = {review_date}')
-" "$REVIEW_TYPE" "$REVIEW_DATE"
-```
-
----
-
 ## Daily Open 流程
 
 1. 检查 `Periodic/YYYY/MM/YYYY-MM-DD.md` 是否存在
 2. 若存在 → 跳过（幂等）
 3. 若不存在 → 使用 `_meta/Templates/每日笔记模板.md` 创建
 4. 填充：当前活跃工单、未完成任务、待处理 Inbox 数量
-5. **更新 Manifest：** `engines.daily.last_daily = YYYY-MM-DD`
-6. 日志写入 `_logs/operations/maintenance.md`
+5. 日志写入 `_logs/operations/maintenance.md`
 
 ---
 
@@ -80,31 +41,76 @@ print(f'Updated manifest: engines.daily.{key} = {review_date}')
 
 ---
 
-## 周期回顾流程
+## Week-Review 流程
 
-各周期回顾聚合下级数据：
+> 目标：完成"本周复盘 + 残留清理 + 下周计划"闭环
 
-```
-Year-Review ← Quarter-Review ← Month-Review ← Week-Review ← Day-Review
-```
-
-创建完成后，**更新 Manifest** 记录该周期的最新日期。
+1. 汇总本周每日笔记，读取上周周记的 `## 下周计划`（若存在）
+2. 对照分析：上周计划 vs 本周执行 → 输出完成/部分完成/未完成 + 原因
+3. 处理本周残留记录（四选一：转任务 / 已处理 / 延期 / 转 kos-compile）
+4. 引导反思：成就 / 挑战 / 洞察 / 改进（用户互动，原话优先）
+5. 生成下周框架建议 → 用户确认 → 写入 `## 下周计划`
+6. 写入 `_logs/reports/YYYY-WW.md`
+7. 更新 `_logs/operations/maintenance.md`
 
 ---
 
-## 参数
+## Month-Review 流程
+
+> 目标：完成"月度复盘 + 计划对照 + 残留清零 + 下月规划"闭环
+
+1. 聚合本月周报（缺失周报时补读每日笔记）
+2. 对照分析：上月计划 vs 本月执行 → 完成/部分完成/未完成 + 原因
+3. 残留清零：处理本月未完成记录 + "以后再说"缓冲（逐条定去向）
+4. 领域检查：各领域进展（用户互动）
+5. 下月规划：对齐年度方向，生成下月框架 → 用户确认
+6. 写入 `_logs/reports/YYYY-MM.md`
+7. 更新 `_logs/operations/maintenance.md`
+
+---
+
+## Quarter-Review 流程
+
+> 目标：聚合季度数据 + 项目完成统计
+
+1. 聚合本季度月报
+2. 项目完成统计
+3. 写入 `_logs/reports/YYYY-QQ.md`
+4. 更新 `_logs/operations/maintenance.md`
+
+---
+
+## Year-Review 流程
+
+> 目标：完成"全年复盘 + 年度计划对照 + 新年计划确认"闭环
+
+1. 聚合全年月报（缺失月报时补读周报/关键日记）
+2. 对照分析：年初计划 vs 全年执行 → 完成/部分完成/未完成 + 原因
+3. 引导年度反思：成就 / 挑战 / 成长 / 关系 / 价值观（用户互动）
+4. 生成新年框架建议（含延续事项 + 新方向 + 启动动作）→ 用户确认
+5. 写入 `_logs/reports/YYYY.md`（年度回顾 + 下一年计划）
+6. 更新 `_logs/operations/maintenance.md`
+
+---
+
+## 关于模板
+
+所有周期笔记使用 `_meta/Templates/` 下对应模板：
+- 每日笔记 → `每日笔记模板.md`
+- 周记 → `周记模板.md`
+- 月记 → `月记模板.md`
+- 季度 → `季度模板.md`
+- 年度 → `年度模板.md`
+
+---
 
 ## 如何思考（10 原则映射）
 
 | # | 原则 | 在本引擎中的应用 |
 |---|------|----------------|
-| 1 | OBSERVE | 先检查周期笔记是否已存在 |
-| 4 | THINK | 聚合下级数据：日→周→月→季→年 |
-| 6 | CONNECT(sys) | 创建笔记后更新 manifest.engines.daily |
-| 9 | CREATE | 创建笔记 + 填充活跃工单数据 |
-| 10 | GROW | 写操作日志供后续周期回顾 |
-
-
-- `--type <daily|day|week|month|quarter|year>` — 指定回顾类型
-- `--date <YYYY-MM-DD>` — 指定日期（默认今天）
-- `--status` — 仅显示状态
+| 1 | OBSERVE | 先检查周期笔记是否已存在；读取上周/上月计划做对照 |
+| 3 | LISTEN | 反思阶段用户原话优先，AI 不预设答案 |
+| 4 | THINK | 对照分析 + 框架建议 + 对齐年度计划 |
+| 6 | CONNECT(sys) | 日→周→月→季→年递进聚合 |
+| 9 | CREATE | 写入周期笔记 + 计划区块 |
+| 10 | GROW | 写操作日志供后续周期引用 |

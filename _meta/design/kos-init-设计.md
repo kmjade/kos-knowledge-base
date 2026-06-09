@@ -102,11 +102,10 @@ KOS-Init Status Report
 [OK]  _logs/            — 存在（4/4 子目录）
 [OK]  _attachments/     — 存在（3/3 子目录）
 [OK]  _meta/scripts/    — 存在
-[OK]  tests/            — 存在
 [OK]  Dashboard/Home.md  — 存在
 [WARN] _meta/Templates/ — 缺少 概念模板.md
 [OK]  索引 (CN/EN/TW)   — 完整
-[OK]  hot.md            — 存在
+[OK]  _meta/hot.md      — 存在
 [INFO] .claude/skills/  — 7/7 KOS 引擎
 [INFO] .codex/skills/   — 7/7 KOS 引擎
 [INFO] .opencode/skills/— 7/7 KOS 引擎

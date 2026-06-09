@@ -11,39 +11,23 @@ status: live
 # 最近上下文 | Recent Context
 
 ## 最后更新 | Last Updated
-2026-06-09 — Canvas 可视层实现 + claude-obsidian 系列收尾
+2026-06-09 — KOS 引擎扩展至 9 + 跨会话状态系统统一
 
 ## 关键进展 | Key Recent Facts
-- **Canvas 可视层**：第三个知识捕获层设计完成（设计文档 + 三平台 SKILL.md + _attachments/ 目录结构）
-- **KOS-Init**：第 8 个引擎—知识库初始化与健康检查（对应 ah-init）
-- **json-canvas 参考补齐**：Claude Code + Codex CLI 部署，三平台全覆盖
-- **claude-obsidian 借鉴系列全部完成**：9 个特性全部实现 ✅
-- KOS 引擎总数增至 8（kos + triage + compile + link + daily + query + canvas + kos-init）
-- 架构文档 v3.0 更新：Canvas 标记为 ✅ 已实现
-
-## 变更摘要 | Recent Changes
-- **设计文档**: `_meta/design/canvas-可视层设计.md` 创建
-- **Canvas 技能（三平台）**:
-  - `.claude/skills/canvas/SKILL.md`
-  - `.codex/skills/canvas/SKILL.md`
-  - `.opencode/skills/canvas/SKILL.md`
-- **json-canvas 参考补齐**:
-  - `.claude/skills/json-canvas/SKILL.md`（新增）
-  - `.codex/skills/json-canvas/SKILL.md`（新增）
-- **目录结构**: `_attachments/canvases/` + `_attachments/media/images/` + `_attachments/media/pdfs/`
-- **默认画布**: `_attachments/canvases/_index.canvas` 创建
-- **KOS 统一入口**: 三平台 kos/SKILL.md 加入 Canvas 意图识别
-- **.gitignore**: 添加 `_attachments/media/` 排除二进制文件
-- **架构文档**: `_meta/design/KOS-LLM-Wiki架构说明v3.0.md` 更新
+- **脚本迁移**：scripts/ → _meta/scripts/，30+ 文件引用全部更新 ✅
+- **KOS 哲学确立**：KOS 是主干，ah 是过渡脚手架，功能已全部吸收
+- **新引擎**：kos-project + kos-archive（从 ah 吸收）
+- **增强引擎**：kos-daily（周期回顾交互深度）+ kos-triage（残留/分流/追踪）
+- **状态系统统一**：_meta/ai-memory/STATE.md + tasks/ 跨引擎追踪
+- **全部 11 个项目完成编号**（26-01 ~ 26-11）
+- **三平台状态**：Claude/Codex/OpenCode 一致，KOS 9 引擎全部署
 
 ## 活跃线程 | Active Threads
-- claude-obsidian 借鉴系列 ✅ **全部完成**
-- Canvas 可视层：P3 按需使用，无持续维护任务
-- _agents/kos/README.md 仍为空（P2）
-- _meta/skills/skills.md 仍为空（P2）
+- ah 功能吸收路线图 ✅ 全部完成
+- knowledge-value tq 导入策略（未来）
 
 ## 当前状态 | Session State
-- Inbox: 0 条待处理 ✅
-- §5.2 claude-obsidian 借鉴: 9/9 ✅ **全部实现**
-  - 文件锁 P0 | 热缓存 P0 | 三级查询 P1 | Delta 追踪 P1 | wiki-fold P2 | Life Agent P2 | Think P3 | **Canvas P3 ✅ 新增**
-- KOS 引擎总数: 8
+- KOS 引擎数: 9（triage/compile/link/daily/canvas/init/project/archive/life）
+- ah 引擎: 待清理（OpenCode 过渡脚手架）
+- Inbox: 待检查
+- STATE.md: 已初始化，8 个引擎区块 + tasks/ 队列

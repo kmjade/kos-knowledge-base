@@ -6,105 +6,94 @@ tags: [architecture, design, canvas, visual-layer, v3]
 status: draft
 ---
 
-# Canvas 可视层 — 设计文档
+# Canvas 鍙灞?鈥?璁捐鏂囨。
 
-> KOS 第三个知识捕获层：**可视化参考层**
-> 对应 claude-obsidian 的 `canvas` 技能，针对 KOS_LLM-Wiki 适配
+> KOS 绗笁涓煡璇嗘崟鑾峰眰锛?*鍙鍖栧弬鑰冨眰**
+> 瀵瑰簲 claude-obsidian 鐨?`canvas` 鎶€鑳斤紝閽堝 KOS_LLM-Wiki 閫傞厤
 
 ---
 
-## 1. 三个知识捕获层
-
-| 层 | 名称 | 功能 | 输出格式 | KOS 对应 |
+## 1. 涓変釜鐭ヨ瘑鎹曡幏灞?
+| 灞?| 鍚嶇О | 鍔熻兘 | 杈撳嚭鏍煎紡 | KOS 瀵瑰簲 |
 |:--:|------|------|---------|----------|
-| L1 | **文本综合** (Text Synthesis) | 对话 → 结构化文本知识 | `.md` wiki 页面 | KOS-Compile |
-| L2 | **结构化知识** (Structured Knowledge) | 分类 → 索引与查询 | `.md` 索引 + Dataview | KOS-Triage + KOS-Query |
-| **L3** | **可视化参考** (Visual Reference) | 视觉 → 空间关系画布 | `.canvas` (JSON Canvas) | **Canvas 可视层** ← 本次新增 |
+| L1 | **鏂囨湰缁煎悎** (Text Synthesis) | 瀵硅瘽 鈫?缁撴瀯鍖栨枃鏈煡璇?| `.md` wiki 椤甸潰 | KOS-Compile |
+| L2 | **缁撴瀯鍖栫煡璇?* (Structured Knowledge) | 鍒嗙被 鈫?绱㈠紩涓庢煡璇?| `.md` 绱㈠紩 + Dataview | KOS-Triage + KOS-Query |
+| **L3** | **鍙鍖栧弬鑰?* (Visual Reference) | 瑙嗚 鈫?绌洪棿鍏崇郴鐢诲竷 | `.canvas` (JSON Canvas) | **Canvas 鍙灞?* 鈫?鏈鏂板 |
 
-### 三者关系
-
+### 涓夎€呭叧绯?
 ```
-文本综合 ──→ 产出可读、可搜索的笔记
-结构化知识 ──→ 产出可发现、可关联的索引
-可视化参考 ──→ 产出可感知、可探索的空间布局
+鏂囨湰缁煎悎 鈹€鈹€鈫?浜у嚭鍙銆佸彲鎼滅储鐨勭瑪璁?缁撴瀯鍖栫煡璇?鈹€鈹€鈫?浜у嚭鍙彂鐜般€佸彲鍏宠仈鐨勭储寮?鍙鍖栧弬鑰?鈹€鈹€鈫?浜у嚭鍙劅鐭ャ€佸彲鎺㈢储鐨勭┖闂村竷灞€
 ```
 
-- L1 和 L2 处理文本；L3 处理**视觉关系**
-- Canvas 不替代笔记，而是用**空间布局**补充知识关联
-- 同一话题可同时拥有 wiki 页面（L1）和 canvas 画布（L3）
-
+- L1 鍜?L2 澶勭悊鏂囨湰锛汱3 澶勭悊**瑙嗚鍏崇郴**
+- Canvas 涓嶆浛浠ｇ瑪璁帮紝鑰屾槸鐢?*绌洪棿甯冨眬**琛ュ厖鐭ヨ瘑鍏宠仈
+- 鍚屼竴璇濋鍙悓鏃舵嫢鏈?wiki 椤甸潰锛圠1锛夊拰 canvas 鐢诲竷锛圠3锛?
 ---
 
-## 2. 核心概念
+## 2. 鏍稿績姒傚康
 
-### 2.1 什么是 Canvas
+### 2.1 浠€涔堟槸 Canvas
 
-Canvas 是 Obsidian 原生的 `.canvas` 文件（JSON Canvas 1.0 格式），渲染为无限视觉面板。支持四种节点类型：
+Canvas 鏄?Obsidian 鍘熺敓鐨?`.canvas` 鏂囦欢锛圝SON Canvas 1.0 鏍煎紡锛夛紝娓叉煋涓烘棤闄愯瑙夐潰鏉裤€傛敮鎸佸洓绉嶈妭鐐圭被鍨嬶細
 
-| 节点类型 | 用途 | 示例 |
+| 鑺傜偣绫诲瀷 | 鐢ㄩ€?| 绀轰緥 |
 |---------|------|------|
-| `text` | Markdown 文本卡片 | 标题、说明、注释 |
-| `file` | 嵌入文件（图片/PDF/笔记） | `![[architecture.png]]` |
-| `group` | 分组区域（Zone） | 带标签的矩形区域，视觉分组 |
-| `link` | 网页 URL 预览 | `https://...` 自动抓取 OG 信息 |
+| `text` | Markdown 鏂囨湰鍗＄墖 | 鏍囬銆佽鏄庛€佹敞閲?|
+| `file` | 宓屽叆鏂囦欢锛堝浘鐗?PDF/绗旇锛?| `![[architecture.png]]` |
+| `group` | 鍒嗙粍鍖哄煙锛圸one锛?| 甯︽爣绛剧殑鐭╁舰鍖哄煙锛岃瑙夊垎缁?|
+| `link` | 缃戦〉 URL 棰勮 | `https://...` 鑷姩鎶撳彇 OG 淇℃伅 |
 
-### 2.2 适用场景
+### 2.2 閫傜敤鍦烘櫙
 
-| 场景 | 优先级 | 说明 |
+| 鍦烘櫙 | 浼樺厛绾?| 璇存槑 |
 |------|:------:|------|
-| **概念关系图** | 高 | 用空间位置 + 连线表达概念间关联 |
-| **视觉素材板** | 中 | 收集图片、截图、PDF 到同一面板 |
-| **项目看板** | 中 | 用 Zone 做阶段分组，卡片代表任务 |
-| **研究路线图** | 低 | 时间线 + 里程碑的视觉展示 |
-| **演示/展示** | 低 | Obsidian 全屏模式展示 Canvas |
+| **姒傚康鍏崇郴鍥?* | 楂?| 鐢ㄧ┖闂翠綅缃?+ 杩炵嚎琛ㄨ揪姒傚康闂村叧鑱?|
+| **瑙嗚绱犳潗鏉?* | 涓?| 鏀堕泦鍥剧墖銆佹埅鍥俱€丳DF 鍒板悓涓€闈㈡澘 |
+| **椤圭洰鐪嬫澘** | 涓?| 鐢?Zone 鍋氶樁娈靛垎缁勶紝鍗＄墖浠ｈ〃浠诲姟 |
+| **鐮旂┒璺嚎鍥?* | 浣?| 鏃堕棿绾?+ 閲岀▼纰戠殑瑙嗚灞曠ず |
+| **婕旂ず/灞曠ず** | 浣?| Obsidian 鍏ㄥ睆妯″紡灞曠ず Canvas |
 
-### 2.3 不适用场景
+### 2.3 涓嶉€傜敤鍦烘櫙
 
-- 纯文本内容（用 wiki 页面即可）
-- 需要版本对比的内容（Git 对 .canvas JSON 的 diff 可读性差）
-- 大量图片的批量存储（图片用 `_attachments/media/` 统一管理）
-
+- 绾枃鏈唴瀹癸紙鐢?wiki 椤甸潰鍗冲彲锛?- 闇€瑕佺増鏈姣旂殑鍐呭锛圙it 瀵?.canvas JSON 鐨?diff 鍙鎬у樊锛?- 澶ч噺鍥剧墖鐨勬壒閲忓瓨鍌紙鍥剧墖鐢?`_attachments/media/` 缁熶竴绠＄悊锛?
 ---
 
-## 3. 目录结构
+## 3. 鐩綍缁撴瀯
 
-### 3.1 存储路径
+### 3.1 瀛樺偍璺緞
 
-所有 Canvas 可视层文件集中存放于 `_attachments/` 目录：
-
+鎵€鏈?Canvas 鍙灞傛枃浠堕泦涓瓨鏀句簬 `_attachments/` 鐩綍锛?
 ```
 _attachments/
-├── canvases/          # 📋 .canvas 画布文件
-│   ├── _index.canvas  # 总览画布（默认入口）
-│   └── ...
-├── media/             # 🖼️ 图片 / PDF / 其他二进制资源
-│   ├── images/        #    图片
-│   ├── pdfs/          #    PDF
-│   └── .gitkeep       #    占位
-└── .gitkeep           # 占位
+鈹溾攢鈹€ canvases/          # 馃搵 .canvas 鐢诲竷鏂囦欢
+鈹?  鈹溾攢鈹€ _index.canvas  # 鎬昏鐢诲竷锛堥粯璁ゅ叆鍙ｏ級
+鈹?  鈹斺攢鈹€ ...
+鈹溾攢鈹€ media/             # 馃柤锔?鍥剧墖 / PDF / 鍏朵粬浜岃繘鍒惰祫婧?鈹?  鈹溾攢鈹€ images/        #    鍥剧墖
+鈹?  鈹溾攢鈹€ pdfs/          #    PDF
+鈹?  鈹斺攢鈹€ .gitkeep       #    鍗犱綅
+鈹斺攢鈹€ .gitkeep           # 鍗犱綅
 ```
 
-**设计理由：**
+**璁捐鐞嗙敱锛?*
 
-| 维度 | 集中式 (`_attachments/`) | 分散式 (`3 Resources/.../wiki/canvases/`) |
+| 缁村害 | 闆嗕腑寮?(`_attachments/`) | 鍒嗘暎寮?(`3 Resources/.../wiki/canvases/`) |
 |------|:------------------------:|:----------------------------------------:|
-| 跨域共享 | ✅ 一个画布可引用多个领域内容 | ❌ 画布局限于单个领域 |
-| 发现性 | ✅ 一处找到所有画布 | ❌ 散布在多个 topic 目录 |
-| Git 管理 | ✅ `_attachments/` 可统一 `.gitignore` | ❌ 需要逐个目录配置 |
-| 与 PARA 一致性 | ❌ 偏离 PARA 领域分离原则 | ✅ 符合领域归属 |
+| 璺ㄥ煙鍏变韩 | 鉁?涓€涓敾甯冨彲寮曠敤澶氫釜棰嗗煙鍐呭 | 鉂?鐢诲竷灞€闄愪簬鍗曚釜棰嗗煙 |
+| 鍙戠幇鎬?| 鉁?涓€澶勬壘鍒版墍鏈夌敾甯?| 鉂?鏁ｅ竷鍦ㄥ涓?topic 鐩綍 |
+| Git 绠＄悊 | 鉁?`_attachments/` 鍙粺涓€ `.gitignore` | 鉂?闇€瑕侀€愪釜鐩綍閰嶇疆 |
+| 涓?PARA 涓€鑷存€?| 鉂?鍋忕 PARA 棰嗗煙鍒嗙鍘熷垯 | 鉁?绗﹀悎棰嗗煙褰掑睘 |
 
-**结论：** 采用 **集中式**，因为 Canvas 本质上是**跨领域**的可视层，不应被单一领域限制。
+**缁撹锛?* 閲囩敤 **闆嗕腑寮?*锛屽洜涓?Canvas 鏈川涓婃槸**璺ㄩ鍩?*鐨勫彲瑙嗗眰锛屼笉搴旇鍗曚竴棰嗗煙闄愬埗銆?
+### 3.2 Git 绛栫暐
 
-### 3.2 Git 策略
-
-| 内容 | 是否入 Git | 原因 |
+| 鍐呭 | 鏄惁鍏?Git | 鍘熷洜 |
 |------|:----------:|------|
-| `.canvas` 文件（JSON） | ✅ 跟踪 | 纯文本，diff 可读 |
-| `.gitkeep` 占位 | ✅ 跟踪 | 保持目录结构 |
-| 图片 (`media/images/`) | ❌ 忽略 | 二进制大文件 |
-| PDF (`media/pdfs/`) | ❌ 忽略 | 二进制大文件 |
+| `.canvas` 鏂囦欢锛圝SON锛?| 鉁?璺熻釜 | 绾枃鏈紝diff 鍙 |
+| `.gitkeep` 鍗犱綅 | 鉁?璺熻釜 | 淇濇寔鐩綍缁撴瀯 |
+| 鍥剧墖 (`media/images/`) | 鉂?蹇界暐 | 浜岃繘鍒跺ぇ鏂囦欢 |
+| PDF (`media/pdfs/`) | 鉂?蹇界暐 | 浜岃繘鍒跺ぇ鏂囦欢 |
 
-在 `.gitignore` 中添加：
+鍦?`.gitignore` 涓坊鍔狅細
 
 ```
 # Canvas media assets
@@ -113,161 +102,134 @@ _attachments/media/
 
 ---
 
-## 4. 命令集
+## 4. 鍛戒护闆?
+### 4.1 鍛戒护娓呭崟
 
-### 4.1 命令清单
-
-| 命令 | 功能 | 参数 | 对应 claude-obsidian |
+| 鍛戒护 | 鍔熻兘 | 鍙傛暟 | 瀵瑰簲 claude-obsidian |
 |------|------|------|:-------------------:|
-| `Canvas-Status` | 查询画布状态 | 可选指定画布名 | `/canvas` |
-| `Canvas-New <name>` | 新建画布 | name: 画布名称 | `/canvas new` |
-| `Canvas-Add-Image <path>` | 添加图片 | path: 本地路径或 URL | `/canvas add image` |
-| `Canvas-Add-Text <content>` | 添加文本卡片 | content: Markdown 文本 | `/canvas add text` |
-| `Canvas-Add-Note <page>` | 添加笔记链接 | page: wiki 页面路径 | `/canvas add note` |
-| `Canvas-Add-PDF <path>` | 添加 PDF | path: 本地路径或 URL | `/canvas add pdf` |
-| `Canvas-Zone <name> [color]` | 添加区域分组 | name+颜色(1-6) | `/canvas zone` |
-| `Canvas-List` | 列出所有画布 | — | `/canvas list` |
+| `Canvas-Status` | 鏌ヨ鐢诲竷鐘舵€?| 鍙€夋寚瀹氱敾甯冨悕 | `/canvas` |
+| `Canvas-New <name>` | 鏂板缓鐢诲竷 | name: 鐢诲竷鍚嶇О | `/canvas new` |
+| `Canvas-Add-Image <path>` | 娣诲姞鍥剧墖 | path: 鏈湴璺緞鎴?URL | `/canvas add image` |
+| `Canvas-Add-Text <content>` | 娣诲姞鏂囨湰鍗＄墖 | content: Markdown 鏂囨湰 | `/canvas add text` |
+| `Canvas-Add-Note <page>` | 娣诲姞绗旇閾炬帴 | page: wiki 椤甸潰璺緞 | `/canvas add note` |
+| `Canvas-Add-PDF <path>` | 娣诲姞 PDF | path: 鏈湴璺緞鎴?URL | `/canvas add pdf` |
+| `Canvas-Zone <name> [color]` | 娣诲姞鍖哄煙鍒嗙粍 | name+棰滆壊(1-6) | `/canvas zone` |
+| `Canvas-List` | 鍒楀嚭鎵€鏈夌敾甯?| 鈥?| `/canvas list` |
 
-### 4.2 与 KOS 命令风格一致
+### 4.2 涓?KOS 鍛戒护椋庢牸涓€鑷?
+閬靛惊 KOS 寮曟搸鐨?`KOS-*` 鍛藉悕鎯緥锛?- 鍛戒护鍓嶇紑锛歚Canvas-`
+- 鍙傛暟椋庢牸锛歚Canvas-Command <required> [optional]`
+- 骞傜瓑鎬э細宸插瓨鍦ㄧ殑鐢诲竷涓嶈鐩栵紝鎶ユ彁绀?
+### 4.3 鑷姩瀹氫綅绠楁硶
 
-遵循 KOS 引擎的 `KOS-*` 命名惯例：
-- 命令前缀：`Canvas-`
-- 参数风格：`Canvas-Command <required> [optional]`
-- 幂等性：已存在的画布不覆盖，报提示
-
-### 4.3 自动定位算法
-
-与 claude-obsidian 相同（参见 `references/canvas-spec.md`）：
+涓?claude-obsidian 鐩稿悓锛堝弬瑙?`references/canvas-spec.md`锛夛細
 
 ```
-1. 找到目标 Zone（group 节点）
-2. Zone 内从左→右排列节点（间距 40px）
-3. 超出 Zone 宽度 → 换行（间距 20px）
-4. 无 Zone → 放在所有节点下方
-5. 图片按宽高比自适应尺寸
+1. 鎵惧埌鐩爣 Zone锛坓roup 鑺傜偣锛?2. Zone 鍐呬粠宸︹啋鍙虫帓鍒楄妭鐐癸紙闂磋窛 40px锛?3. 瓒呭嚭 Zone 瀹藉害 鈫?鎹㈣锛堥棿璺?20px锛?4. 鏃?Zone 鈫?鏀惧湪鎵€鏈夎妭鐐逛笅鏂?5. 鍥剧墖鎸夊楂樻瘮鑷€傚簲灏哄
 ```
 
 ---
 
-## 5. 三平台技能架构
-
-### 5.1 技能依赖链
+## 5. 涓夊钩鍙版妧鑳芥灦鏋?
+### 5.1 鎶€鑳戒緷璧栭摼
 
 ```
-json-canvas (参考层)     canvas (工作流层)
-     │                        │
-     │  JSON Canvas 1.0 格式规范  │  命令解析 + 文件操作 + 定位算法
-     ▼                        ▼
-  ┌───────────────────────────────────┐
-  │       三平台共享 SKILL.md          │
-  │  Claude Code / Codex CLI / OpenCode │
-  └───────────────────────────────────┘
-```
+json-canvas (鍙傝€冨眰)     canvas (宸ヤ綔娴佸眰)
+     鈹?                       鈹?     鈹? JSON Canvas 1.0 鏍煎紡瑙勮寖  鈹? 鍛戒护瑙ｆ瀽 + 鏂囦欢鎿嶄綔 + 瀹氫綅绠楁硶
+     鈻?                       鈻?  鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鈹?      涓夊钩鍙板叡浜?SKILL.md          鈹?  鈹? Claude Code / Codex CLI / OpenCode 鈹?  鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?```
 
-### 5.2 技能部署
-
-| 技能 | Claude Code | Codex CLI | OpenCode |
+### 5.2 鎶€鑳介儴缃?
+| 鎶€鑳?| Claude Code | Codex CLI | OpenCode |
 |------|:-----------:|:---------:|:--------:|
-| `json-canvas` | ✅ 新增 | ✅ 新增 | ✅ 已有 |
-| `canvas` | ✅ 新增 | ✅ 新增 | ✅ 新增 |
+| `json-canvas` | 鉁?鏂板 | 鉁?鏂板 | 鉁?宸叉湁 |
+| `canvas` | 鉁?鏂板 | 鉁?鏂板 | 鉁?鏂板 |
 
-### 5.3 与 KOS 统一入口集成
+### 5.3 涓?KOS 缁熶竴鍏ュ彛闆嗘垚
 
-在 `kos/SKILL.md` 中新增意图识别规则：
+鍦?`kos/SKILL.md` 涓柊澧炴剰鍥捐瘑鍒鍒欙細
 
-| 用户表达 | 路由 |
+| 鐢ㄦ埛琛ㄨ揪 | 璺敱 |
 |---------|------|
-| canvas、画布、可视、visual、visualize | **canvas** |
+| canvas銆佺敾甯冦€佸彲瑙嗐€乿isual銆乿isualize | **canvas** |
 
 ---
 
-## 6. 与现有 KOS 引擎的集成
+## 6. 涓庣幇鏈?KOS 寮曟搸鐨勯泦鎴?
+### 6.1 KOS-Compile 鍙€夎仈鍔?
+- **缂栬瘧鍚?*锛氬姒傚康鍏崇郴鏄庣‘鐨?topic锛岃闂敤鎴锋槸鍚︾敓鎴愬叧绯?canvas
+- **涓嶈嚜鍔ㄧ敓鎴?*锛氶伩鍏嶅櫔闊筹紝闇€鐢ㄦ埛纭
+- **杈撳嚭**锛歚_attachments/canvases/[topic]-relations.canvas`
 
-### 6.1 KOS-Compile 可选联动
+### 6.2 KOS-Triage 鍙€夎矾鐢?
+- **鍒嗘嫞鏃?*锛氬鏋?Inbox 鏂囦欢鍖呭惈鍥剧墖銆佹埅鍥炬垨瑙嗚绱犳潗锛屾彁绀?鏄惁鍔犲叆 canvas"
+- **涓嶈嚜鍔ㄨ矾鐢?*锛氭枃鏈枃浠剁収甯镐笁妗ｅ垎鎷?
+### 6.3 KOS-Link 鍏煎
 
-- **编译后**：对概念关系明确的 topic，询问用户是否生成关系 canvas
-- **不自动生成**：避免噪音，需用户确认
-- **输出**：`_attachments/canvases/[topic]-relations.canvas`
-
-### 6.2 KOS-Triage 可选路由
-
-- **分拣时**：如果 Inbox 文件包含图片、截图或视觉素材，提示"是否加入 canvas"
-- **不自动路由**：文本文件照常三档分拣
-
-### 6.3 KOS-Link 兼容
-
-- L3 链接检查：扫描 `.canvas` 中的 `[[wiki-link]]` 和 `file` 路径
-- 注意：.canvas 是 JSON 不是 Markdown，解析方式不同
-- 初期 L3 跳过 `.canvas` 文件（P3 功能不做 L3 检查）
+- L3 閾炬帴妫€鏌ワ細鎵弿 `.canvas` 涓殑 `[[wiki-link]]` 鍜?`file` 璺緞
+- 娉ㄦ剰锛?canvas 鏄?JSON 涓嶆槸 Markdown锛岃В鏋愭柟寮忎笉鍚?- 鍒濇湡 L3 璺宠繃 `.canvas` 鏂囦欢锛圥3 鍔熻兘涓嶅仛 L3 妫€鏌ワ級
 
 ---
 
-## 7. 文件锁集成
-
-所有 `Canvas-Add-*` 和 `Canvas-Zone` 操作涉及写入 `.canvas` 文件，需**获取文件锁**：
-
+## 7. 鏂囦欢閿侀泦鎴?
+鎵€鏈?`Canvas-Add-*` 鍜?`Canvas-Zone` 鎿嶄綔娑夊強鍐欏叆 `.canvas` 鏂囦欢锛岄渶**鑾峰彇鏂囦欢閿?*锛?
 ```
-python3 scripts/wiki-lock.py acquire _attachments/canvases/target.canvas
-... 写入操作 ...
-python3 scripts/wiki-lock.py release _attachments/canvases/target.canvas
+python3 _meta/scripts/wiki-lock.py acquire _attachments/canvases/target.canvas
+... 鍐欏叆鎿嶄綔 ...
+python3 _meta/scripts/wiki-lock.py release _attachments/canvases/target.canvas
 ```
 
-已在 wiki-lock.py 的并发安全范围内。
-
+宸插湪 wiki-lock.py 鐨勫苟鍙戝畨鍏ㄨ寖鍥村唴銆?
 ---
 
-## 8. 限制与边界
-
-| 维度 | 限制 | 原因 |
+## 8. 闄愬埗涓庤竟鐣?
+| 缁村害 | 闄愬埗 | 鍘熷洜 |
 |------|------|------|
-| 图片处理 | 不裁剪/不压缩/不转换格式 | 保持原图质量 |
-| 批量操作 | 一次建议 ≤5 个节点 | 避免 canvas JSON 过大 |
-| 画布大小 | 不主动清理节点 | 用户手动管理 |
-| 异步入图 | 不支持 | Obsidian 同步加载 |
-| 搜索引擎 | Canvas 内容不在 KOS-Query 范围内 | JSON 非 Markdown |
-| 跨语言 | Canvas 不翻译 | 视觉内容语言无关 |
+| 鍥剧墖澶勭悊 | 涓嶈鍓?涓嶅帇缂?涓嶈浆鎹㈡牸寮?| 淇濇寔鍘熷浘璐ㄩ噺 |
+| 鎵归噺鎿嶄綔 | 涓€娆″缓璁?鈮? 涓妭鐐?| 閬垮厤 canvas JSON 杩囧ぇ |
+| 鐢诲竷澶у皬 | 涓嶄富鍔ㄦ竻鐞嗚妭鐐?| 鐢ㄦ埛鎵嬪姩绠＄悊 |
+| 寮傛鍏ュ浘 | 涓嶆敮鎸?| Obsidian 鍚屾鍔犺浇 |
+| 鎼滅储寮曟搸 | Canvas 鍐呭涓嶅湪 KOS-Query 鑼冨洿鍐?| JSON 闈?Markdown |
+| 璺ㄨ瑷€ | Canvas 涓嶇炕璇?| 瑙嗚鍐呭璇█鏃犲叧 |
 
 ---
 
-## 9. 与 claude-obsidian 对比
+## 9. 涓?claude-obsidian 瀵规瘮
 
-| 特性 | claude-obsidian | KOS 适配 | 理由 |
+| 鐗规€?| claude-obsidian | KOS 閫傞厤 | 鐞嗙敱 |
 |------|:--------------:|:--------:|------|
-| 默认画布 | `wiki/canvases/main.canvas` | `_attachments/canvases/_index.canvas` | 集中式存储 |
-| 附件目录 | `_attachments/images/canvas/` | `_attachments/media/images/` | 统一 media 管理 |
-| /banana 集成 | ✅ | ❌ 跳过 | 无 banana-claude 插件 |
-| 会话日志 | `.recent-images.txt` | ❌ 跳过 | vault 无持续图片生成 |
-| auto-positioning | Python PIL 检测 | ✅ 保留 | 平台无关基础知识 |
-| 画布列表 | `wiki/canvases/*.canvas` | `_attachments/canvases/*.canvas` | 路径适配 |
-| 索引更新 | `wiki/overview.md` | KOS-Query 间接覆盖 | 不新增维护点 |
+| 榛樿鐢诲竷 | `wiki/canvases/main.canvas` | `_attachments/canvases/_index.canvas` | 闆嗕腑寮忓瓨鍌?|
+| 闄勪欢鐩綍 | `_attachments/images/canvas/` | `_attachments/media/images/` | 缁熶竴 media 绠＄悊 |
+| /banana 闆嗘垚 | 鉁?| 鉂?璺宠繃 | 鏃?banana-claude 鎻掍欢 |
+| 浼氳瘽鏃ュ織 | `.recent-images.txt` | 鉂?璺宠繃 | vault 鏃犳寔缁浘鐗囩敓鎴?|
+| auto-positioning | Python PIL 妫€娴?| 鉁?淇濈暀 | 骞冲彴鏃犲叧鍩虹鐭ヨ瘑 |
+| 鐢诲竷鍒楄〃 | `wiki/canvases/*.canvas` | `_attachments/canvases/*.canvas` | 璺緞閫傞厤 |
+| 绱㈠紩鏇存柊 | `wiki/overview.md` | KOS-Query 闂存帴瑕嗙洊 | 涓嶆柊澧炵淮鎶ょ偣 |
 
 ---
 
-## 10. 实施路线
+## 10. 瀹炴柦璺嚎
 
-| 阶段 | 内容 | 前置条件 |
+| 闃舵 | 鍐呭 | 鍓嶇疆鏉′欢 |
 |:----:|------|----------|
-| **P0** | 设计文档 + 目录结构 + `.gitkeep` | 本文档完成 |
-| **P1** | 三平台 `json-canvas` 参考 SKILL.md | 参考 spec 已有 |
-| **P2** | 三平台 `canvas` 工作流 SKILL.md | json-canvas 部署完成 |
-| **P3** | KOS 统一入口集成 + 默认 `_index.canvas` | canvas 技能可用 |
-| **未来** | KOS-Compile/Triage 可选联动 | 视觉内容量增长后 |
+| **P0** | 璁捐鏂囨。 + 鐩綍缁撴瀯 + `.gitkeep` | 鏈枃妗ｅ畬鎴?|
+| **P1** | 涓夊钩鍙?`json-canvas` 鍙傝€?SKILL.md | 鍙傝€?spec 宸叉湁 |
+| **P2** | 涓夊钩鍙?`canvas` 宸ヤ綔娴?SKILL.md | json-canvas 閮ㄧ讲瀹屾垚 |
+| **P3** | KOS 缁熶竴鍏ュ彛闆嗘垚 + 榛樿 `_index.canvas` | canvas 鎶€鑳藉彲鐢?|
+| **鏈潵** | KOS-Compile/Triage 鍙€夎仈鍔?| 瑙嗚鍐呭閲忓闀垮悗 |
 
 ---
 
-## 11. 参考资料
-
-| 文件 | 说明 |
+## 11. 鍙傝€冭祫鏂?
+| 鏂囦欢 | 璇存槑 |
 |------|------|
-| [[4 Archives/claude-obsidian/skills/canvas/SKILL.md]] | 原始 canvas 技能 |
-| [[4 Archives/claude-obsidian/skills/canvas/SKILL_CN.md]] | 中文版 |
-| [[4 Archives/claude-obsidian/skills/canvas/references/canvas-spec.md]] | JSON Canvas 格式全参考 |
-| [[.opencode/skills/json-canvas/SKILL.md]] | 已部署的 json-canvas 参考 |
-| [[.flownote/skills/json-canvas/SKILL.md]] | Flownote 版 json-canvas |
-| [[_meta/design/KOS-LLM-Wiki架构说明v3.0.md]] | 当前架构文档 |
-| [JSON Canvas 1.0 规范](https://jsoncanvas.org/spec/1.0/) | 开放标准 |
+| [[4 Archives/claude-obsidian/skills/canvas/SKILL.md]] | 鍘熷 canvas 鎶€鑳?|
+| [[4 Archives/claude-obsidian/skills/canvas/SKILL_CN.md]] | 涓枃鐗?|
+| [[4 Archives/claude-obsidian/skills/canvas/references/canvas-spec.md]] | JSON Canvas 鏍煎紡鍏ㄥ弬鑰?|
+| [[.opencode/skills/json-canvas/SKILL.md]] | 宸查儴缃茬殑 json-canvas 鍙傝€?|
+| [[.flownote/skills/json-canvas/SKILL.md]] | Flownote 鐗?json-canvas |
+| [[_meta/design/KOS-LLM-Wiki鏋舵瀯璇存槑v3.0.md]] | 褰撳墠鏋舵瀯鏂囨。 |
+| [JSON Canvas 1.0 瑙勮寖](https://jsoncanvas.org/spec/1.0/) | 寮€鏀炬爣鍑?|
 
 ---
 
-> **设计状态：** v1.0 初稿 · P3 优先级
-> **维护人：** AI Agent（KOS 引擎）
+> **璁捐鐘舵€侊細** v1.0 鍒濈 路 P3 浼樺厛绾?> **缁存姢浜猴細** AI Agent锛圞OS 寮曟搸锛?
