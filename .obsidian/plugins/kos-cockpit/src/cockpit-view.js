@@ -122,8 +122,6 @@ class CockpitView extends ItemView {
     if (this.settings?.showEngineState !== false) this.renderEngineState(container, data);
     if (this.settings?.showWeeklyChart !== false) this.renderWeeklyChart(container, data);
 
-    // AI Chat entry button (always at bottom)
-    this.renderChatEntryBtn(container);
   }
 
   renderHeader(container, data) {
