@@ -3,7 +3,7 @@
 
 const { ItemView, moment } = require('obsidian');
 const { t } = require('./locale');
-const { AIChat } = require('./ai-chat');
+const { AIChat, resolveFlownoteProvider } = require('./ai-chat');
 const {
   getTodayState, getInboxFiles, getDashboardStats,
   getRecentActivity, getHotContext, getWeeklyRecords,
@@ -394,16 +394,49 @@ class CockpitView extends ItemView {
   }
 
   _initAiChat() {
-    if (this.aiChat && this.aiChat.isConfigured) return; // already initialised
-    if (!this.aiChat) {
-      this.aiChat = new AIChat({
-        locale: this.settings?.locale || 'zh-cn',
-        aiEndpoint: this.settings?.aiEndpoint || '',
-        aiApiKey: this.settings?.aiApiKey || '',
-        aiModel: this.settings?.aiModel || 'gpt-4o',
-        aiSystemPrompt: this.settings?.aiSystemPrompt || '',
-      });
-    }
+    if (this.aiChat && this.aiChat.isConfigured) return;
+    if (this.aiChat) return;
+
+    // Phase 1: try auto-detecting FLOWnote's provider config
+    const self = this;
+    resolveFlownoteProvider(this.app.vault.adapter).then((flownoteConfig) => {
+      if (flownoteConfig) {
+        self.aiChat = new AIChat({
+          locale: self.settings?.locale || 'zh-cn',
+          baseUrl: flownoteConfig.baseUrl,
+          apiKey: flownoteConfig.apiKey,
+          model: flownoteConfig.model,
+          systemPrompt: self.settings?.aiSystemPrompt || '',
+          providerLabel: flownoteConfig.label,
+        });
+        const section = self.contentEl.querySelector('.kos-db-ai');
+        if (section) {
+          const msgContainer = section.querySelector('.kos-db-ai-msgs');
+          if (msgContainer) self._renderChatMessages(msgContainer);
+        }
+        return;
+      }
+
+      // Phase 2: fall back to manual Cockpit settings
+      const baseUrl = (self.settings?.aiEndpoint || '').trim();
+      const apiKey = (self.settings?.aiApiKey || '').trim();
+      const model = (self.settings?.aiModel || '').trim();
+      if (baseUrl && apiKey && model) {
+        self.aiChat = new AIChat({
+          locale: self.settings?.locale || 'zh-cn',
+          baseUrl,
+          apiKey,
+          model,
+          systemPrompt: self.settings?.aiSystemPrompt || '',
+          providerLabel: 'Manual',
+        });
+        const section = self.contentEl.querySelector('.kos-db-ai');
+        if (section) {
+          const msgContainer = section.querySelector('.kos-db-ai-msgs');
+          if (msgContainer) self._renderChatMessages(msgContainer);
+        }
+      }
+    });
   }
 
   _clearChat() {

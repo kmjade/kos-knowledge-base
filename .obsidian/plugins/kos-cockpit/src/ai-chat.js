@@ -1,44 +1,143 @@
 // KOS Cockpit — AI Chat Service
-// OpenAI-compatible /chat/completions client with AbortController support.
+// FLOWnote-compatible provider resolution + OpenAI-compatible streaming client.
 
 /** Default system prompt for KOS context */
 const DEFAULT_SYSTEM_PROMPT = 'You are a knowledge management assistant helping the user navigate their KOS vault. Respond concisely in the user\'s language.';
 
+/**
+ * FLOWnote provider presets (mirrors FLOWnote's built-in providers).
+ * Key = providerId used in FLOWnote's data.json -> agentProvider.direct.providerId
+ */
+const FLOWNOTE_PROVIDERS = {
+  'deepseek': {
+    baseUrl: 'https://api.deepseek.com/v1',
+    label: 'DeepSeek',
+  },
+  'openai-official': {
+    baseUrl: 'https://api.openai.com/v1',
+    label: 'OpenAI',
+  },
+  'openai-compat-custom': {
+    baseUrl: '', // user-configured
+    label: 'OpenAI Compatible',
+  },
+  'claude': {
+    baseUrl: 'https://api.anthropic.com/v1',
+    label: 'Anthropic Claude',
+  },
+  'gemini': {
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
+    label: 'Google Gemini',
+  },
+  'siliconflow': {
+    baseUrl: 'https://api.siliconflow.cn/v1',
+    label: 'SiliconFlow',
+  },
+  'groq': {
+    baseUrl: 'https://api.groq.com/openai/v1',
+    label: 'Groq',
+  },
+  'together': {
+    baseUrl: 'https://api.together.xyz/v1',
+    label: 'Together AI',
+  },
+};
+
+// ────────────────────────────────────────────
+// Resolver: read FLOWnote's provider config
+// ────────────────────────────────────────────
+
+/**
+ * Try to load FLOWnote's agent provider configuration from its data.json.
+ * Returns null if FLOWnote is not installed or not configured.
+ *
+ * @param {{ adapter: { read: (path) => Promise<string> } }} vaultAdapter
+ */
+async function resolveFlownoteProvider(vaultAdapter) {
+  if (!vaultAdapter || typeof vaultAdapter.read !== 'function') return null;
+
+  try {
+    const raw = await vaultAdapter.read('.obsidian/plugins/flownote/data.json');
+    const config = JSON.parse(raw);
+    const ap = config && config.settings && config.settings.agentProvider;
+    if (!ap || !ap.enabled) return null;
+
+    const direct = ap.direct || ap[ap.mode];
+    if (!direct) return null;
+
+    const providerId = direct.providerId;
+    const preset = FLOWNOTE_PROVIDERS[providerId];
+    if (!preset) return null;
+
+    const apiKeys = direct.apiKeys || {};
+    const apiKey = apiKeys[providerId];
+    if (!apiKey) return null;
+
+    const model = direct.model || preset.defaultModel || '';
+    const baseUrl = direct.baseUrlOverride || preset.baseUrl;
+    if (!baseUrl && providerId !== 'openai-compat-custom') return null;
+
+    // For openai-compat-custom, we need the user's manual config
+    if (providerId === 'openai-compat-custom' && !baseUrl) return null;
+
+    return {
+      providerId,
+      apiKey,
+      model,
+      baseUrl,
+      label: preset.label,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ────────────────────────────────────────────
+// AIChat class
+// ────────────────────────────────────────────
+
 class AIChat {
+  /**
+   * @param {object} settings - Resolved provider settings (from resolveFlownoteProvider or manual)
+   * @param {string} settings.locale
+   * @param {string} settings.baseUrl
+   * @param {string} settings.apiKey
+   * @param {string} settings.model
+   * @param {string} [settings.systemPrompt]
+   */
   constructor(settings) {
-    this.settings = settings;
+    this.settings = settings || {};
     this.messages = [];
     this.abortController = null;
     this._addWelcome();
   }
 
-  /** Current locale from settings */
   get _locale() {
     return (this.settings && this.settings.locale) || 'zh-cn';
   }
 
-  /** Check if API configuration is present */
   get isConfigured() {
     const s = this.settings || {};
-    return !!(s.aiEndpoint && s.aiApiKey && s.aiModel);
+    return !!(s.baseUrl && s.apiKey && s.model);
   }
 
-  /** Reset conversation */
+  /** Provider label for display */
+  get providerLabel() {
+    const s = this.settings || {};
+    return s.providerLabel || s.baseUrl || 'Unknown';
+  }
+
   clear() {
     this.messages = [];
     this._addWelcome();
   }
 
-  /** Expose message history (read-only copy) */
   getHistory() {
     return this.messages.slice();
   }
 
   /**
    * Send a user message and stream the assistant response.
-   * @param {string} content - User message text
-   * @param {object} callbacks - { onToken(text), onDone(fullText), onError(err) }
-   * @returns {AbortSignal} - signal to abort the request
    */
   sendMessage(content, callbacks = {}) {
     const { onToken, onDone, onError } = callbacks;
@@ -49,41 +148,37 @@ class AIChat {
       return null;
     }
 
-    // Add user message
     const userMsg = { role: 'user', content: String(content).trim() };
     this.messages.push(userMsg);
 
-    // Build payload
-    const systemPrompt = (s.aiSystemPrompt || '').trim() || DEFAULT_SYSTEM_PROMPT;
+    const systemPrompt = (s.systemPrompt || '').trim() || DEFAULT_SYSTEM_PROMPT;
+    // Build payload — include system prompt from settings only, not from history
     const payload = {
-      model: s.aiModel,
+      model: s.model,
       messages: [
         { role: 'system', content: systemPrompt },
         ...this.messages.filter((m) => m.role !== 'system'),
       ],
     };
 
-    // Create abort controller
     this.abortController = new AbortController();
     const signal = this.abortController.signal;
 
-    // Accumulator for the assistant response
     let fullResponse = '';
 
-    // Start the request
-    this._doStreamRequest(s.aiEndpoint, s.aiApiKey, payload, signal, {
-      onToken(text) {
+    this._doStreamRequest(s.baseUrl, s.apiKey, payload, signal, {
+      onToken: (text) => {
         fullResponse += text;
         if (onToken) onToken(text);
       },
-      onDone() {
+      onDone: () => {
         if (fullResponse) {
           this.messages.push({ role: 'assistant', content: fullResponse });
         }
         this.abortController = null;
         if (onDone) onDone(fullResponse);
       },
-      onError(err) {
+      onError: (err) => {
         this.abortController = null;
         if (onError) onError(err);
       },
@@ -92,7 +187,6 @@ class AIChat {
     return signal;
   }
 
-  /** Abort an in-flight request */
   abort() {
     if (this.abortController) {
       this.abortController.abort();
@@ -115,31 +209,24 @@ class AIChat {
     });
   }
 
-  /**
-   * Stream a chat completion request via fetch + ReadableStream.
-   */
-  async _doStreamRequest(endpoint, apiKey, payload, signal, callbacks) {
+  async _doStreamRequest(baseUrl, apiKey, payload, signal, callbacks) {
     const { onToken, onDone, onError } = callbacks;
 
-    // Determine full URL
-    let url = String(endpoint || '').trim();
-    if (!url) url = 'https://api.openai.com/v1';
-    // Append /chat/completions if not already in path
-    if (!/\/chat\/completions$/i.test(url)) {
-      url = url.replace(/\/+$/, '') + '/chat/completions';
+    // Build the full URL
+    let endpoint = String(baseUrl || '').trim();
+    if (!endpoint) endpoint = 'https://api.openai.com/v1';
+    if (!/\/chat\/completions$/i.test(endpoint)) {
+      endpoint = endpoint.replace(/\/+$/, '') + '/chat/completions';
     }
 
     try {
-      const response = await fetch(url, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + String(apiKey || '').trim(),
         },
-        body: JSON.stringify({
-          ...payload,
-          stream: true,
-        }),
+        body: JSON.stringify({ ...payload, stream: true }),
         signal,
       });
 
@@ -172,9 +259,7 @@ class AIChat {
             const json = JSON.parse(trimmed.slice(6));
             const delta = json.choices && json.choices[0] && json.choices[0].delta;
             const content = delta && delta.content;
-            if (content) {
-              if (onToken) onToken(content);
-            }
+            if (content && onToken) onToken(content);
           } catch {}
         }
       }
@@ -194,13 +279,10 @@ class AIChat {
 
       if (onDone) onDone();
     } catch (err) {
-      if (err.name === 'AbortError') {
-        // Aborted by user, not an error
-        return;
-      }
+      if (err.name === 'AbortError') return;
       if (onError) onError(err);
     }
   }
 }
 
-module.exports = { AIChat, DEFAULT_SYSTEM_PROMPT };
+module.exports = { AIChat, resolveFlownoteProvider, FLOWNOTE_PROVIDERS, DEFAULT_SYSTEM_PROMPT };

@@ -12,5 +12,9 @@
   "showNav": true,
   "maxRecentItems": 7,
   "maxTaskItems": 3,
-  "maxInboxItems": 6
+  "maxInboxItems": 6,
+  "aiEndpoint": "https://api.deepseek.com/anthropic",
+  "aiApiKey": "https://platform.deepseek.com",
+  "aiModel": "deepseek-v4-flash",
+  "aiSystemPrompt": ""
 }
