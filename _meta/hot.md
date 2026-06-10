@@ -71,3 +71,11 @@ status: live
 - 今日笔记: 已创建 2026-06-10（空壳）
 - 本次会话: N1 技能收敛（第三轮）✅ + 全库结构重组（_meta 13→5 · _logs · _agents · scripts · _attachments）✅
 - 下一会话建议: 更新 `_meta/system/logs/operations/maintenance.md` 操作日志；检查 flake 扫描结果；处理其他项目
+- **KOS Cockpit 构建完成**: kos-cockpit.html 从概念验证升级为全功能 SPA，包含仪表盘/管道/知识花园/AI Chat/设置 5 个标签页，CSS Grid 面板支持拖拽排序、折叠、移除、配置持久化（localStorage）
+- **P-012 KOS Cockpit UI**: MVP 交付 — 见 kos-cockpit.html（70KB）
+  - 顶栏：系统健康 78/100 仪表 + 搜索 + 实时时钟
+  - 仪表盘：8 个可配置面板（Vault Health / Engine / Projects / Rhythm / Growth / Quick Launch / Activity Feed / Hot.md）
+  - 管道视图：Triage / Compile / Link 三阶段管线状态
+  - 知识花园：Vault 结构 / 语言覆盖率 / 7 日增长 / 标签云
+  - 设置：列数切换、面板显隐、刷新间隔、布局持久化
+- **KOS Cockpit v1.1 交付**: 全功能单页应用，70KB HTML/CSS/JS。使用 `file:///F:/KOS_LLM-Wiki/kos-cockpit.html` 在浏览器中打开即可使用。

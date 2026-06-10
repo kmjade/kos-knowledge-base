@@ -83,6 +83,21 @@ const LOCALES = {
     'ai.retry': '重试',
     'ai.copy': '复制',
     'ai.copied': '已复制',
+    'ai.modelLabel': '模型',
+    'ai.connected': '已连接',
+    'ai.notConfigured': '未配置',
+    'ai.welcomeTitle': 'Ask KOS',
+    'ai.suggestProjects': '项目概览',
+    'ai.suggestProjectsDesc': '查看活跃项目进度',
+    'ai.suggestRecent': '近期活动',
+    'ai.suggestRecentDesc': '最近修改的笔记',
+    'ai.suggestSearch': '搜索知识库',
+    'ai.suggestSearchDesc': '查找特定内容',
+
+    // EN
+
+    // TW
+
 
     // AI settings
     'ai.providerSection': 'AI Provider',
@@ -196,6 +211,16 @@ const LOCALES = {
     'ai.retry': 'Retry',
     'ai.copy': 'Copy',
     'ai.copied': 'Copied',
+    'ai.modelLabel': 'Model',
+    'ai.connected': 'Connected',
+    'ai.notConfigured': 'Not configured',
+    'ai.welcomeTitle': 'Ask KOS',
+    'ai.suggestProjects': 'Project Overview',
+    'ai.suggestProjectsDesc': 'View active project progress',
+    'ai.suggestRecent': 'Recent Activity',
+    'ai.suggestRecentDesc': 'Recently modified notes',
+    'ai.suggestSearch': 'Search Vault',
+    'ai.suggestSearchDesc': 'Find specific content',
 
     'ai.providerSection': 'AI Provider',
     'ai.providerSectionDesc': 'Configure API access for the AI chat. If FLOWnote has AI Provider configured (recommended), Cockpit will auto-detect it. Leave empty to disable.',
@@ -295,6 +320,16 @@ const LOCALES = {
     'ai.retry': '重試',
     'ai.copy': '複製',
     'ai.copied': '已複製',
+    'ai.modelLabel': '模型',
+    'ai.connected': '已連接',
+    'ai.notConfigured': '未配置',
+    'ai.welcomeTitle': 'Ask KOS',
+    'ai.suggestProjects': '專案概覽',
+    'ai.suggestProjectsDesc': '查看活躍專案進度',
+    'ai.suggestRecent': '近期活動',
+    'ai.suggestRecentDesc': '最近修改的筆記',
+    'ai.suggestSearch': '搜尋知識庫',
+    'ai.suggestSearchDesc': '查找特定內容',
 
     'ai.providerSection': 'AI Provider',
     'ai.providerSectionDesc': '配置 AI 對話的 API 接入參數。若 FLOWnote 已配置 AI Provider（推薦），Cockpit 將自動讀取其設定。留空則聊天區不可用。',

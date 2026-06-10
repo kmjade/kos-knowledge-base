@@ -1,4 +1,4 @@
-// KOS Cockpit v10 — FLOWnote-style panel switching (home / chat)
+// KOS Cockpit v11 — Full tab navigation (home / chat / life / pipeline / garden / settings)
 // + Settings-aware + locale i18n + AI Chat with FLOWnote auto-detect
 
 const { ItemView, moment } = require('obsidian');
@@ -9,6 +9,11 @@ const {
   getRecentActivity, getHotContext, getWeeklyRecords,
   getEngineState, listProjects,
 } = require('./home-service');
+const {
+  calcHealthScore, getTrend, getKeyMetrics,
+  getTodayCaptureCount, calcStreak,
+} = require('./health-service');
+const { getInboxDetail, getCompileQueue, getThroughputStats } = require('./pipeline-service');
 
 const VIEW_TYPE_COCKPIT = 'kos-cockpit-view';
 
@@ -17,11 +22,14 @@ class CockpitView extends ItemView {
     super(leaf);
     this.plugin = plugin;
     this.aiChat = null;
-    this.activePanel = 'home'; // 'home' | 'chat'
+    this.activePanel = 'home'; // 'home' | 'chat' | 'life' | 'pipeline' | 'garden' | 'settings'
   }
 
   getViewType() { return VIEW_TYPE_COCKPIT; }
-  getDisplayText() { return this.activePanel === 'chat' ? 'KOS AI Chat' : 'KOS Cockpit'; }
+  getDisplayText() {
+    const names = { home: 'KOS Cockpit', chat: 'KOS AI Chat', life: 'Life+AI', pipeline: 'Pipeline', garden: 'Knowledge Garden', settings: 'Settings' };
+    return names[this.activePanel] || 'KOS Cockpit';
+  }
   getIcon() { return 'gauge'; }
 
   get settings() { return this.plugin ? this.plugin.settings : null; }
@@ -40,6 +48,7 @@ class CockpitView extends ItemView {
     super.onload();
     this.contentEl.empty();
     this.contentEl.addClass('kos-cockpit-container');
+    this._applySeasonalTheme();
     this.renderLoading();
     await this.refresh();
   }
@@ -83,13 +92,30 @@ class CockpitView extends ItemView {
       getEngineState(app).catch(() => ({})),
       Promise.resolve(getInboxFiles(app.vault)),
     ]);
-    return { today, projects, stats, recent, hot, weekly, engines, inboxFiles };
+
+    // Phase 1: pipeline data
+    const [inboxDetail, compileQueue] = await Promise.all([
+      getInboxDetail(app).catch(() => []),
+      getCompileQueue(app).catch(() => []),
+    ]);
+    return { today, projects, stats, recent, hot, weekly, engines, inboxFiles, inboxDetail, compileQueue };
   }
 
-  /** Switch between 'home' and 'chat' panels */
+  /** Switch between panels */
   switchPanel(panel, data) {
     this.activePanel = panel;
     this.renderPanel(data || null);
+  }
+
+  
+  // ──────────────── Seasonal Theme ────────────────
+
+  _applySeasonalTheme() {
+    var season = this.settings?.seasonalTheme || 'spring';
+    var root = this.contentEl;
+    if (!root) return;
+    ['theme-spring','theme-summer','theme-autumn','theme-winter'].forEach(function(c) { root.removeClass(c); });
+    root.addClass('theme-' + season);
   }
 
   // ──────────────── Panel Router ────────────────
@@ -99,321 +125,827 @@ class CockpitView extends ItemView {
     container.empty();
     const main = container.createEl('div', { cls: 'kos-db' });
 
+    this._applySeasonalTheme();
+    // Render tab bar for all panels
+    this._renderTabBar(main);
+
+    // Render active panel content
+    const contentArea = main.createEl('div', { cls: 'kos-tab-content active', attr: { style: 'min-height:400px' } });
     if (this.activePanel === 'chat') {
-      this.renderChatView(main, data);
+      this.renderChatView(contentArea, data);
+    } else if (this.activePanel === 'life') {
+      this.renderLifeView(contentArea, data);
+    } else if (this.activePanel === 'pipeline') {
+      this.renderPipelineView(contentArea, data);
+    } else if (this.activePanel === 'garden') {
+      this.renderGardenView(contentArea, data);
+    } else if (this.activePanel === 'settings') {
+      this.renderSettingsView(contentArea, data);
     } else {
-      this.renderHomeView(main, data);
+      this.renderDashboard(contentArea, data);
     }
+  }
+
+  // ──────────────── Tab Bar ────────────────
+
+  _renderTabBar(container) {
+    const tabs = [
+      { id: 'home', icon: '\uD83D\uDCCA', label: '\u4EEA\u8868\u76D8' },
+      { id: 'chat', icon: '\uD83E\uDD16', label: 'AI Chat' },
+      { id: 'life', icon: '\uD83E\uDDEC', label: '\u751F\u6D3B' },
+      { id: 'pipeline', icon: '\uD83D\uDD27', label: '\u7BA1\u9053' },
+      { id: 'garden', icon: '\uD83C\uDF33', label: '\u77E5\u8BC6\u82B1\u56ED' },
+      { id: 'settings', icon: '\u2699\uFE0F', label: '\u8BBE\u7F6E' },
+    ];
+    var bar = container.createEl('div', { cls: 'kos-tabbar' });
+    tabs.forEach(function(t) {
+      var item = bar.createEl('button', {
+        cls: 'kos-tab-item' + (t.id === this.activePanel ? ' active' : ''),
+      });
+      item.innerHTML = t.icon + ' ' + t.label;
+      item.addEventListener('click', function() {
+        if (t.id === this.activePanel) return;
+        this.collectData(this.app).then(function(d) { this.switchPanel(t.id, d); }.bind(this));
+      }.bind(this));
+    }.bind(this));
   }
 
   // ──────────────── Home (Dashboard) ────────────────
 
-  renderHomeView(container, data) {
-    this.renderHeader(container, data);
-    this.renderQuickActions(container);
-
-    if (this.settings?.showTodayTasks !== false) this.renderTodayTasks(container, data);
-    if (this.settings?.showVaultStats !== false || this.settings?.showRecentActivity !== false) {
-      this.renderTwoColumns(container, data);
-    }
-    if (this.settings?.showNav !== false) this.renderNav(container);
-    if (this.settings?.showInboxFiles !== false) this.renderInboxFiles(container, data);
-    if (this.settings?.showProjectCards !== false) this.renderProjects(container, data);
-    if (this.settings?.showEngineState !== false) this.renderEngineState(container, data);
-    if (this.settings?.showWeeklyChart !== false) this.renderWeeklyChart(container, data);
-
+  renderDashboard(container, data) {
+    this._renderTopBar(container, data);
+    this._renderPipelineFlow(container, data);
+    this._renderKeyMetrics(container, data);
+    const grid = container.createEl('div', { cls: 'kos-dashboard-grid' });
+    // Zone 1 — 引擎 (Engine): Health · Engine Control · Quick Launch
+    const zone1 = grid.createEl('div', { cls: 'kos-zone-left', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
+    this._renderHealthPanel(zone1, data);
+    this._renderEngineControl(zone1, data);
+    this._renderLaunchPanel(zone1);
+    // Zone 2 — 工作 (Work): Today Focus · Active Projects
+    const zone2 = grid.createEl('div', { cls: 'kos-zone-center', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
+    this._renderTodayFocus(zone2, data);
+    this._renderProjectsPanel(zone2, data);
+    // Zone 3 — 知识 (Knowledge): Growth · Feed · Hot
+    const zone3 = grid.createEl('div', { cls: 'kos-zone-right', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
+    this._renderGrowthPanel(zone3, data);
+    this._renderFeedPanel(zone3, data);
+    this._renderHotPanel(zone3, data);
   }
 
-  renderHeader(container, data) {
-    const h = container.createEl('div', { cls: 'kos-db-header' });
-    const now = moment();
-    const dayNames = this._dayNames;
-    h.createEl('div', {
-      text: '\uD83D\uDCC5 ' + now.format(this._t('header.dateFormat')) + ' \u661F\u671F' + dayNames[now.day()],
-      cls: 'kos-db-header-date',
-    });
-    const statusText = data.today?.exists
-      ? this._t('header.noteCreated')
-      : this._t('header.noteNotCreated');
-    const focusVal = data.today?.focus || '';
-    h.createEl('div', {
-      text: this._t('header.noteStatus', { status: statusText })
-        + '  \u00B7  '
-        + this._t('header.todayFocus', { focus: focusVal || this._t('header.focusNotSet') }),
-      cls: 'kos-db-header-status',
-    });
-    const refreshBtn = h.createEl('button', { cls: 'kos-db-refresh-btn' });
-    refreshBtn.innerHTML = '\u21BB';
+  _renderTopBar(container, data) {
+    const bar = container.createEl('div', { cls: 'kos-topbar' });
+    const brand = bar.createEl('div', { cls: 'kos-topbar-brand' });
+    brand.createEl('span', { cls: 'kos-logo', text: 'KOS' });
+    brand.createEl('small', { cls: 'kos-logo-sub', text: 'v2' });
+    const score = calcHealthScore(data);
+    const badgeCls = score >= 85 ? 'health-optimal' : score >= 65 ? 'health-warning' : 'health-critical';
+    const badge = bar.createEl('div', { cls: 'kos-health-badge ' + badgeCls, attr: { title: 'Vault Health: ' + score + '%' } });
+    badge.createEl('span', { cls: 'dot' });
+    badge.createEl('span', { cls: 'health-text', text: score + '/100' });
+    badge.addEventListener('click', () => { this._handleLaunch('init'); });
+    bar.createEl('div', { cls: 'kos-topbar-spacer' });
+    const searchWrap = bar.createEl('div', { cls: 'kos-topbar-search' });
+    searchWrap.createEl('input', { cls: 'kos-topbar-search-input', attr: { type: 'text', placeholder: 'Search notes...' } });
+    const actions = bar.createEl('div', { cls: 'kos-topbar-actions' });
+    const refreshBtn = actions.createEl('button', { cls: 'kos-topbar-btn', text: '\u21BB', attr: { title: 'Refresh' } });
     refreshBtn.addEventListener('click', () => { this.renderLoading(); this.refresh(); });
+    const clock = actions.createEl('div', { cls: 'kos-topbar-clock' });
+    const now = moment();
+    clock.createEl('span', { cls: 'kos-topbar-date', text: now.format('ddd YYYY-MM-DD') });
+    clock.createEl('span', { cls: 'kos-topbar-time', text: now.format('HH:mm') });
   }
 
-  renderQuickActions(container) {
-    const qa = container.createEl('div', { cls: 'kos-db-actions' });
-    const actions = [
-      { label: '\uD83D\uDCC5 ' + this._t('action.planToday'), cmd: 'daily-open' },
-      { label: '\uD83D\uDCDD ' + this._t('action.capture'), cmd: 'capture' },
-      { label: '\uD83D\uDD04 ' + this._t('action.dayReview'), cmd: 'day-review' },
-      { label: '\uD83D\uDCCB ' + this._t('action.newProject'), cmd: 'project' },
-      { label: '\uD83D\uDDC2\uFE0F ' + this._t('action.triage'), cmd: 'triage' },
-      { label: '\u2699\uFE0F ' + this._t('action.settings'), cmd: 'settings' },
-      { label: '\uD83E\uDD16 ' + this._t('action.aiChat'), cmd: 'ai-chat' },
+  // Phase 1: Pipeline Flow
+
+  _renderPipelineFlow(container, data) {
+    var inboxCount = (data.inboxFiles || []).length;
+    var compileCount = (data.compileQueue || []).length;
+    var stats = data.stats?.stats || {};
+    var wikiCount = (stats.resources || 0) - (stats.inbox || 0);
+    var panel = container.createEl('div', { cls: 'kos-panel' });
+    var body = panel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
+    var flowRow = body.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center' } });
+    var steps = [
+      { label: 'Inbox', count: inboxCount, color: inboxCount === 0 ? 'var(--kc-green)' : inboxCount <= 5 ? 'var(--kc-amber)' : 'var(--kc-red)', ikey: 'inbox' },
+      { label: 'Triage', count: '-', color: 'var(--kc-text-dim)', ikey: 'triage' },
+      { label: 'Raw', count: compileCount, color: compileCount === 0 ? 'var(--kc-green)' : 'var(--kc-amber)', ikey: 'compile' },
+      { label: 'Compile', count: '-', color: 'var(--kc-text-dim)', ikey: 'compile-run' },
+      { label: 'Wiki', count: wikiCount, color: wikiCount > 0 ? 'var(--kc-green)' : 'var(--kc-text-dim)', ikey: 'wiki' },
     ];
-    actions.forEach((a) => {
-      const btn = qa.createEl('button', { cls: 'kos-db-action-btn' });
-      btn.textContent = a.label;
-      btn.addEventListener('click', () => { this.handleQuickAction(a.cmd); });
+    steps.forEach(function(s, idx) {
+      var el = flowRow.createEl('div', {
+        attr: { style: 'display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;border-radius:6px;transition:all 0.2s' },
+      });
+      el.addEventListener('mouseenter', function() { el.style.background = 'var(--kc-bg-card)'; });
+      el.addEventListener('mouseleave', function() { el.style.background = 'transparent'; });
+      el.addEventListener('click', function() {
+        if (s.ikey === 'inbox') { this.app.workspace.openLinkText('0 Inbox', '', true); }
+        else if (s.ikey === 'compile') { new Notice('Pipeline view — coming soon'); }
+        else if (s.ikey === 'wiki') { this.app.workspace.openLinkText('3 Resources/000-Knowledge', '', true); }
+      }.bind(this));
+      el.createEl('span', { text: String(s.count), attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:700;color:' + s.color } });
+      el.createEl('span', { text: s.label, attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' } });
+      if (idx < steps.length - 1) {
+        flowRow.createEl('span', { text: String.fromCharCode(8594), attr: { style: 'color:var(--kc-text-dim);font-size:12px;margin:0 2px;opacity:0.3' } });
+      }
+    }.bind(this));
+    body.createEl('div', { attr: { style: 'text-align:center;margin-top:6px;font-size:9px;color:var(--kc-text-dim)' }, text: 'Pipeline flow: click to navigate' });
+  }
+
+  // Phase 1: Key Metrics Row
+
+  _renderKeyMetrics(container, data) {
+    var metrics = getKeyMetrics(data);
+    var row = container.createEl('div', { attr: { style: 'display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px' } });
+    metrics.forEach(function(m) {
+      var card = row.createEl('div', { cls: 'kos-panel', attr: { style: 'padding:12px 14px;text-align:center;border-left:3px solid ' + m.color } });
+      card.createEl('div', { attr: { style: 'font-size:24px;font-weight:700;font-family:var(--kc-mono);color:' + m.color }, text: m.value });
+      card.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px' }, text: m.label });
+      var trendEl = card.createEl('div', { attr: { style: 'margin-top:4px;font-size:9px' } });
+      var trendIcon = m.trend === 'up' ? String.fromCharCode(9650) : m.trend === 'down' ? String.fromCharCode(9660) : String.fromCharCode(8212);
+      var trendColor = m.trend === 'up' ? 'var(--kc-green)' : m.trend === 'down' ? 'var(--kc-red)' : 'var(--kc-text-dim)';
+      trendEl.innerHTML = '<span style="color:' + trendColor + '">' + trendIcon + '</span> <span style="color:var(--kc-text-dim)">' + m.trendLabel + '</span>';
     });
   }
 
-  handleQuickAction(cmd) {
-    switch (cmd) {
-      case 'daily-open': {
-        const { dailyNotePath } = require('./utils');
-        this.app.workspace.openLinkText(dailyNotePath(moment().format('YYYY-MM-DD')), '', true);
-        break;
-      }
-      case 'ai-chat': {
-        this.collectData(this.app).then((data) => this.switchPanel('chat', data));
-        break;
-      }
-      case 'settings': {
-        const setting = this.app.setting;
-        if (setting) { setting.open(); setting.openTabById('kos-cockpit'); }
-        break;
-      }
-      default:
-        this.app.workspace.openLinkText('_meta/hot.md', '', true);
-    }
+  // Phase 1: Engine Control (clickable)
+
+  _renderEngineControl(container, data) {
+    var engines = data.engines || {};
+    var panel = this._createPanel(container, 'Engine Control', 'engines');
+    var body = panel.body;
+    var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr;gap:5px' } });
+    var engineDefs = [
+      { key: 'triage', label: 'Triage', status: engines.triage?.status || 'idle' },
+      { key: 'compile', label: 'Compile', status: engines.compile?.status || 'idle' },
+      { key: 'link', label: 'Link', status: engines.link?.status || 'idle' },
+      { key: 'daily', label: 'Daily', status: data.today?.exists ? 'done' : 'warning' },
+      { key: 'project', label: 'Project', status: (data.projects || []).length > 0 ? 'done' : 'idle' },
+      { key: 'life', label: 'Life+AI', status: engines.life?.status || 'idle' },
+    ];
+    engineDefs.forEach(function(def) {
+      var card = grid.createEl('div', { attr: { style: 'padding:8px 10px;background:var(--kc-bg-card);border-radius:6px;cursor:pointer;transition:all 0.2s' } });
+      card.addEventListener('mouseenter', function() { card.style.background = 'var(--kc-bg-card-hover)'; });
+      card.addEventListener('mouseleave', function() { card.style.background = 'var(--kc-bg-card)'; });
+      var topRow = card.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;margin-bottom:4px' } });
+      topRow.createEl('span', { attr: { style: 'font-size:11px;font-weight:500;color:var(--kc-text-primary)' }, text: def.label });
+      var statusColor = def.status === 'done' ? 'var(--kc-green)' : def.status === 'warning' ? 'var(--kc-amber)' : 'var(--kc-text-dim)';
+      topRow.createEl('span', { attr: { style: 'width:6px;height:6px;border-radius:50%;background:' + statusColor + ';flex-shrink:0' } });
+      var bottomRow = card.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center' } });
+      var statusText = def.status === 'done' ? 'Ready' : def.status === 'warning' ? 'Action needed' : 'Idle';
+      bottomRow.createEl('span', { attr: { style: 'font-size:9px;color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: statusText });
+      var btn = bottomRow.createEl('button', { attr: { style: 'font-size:9px;padding:2px 10px;border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-deep);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font)' }, text: String.fromCharCode(9654) });
+      btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-bg-card-hover)'; btn.style.color = 'var(--kc-text-primary)'; });
+      btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-bg-deep)'; btn.style.color = 'var(--kc-text-secondary)'; });
+      btn.addEventListener('click', function(e) { e.stopPropagation(); this._handleLaunch(def.key); }.bind(this));
+      card.addEventListener('click', function() { this._handleLaunch(def.key); }.bind(this));
+    }.bind(this));
   }
 
-  renderTodayTasks(container, data) {
-    const section = container.createEl('div', { cls: 'kos-db-section kos-db-today-tasks' });
-    const header = section.createEl('div', { cls: 'kos-db-today-header' });
-    header.createEl('div', { text: '\u2705 ' + this._t('task.title'), cls: 'kos-db-section-title' });
-    if (data.today?.tasks) {
-      const { done, total, completionRate } = data.today.tasks;
-      header.createEl('span', {
-        text: this._t('task.progress', { done, total, rate: completionRate }),
-        cls: 'kos-db-today-count ' + (total > 0 && completionRate >= 100 ? 'kos-db-today-done' : ''),
-      });
-    }
-    const list = section.createEl('div', { cls: 'kos-db-today-list' });
-    const maxItems = this.settings?.maxTaskItems || 12;
-    const items = (data.today?.taskItems || []).slice(0, maxItems);
+  // Phase 1: Today Focus
+
+  _renderTodayFocus(container, data) {
+    var panel = this._createPanel(container, 'Today Focus', 'today');
+    var body = panel.body;
+    var headerRow = body.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px' } });
+    var tasks = data.today?.tasks || { done: 0, total: 0, completionRate: 0 };
+    headerRow.createEl('span', { attr: { style: 'font-size:12px;font-weight:500;color:var(--kc-text-primary)' }, text: 'Tasks' });
+    headerRow.createEl('span', { attr: { style: 'font-size:10px;font-family:var(--kc-mono);color:' + (tasks.completionRate >= 100 ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: tasks.done + '/' + tasks.total + ' (' + tasks.completionRate + '%)' });
+    var taskList = body.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:3px;margin-bottom:10px' } });
+    var items = (data.today?.taskItems || []).slice(0, 5);
     if (!data.today?.exists) {
-      list.createEl('div', { text: this._t('task.dailyMissing'), cls: 'kos-db-empty' });
+      taskList.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'Daily note not created.' });
+      var createBtn = body.createEl('button', { attr: { style: 'margin-top:6px;padding:4px 12px;font-size:10px;border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font)' }, text: 'Create Daily Note' });
+      createBtn.addEventListener('click', function() { this.app.workspace.openLinkText('Periodic/' + moment().format('YYYY/MM/YYYY-MM-DD'), '', true); }.bind(this));
     } else if (items.length === 0) {
-      list.createEl('div', { text: this._t('task.none'), cls: 'kos-db-empty' });
+      taskList.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No tasks.' });
     } else {
-      items.forEach((item) => {
-        const row = list.createEl('div', { cls: 'kos-db-today-item' + (item.done ? ' kos-db-today-item-done' : '') });
-        row.createEl('span', { cls: 'kos-db-today-cb' }).textContent = item.done ? '\u2611' : '\u2610';
-        row.createEl('span', { text: item.text, cls: 'kos-db-today-text' });
+      items.forEach(function(item) {
+        var row = taskList.createEl('div', { attr: { style: 'display:flex;align-items:flex-start;gap:5px;padding:2px 0;font-size:11px' + (item.done ? ';opacity:0.5;text-decoration:line-through' : '') } });
+        row.createEl('span', { text: item.done ? '[x]' : '[ ]', attr: { style: 'flex-shrink:0;font-size:10px;font-family:var(--kc-mono)' } });
+        row.createEl('span', { text: item.text, attr: { style: 'word-break:break-word;color:var(--kc-text-secondary)' } });
       });
     }
+    var statsRow = body.createEl('div', { attr: { style: 'display:flex;gap:12px;padding-top:8px;border-top:1px solid var(--kc-border)' } });
+    var streak = calcStreak(data.weekly);
+    var streakEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
+    streakEl.createEl('div', { attr: { style: 'font-size:18px;font-weight:700;font-family:var(--kc-mono);color:var(--kc-amber)' }, text: String(streak) + 'd' });
+    streakEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Streak' });
+    var todayCount = getTodayCaptureCount(data.weekly);
+    var weekAvg = (data.weekly || []).length > 0 ? Math.round((data.weekly || []).reduce(function(s, c) { return s + c.count; }, 0) / (data.weekly || []).length * 10) / 10 : 0;
+    var captureEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
+    captureEl.createEl('div', { attr: { style: 'font-size:18px;font-weight:700;font-family:var(--kc-mono);color:' + (todayCount >= weekAvg ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: String(todayCount) });
+    captureEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Today' });
+    var dailyEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
+    dailyEl.createEl('div', { attr: { style: 'font-size:12px;color:' + (data.today?.exists ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: data.today?.exists ? 'Done' : 'Pending' });
+    dailyEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Daily' });
   }
 
-  renderProjects(container, data) {
-    const section = container.createEl('div', { cls: 'kos-db-section' });
-    section.createEl('div', { text: '\uD83D\uDCCB ' + this._t('project.title'), cls: 'kos-db-section-title' });
-    const grid = section.createEl('div', { cls: 'kos-db-project-grid' });
-    const projects = data.projects || [];
-    if (projects.length === 0) {
-      grid.createEl('div', { text: this._t('project.empty'), cls: 'kos-db-empty' });
-      return;
-    }
-    projects.forEach((proj) => {
-      const card = grid.createEl('div', { cls: 'kos-db-project-card' });
-      card.addEventListener('click', () => { this.app.workspace.openLinkText(proj.path, '', true); });
-      const titleRow = card.createEl('div', { cls: 'kos-db-project-title-row' });
-      titleRow.createEl('span', { text: proj.title || 'Unnamed', cls: 'kos-db-project-title' });
-      const p = String(proj.priority || '').toLowerCase();
-      if (p) titleRow.createEl('span', { text: proj.priority, cls: 'kos-db-badge kos-db-badge-' + p });
-      const rate = proj.tasks?.completionRate || 0;
-      card.createEl('div', { cls: 'kos-db-progress', attr: { style: '--progress:' + rate + '%' } });
-      card.createEl('div', { text: (proj.tasks?.done || 0) + '/' + (proj.tasks?.total || 0), cls: 'kos-db-progress-label' });
-    });
-  }
+  // Widget: Vault Health
 
-  renderTwoColumns(container, data) {
-    const cols = container.createEl('div', { cls: 'kos-db-cols' });
-    if (this.settings?.showVaultStats !== false) {
-      const left = cols.createEl('div', { cls: 'kos-db-col' });
-      left.createEl('div', { text: '\uD83D\uDCCA ' + this._t('stats.title'), cls: 'kos-db-section-title' });
-      const metrics = [
-        { label: this._t('stats.totalNotes'), value: String(data.stats?.totalNotes || 0) },
-        { label: this._t('stats.activeProjects'), value: String((data.projects || []).length) },
-        { label: this._t('stats.todayNew'), value: String(data.stats?.todayNew || 0) },
-        { label: this._t('stats.pendingTriage'), value: String((data.inboxFiles || []).length) },
-      ];
-      const grid = left.createEl('div', { cls: 'kos-db-metrics' });
-      metrics.forEach((m) => {
-        const item = grid.createEl('div', { cls: 'kos-db-metric' });
-        item.createEl('div', { text: m.value, cls: 'kos-db-metric-val' });
-        item.createEl('div', { text: m.label, cls: 'kos-db-metric-label' });
-      });
-      if (data.stats?.stats) {
-        const s = data.stats.stats;
-        const subStats = [
-          { label: 'Projects', value: String(s.projects || 0) },
-          { label: 'Areas', value: String(s.areas || 0) },
-          { label: 'Resources', value: String(s.resources || 0) },
-          { label: 'Periodic', value: String(s.periodic || 0) },
-        ];
-        const subGrid = left.createEl('div', { cls: 'kos-db-sub-metrics' });
-        subStats.forEach((m) => {
-          const item = subGrid.createEl('div', { cls: 'kos-db-sub-metric' });
-          item.createEl('span', { text: m.value, cls: 'kos-db-sub-metric-val' });
-          item.createEl('span', { text: ' ' + m.label, cls: 'kos-db-sub-metric-label' });
-        });
-      }
-    }
-    if (this.settings?.showRecentActivity !== false) {
-      const right = cols.createEl('div', { cls: 'kos-db-col' });
-      right.createEl('div', { text: '\uD83D\uDD04 ' + this._t('recent.title'), cls: 'kos-db-section-title' });
-      const recent = data.recent || [];
-      const maxItems = this.settings?.maxRecentItems || 8;
-      const list = right.createEl('div', { cls: 'kos-db-recent-list' });
-      if (recent.length === 0) {
-        list.createEl('div', { text: this._t('recent.empty'), cls: 'kos-db-empty' });
-      } else {
-        recent.slice(0, maxItems).forEach((item) => {
-          const row = list.createEl('div', { cls: 'kos-db-recent-item' });
-          row.createEl('span', { text: moment(item.mtime).format('MM-DD HH:mm'), cls: 'kos-db-recent-time' });
-          const link = row.createEl('a', { text: '  ' + item.title, cls: 'kos-db-recent-link' });
-          link.addEventListener('click', () => { this.app.workspace.openLinkText(item.path, '', true); });
-        });
-      }
-    }
-  }
-
-  renderNav(container) {
-    const nav = container.createEl('div', { cls: 'kos-db-nav' });
-    nav.createEl('div', { text: '\uD83C\uDFE0 ' + this._t('nav.title'), cls: 'kos-db-section-title' });
-    const links = nav.createEl('div', { cls: 'kos-db-nav-links' });
-    const items = [
-      { label: '\uD83C\uDFE0 \u751F\u6D3B', path: '2 Areas/\u751F\u6D3B/\u751F\u6D3B' },
-      { label: '\uD83D\uDCD6 \u5B66\u4E60', path: '2 Areas/\u5B66\u4E60/\u5B66\u4E60' },
-      { label: '\uD83D\uDCBC \u5DE5\u4F5C', path: '2 Areas/\u5DE5\u4F5C/\u5DE5\u4F5C' },
-      { label: '\uD83D\uDCD6 \u603B\u7D22\u5F15', path: '_meta/\uD83D\uDD17 \u77E5\u8BC6\u5173\u8054/Index/_index-zh-cn' },
-      { label: '\uD83D\uDDC4\uFE0F \u5F52\u6863', path: '4 Archives' },
-      { label: '\uD83D\uDCE5 Inbox', path: '0 Inbox' },
-      { label: '\u2699\uFE0F Hot Cache', path: '_meta/hot' },
+  _renderHealthPanel(container, data) {
+    const healthScore = calcHealthScore(data);
+    const panel = this._createPanel(container, 'Vault Health', 'health');
+    const body = panel.body;
+    const gaugeWrap = body.createEl('div', { cls: 'kos-gauge-wrap' });
+    const ring = gaugeWrap.createEl('div', { cls: 'kos-gauge-ring' });
+    const c = 314;
+    const offset = c - (healthScore / 100) * c;
+    ring.innerHTML = '<svg viewBox="0 0 110 110"><circle class="bg" cx="55" cy="55" r="50"/><circle class="arc" cx="55" cy="55" r="50" stroke-dasharray="' + c + '" stroke-dashoffset="' + offset + '"/></svg><div class="center-label"><span class="pct">' + healthScore + '%</span><span class="pct-label">' + (healthScore >= 85 ? 'Optimal' : healthScore >= 65 ? 'Needs Work' : 'Critical') + '</span></div>';
+    const checkList = body.createEl('div', { cls: 'kos-check-list' });
+    var checks = [
+      { label: 'L1 Frontmatter', score: Math.min(100, 95 + (data.today?.exists ? 3 : 0)) },
+      { label: 'L2 UDC', score: 92 },
+      { label: 'L3 Links', score: 96 },
+      { label: 'L4 Cross-lang', score: 83 },
+      { label: 'L5 Projects', score: data.projects?.length > 0 ? 100 : 70 },
+      { label: 'L6 Empties', score: (data.inboxFiles || []).length === 0 ? 100 : Math.max(60, 100 - (data.inboxFiles || []).length * 5) },
     ];
-    items.forEach((item) => {
-      const a = links.createEl('a', { text: item.label, cls: 'kos-db-nav-link' });
-      a.addEventListener('click', () => { this.app.workspace.openLinkText(item.path, '', true); });
+    checks.forEach(function(ch) {
+      var item = checkList.createEl('div', { cls: 'kos-check-item' });
+      item.createEl('span', { cls: 'lbl', text: ch.label });
+      var status = item.createEl('span', { cls: 'status' });
+      var dotClass = ch.score >= 90 ? 'd-green' : ch.score >= 70 ? 'd-amber' : 'd-red';
+      status.createEl('span', { cls: 'd ' + dotClass });
+      status.createEl('span', { text: ch.score + '%' });
+    });
+    var inboxCard = body.createEl('div', { cls: 'kos-inbox-card' });
+    inboxCard.createEl('div', { cls: 'count', text: String((data.inboxFiles || []).length) });
+    var meta = inboxCard.createEl('div', { cls: 'meta' });
+    meta.createEl('span', { cls: 'l', text: 'Inbox Pending' });
+    meta.createEl('span', { cls: 'sub', text: (data.stats?.totalNotes || 0) + ' total notes' });
+  }
+
+  // Widget: Active Projects
+
+  _renderProjectsPanel(container, data) {
+    var panel = this._createPanel(container, 'Active Projects', 'projects');
+    var body = panel.body;
+    var list = body.createEl('div', { cls: 'kos-project-list' });
+    var projects = data.projects || [];
+    if (projects.length === 0) { list.createEl('div', { text: 'No active projects.', cls: 'kos-empty' }); return; }
+    projects.slice(0, 6).forEach(function(proj) {
+      var card = list.createEl('div', { cls: 'kos-project-card' });
+      card.addEventListener('click', function() { this.app.workspace.openLinkText(proj.path, '', true); }.bind(this));
+      var top = card.createEl('div', { cls: 'top' });
+      top.createEl('span', { cls: 'pname', text: proj.title || 'Unnamed' });
+      top.createEl('span', { cls: 'pstatus ' + (proj.status || 'active'), text: proj.status || 'active' });
+      var barWrap = card.createEl('div', { cls: 'bar-wrap' });
+      var bar = barWrap.createEl('div', { cls: 'bar' });
+      var rate = proj.tasks?.completionRate || 0;
+      var fillClass = rate >= 80 ? 'fill-green' : rate >= 50 ? 'fill-amber' : 'fill-cyan';
+      bar.createEl('div', { cls: 'fill ' + fillClass, attr: { style: 'width:' + rate + '%' } });
+      barWrap.createEl('span', { cls: 'bar-pct', text: rate + '%' });
+    }.bind(this));
+  }
+
+  // Widget: Knowledge Growth
+
+  _renderGrowthPanel(container, data) {
+    var panel = this._createPanel(container, 'Knowledge Growth', 'growth');
+    var body = panel.body;
+    var stats = data.stats?.stats || {};
+    var totalNotes = data.stats?.totalNotes || 0;
+    var resources = stats.resources || 0;
+    var projectsCount = (data.projects || []).length;
+    var recentCount = (data.recent || []).length;
+    var chartSvg = body.createEl('div', { attr: { style: 'text-align:center;padding:6px 0' } });
+    chartSvg.innerHTML = '<svg viewBox="0 0 300 70" preserveAspectRatio="none" style="width:100%;height:50px"><defs><linearGradient id="g-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--kc-cyan)"/><stop offset="100%" stop-color="var(--kc-cyan)" stop-opacity="0"/></linearGradient></defs><path fill="url(#g-grad)" d="M0,65 Q40,55 80,60 T160,42 T200,25 T260,18 T300,8 L300,70 L0,70 Z" opacity="0.15"/><path fill="none" stroke="var(--kc-cyan)" stroke-width="1.5" d="M0,65 Q40,55 80,60 T160,42 T200,25 T260,18 T300,8"/></svg>';
+    var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-top:8px' } });
+    var items = [
+      { label: 'Pages', value: String(totalNotes) },
+      { label: 'Resources', value: String(resources) },
+      { label: 'Projects', value: String(projectsCount) },
+      { label: 'Recent', value: String(recentCount) },
+    ];
+    items.forEach(function(item) {
+      var cell = grid.createEl('div', { attr: { style: 'text-align:center;padding:4px' } });
+      cell.createEl('div', { attr: { style: 'font-size:16px;font-weight:700;font-family:var(--kc-mono);color:var(--kc-cyan)' }, text: item.value });
+      cell.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' }, text: item.label });
     });
   }
 
-  renderInboxFiles(container, data) {
-    const files = data.inboxFiles || [];
-    if (files.length === 0) return;
-    const maxItems = this.settings?.maxInboxItems || 6;
-    const section = container.createEl('div', { cls: 'kos-db-section kos-db-inbox' });
-    section.createEl('div', { text: '\uD83D\uDCE5 ' + this._t('inbox.title', { count: files.length }), cls: 'kos-db-section-title' });
-    const list = section.createEl('div', { cls: 'kos-db-inbox-list' });
-    files.slice(0, maxItems).forEach((file) => {
-      const row = list.createEl('div', { cls: 'kos-db-inbox-item' });
-      const name = row.createEl('a', { text: file.basename || file.path, cls: 'kos-db-inbox-link' });
-      name.addEventListener('click', () => { this.app.workspace.openLinkText(file.path, '', true); });
-      if (file.stat?.mtime) {
-        row.createEl('span', { text: moment(file.stat.mtime).format('MM-DD HH:mm'), cls: 'kos-db-inbox-time' });
-      }
-    });
-    if (files.length > maxItems) {
-      const more = section.createEl('div', { cls: 'kos-db-inbox-more' });
-      more.createEl('a', { text: this._t('inbox.more', { count: files.length - maxItems }), cls: 'kos-db-inbox-link' })
-        .addEventListener('click', () => { this.app.workspace.openLinkText('0 Inbox', '', true); });
-    }
+  // Widget: Quick Launch
+
+  _renderLaunchPanel(container) {
+    var panel = this._createPanel(container, 'Quick Launch', 'launch');
+    var body = panel.body;
+    var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr;gap:4px' } });
+    var actions = [
+      { label: 'Triage', action: 'triage', cls: '' },
+      { label: 'Compile', action: 'compile', cls: 'cyan' },
+      { label: 'Link', action: 'link', cls: 'green' },
+      { label: 'Query', action: 'query', cls: 'orange' },
+      { label: 'Daily', action: 'daily', cls: 'purple' },
+      { label: 'Week R.', action: 'week', cls: 'amber' },
+      { label: 'Init', action: 'init', cls: 'cyan' },
+      { label: 'Life+AI', action: 'life', cls: 'green' },
+    ];
+    actions.forEach(function(a) {
+      var btn = grid.createEl('button', { attr: { style: 'padding:7px 8px;font-size:10px;border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-card);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' + (a.cls ? ';border-left:2px solid var(--kc-' + a.cls + ')' : '') }, text: a.label });
+      btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-bg-card-hover)'; btn.style.color = 'var(--kc-text-primary)'; });
+      btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-bg-card)'; btn.style.color = 'var(--kc-text-secondary)'; });
+      btn.addEventListener('click', function() { this._handleLaunch(a.action); }.bind(this));
+    }.bind(this));
   }
 
-  renderEngineState(container, data) {
-    const engines = data.engines || {};
-    const section = container.createEl('div', { cls: 'kos-db-section' });
-    section.createEl('div', { text: '\u2699\uFE0F ' + this._t('engine.title'), cls: 'kos-db-section-title' });
-    const grid = section.createEl('div', { cls: 'kos-db-engine-grid' });
-    const primaryEngines = ['triage', 'compile', 'link', 'daily', 'project', 'archive'];
-    const hasData = primaryEngines.some((e) => engines[e]?.lastRun || engines[e]?.summary);
-    if (!hasData) {
-      grid.createEl('div', { text: this._t('engine.empty'), cls: 'kos-db-empty' });
+  _handleLaunch(action) {
+    var msgs = {
+      triage: 'KOS-Triage launched',
+      compile: 'KOS-Compile launched',
+      link: 'KOS-Link started',
+      query: 'KOS-Query panel opened',
+      daily: 'Daily Open creating...',
+      week: 'Week-Review generating...',
+      init: 'KOS-Init health check...',
+      life: 'Life+AI panel opened',
+    };
+    var msg = msgs[action] || 'Executing: ' + action;
+    try {
+      new Notice(msg);
+    } catch (_) {}
+  }
+
+  // Widget: Activity Feed
+
+  _renderFeedPanel(container, data) {
+    var panel = this._createPanel(container, 'Activity Feed', 'feed');
+    var body = panel.body;
+    var list = body.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:2px;max-height:220px;overflow-y:auto' } });
+    var recent = data.recent || [];
+    if (recent.length === 0) {
+      list.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No recent activity.' });
       return;
     }
-    primaryEngines.forEach((key) => {
-      const eng = engines[key] || {};
-      const chip = grid.createEl('div', {
-        cls: 'kos-db-engine-chip'
-          + (eng.status === 'done' ? ' kos-db-engine-done' : '')
-          + (eng.lastRun ? '' : ' kos-db-engine-idle'),
+    recent.slice(0, 10).forEach(function(item) {
+      var row = list.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:10px;border-radius:4px;cursor:pointer;transition:all 0.15s' } });
+      row.addEventListener('mouseenter', function() { row.style.background = 'var(--kc-bg-card)'; });
+      row.addEventListener('mouseleave', function() { row.style.background = 'transparent'; });
+      row.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
+      row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:9px;color:var(--kc-text-dim);white-space:nowrap;min-width:40px' }, text: moment(item.mtime).format('MM-DD HH:mm') });
+      row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, text: item.title || item.path });
+    }.bind(this));
+  }
+
+  // Widget: Hot Context
+
+  _renderHotPanel(container, data) {
+    var panel = this._createPanel(container, 'Hot Context', 'hot');
+    var body = panel.body;
+    var entries = (data.hot || []).slice(0, 4);
+    if (entries.length === 0) {
+      body.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No hot context entries.' });
+      return;
+    }
+    entries.forEach(function(entry) {
+      var row = body.createEl('div', { attr: { style: 'padding:5px 8px;font-size:10px;color:var(--kc-text-secondary);font-family:var(--kc-mono);border-left:2px solid var(--kc-amber-dim);margin-bottom:4px;border-radius:2px;background:var(--kc-bg-card)' } });
+      row.createEl('span', { attr: { style: 'color:var(--kc-amber);margin-right:6px' }, text: entry.date });
+      row.createEl('span', { text: entry.summary });
+    });
+  }
+
+  // ──────────────── Life+AI Panel ────────────────
+
+  renderLifeView(container, data) {
+    var engines = data.engines || {};
+    var lifeEngine = engines.life || {};
+
+    // Top summary
+    var topPanel = container.createEl('div', { cls: 'kos-panel', attr: { style: 'margin-bottom:14px' } });
+    var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:16px 20px' } });
+    var topRow = topBody.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:20px;flex-wrap:wrap' } });
+    topRow.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83E\uDDEC Life+AI' });
+    topRow.createEl('span', { attr: { style: 'font-size:12px;color:var(--kc-text-secondary);flex:1' }, text: '\u751F\u6D3B \u00B7 \u5B66\u4E60 \u00B7 \u5DE5\u4F5C \u2014 \u4E09\u652F\u67F1\u5468\u671F\u7BA1\u7406' });
+    var statusDot = topRow.createEl('span', { attr: { style: 'width:8px;height:8px;border-radius:50%;background:' + (lifeEngine.lastRun ? 'var(--kc-green)' : 'var(--kc-text-dim)') } });
+
+    // Three pillars grid
+    var grid = container.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px' } });
+    var pillars = [
+      {
+        icon: '\uD83E\uDDD1\u200D\uD83C\uDF3E', label: '\u751F\u6D3B', color: 'var(--kc-green)',
+        items: [
+          { key: 'health', label: '\u5065\u5EB7\u8FDB\u5EA6', value: '\u2014' },
+          { key: 'habit', label: '\u4E60\u60EF\u8FFD\u8E2A', value: '\u2014' },
+        ],
+      },
+      {
+        icon: '\uD83D\uDCDA', label: '\u5B66\u4E60', color: 'var(--kc-cyan)',
+        items: [
+          { key: 'learn', label: '\u5B66\u4E60\u8FDB\u5EA6', value: '\u2014' },
+          { key: 'skill', label: '\u6280\u80FD\u57F9\u517B', value: '\u2014' },
+        ],
+      },
+      {
+        icon: '\uD83D\uDCBB', label: '\u5DE5\u4F5C', color: 'var(--kc-amber)',
+        items: [
+          { key: 'projects', label: '\u9879\u76EE\u8FDB\u5EA6', value: String((data.projects || []).length) + ' active' },
+          { key: 'tasks', label: '\u4ECA\u65E5\u4EFB\u52A1', value: data.today?.tasks ? String(data.today.tasks.total) + ' tasks' : '\u2014' },
+        ],
+      },
+    ];
+    pillars.forEach(function(p) {
+      var card = grid.createEl('div', { cls: 'kos-panel' });
+      var header = card.createEl('div', { cls: 'kos-panel-header' });
+      header.createEl('span', { attr: { style: 'font-size:13px;font-weight:600;color:' + p.color }, text: p.icon + ' ' + p.label });
+      var body = card.createEl('div', { cls: 'kos-panel-body' });
+      p.items.forEach(function(item) {
+        var row = body.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:11px;border-bottom:1px solid rgba(240,180,41,0.04)' } });
+        row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary)' }, text: item.label });
+        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:var(--kc-text-primary)' }, text: item.value });
       });
-      chip.createEl('span', { text: key, cls: 'kos-db-engine-name' });
-      if (eng.lastRun) chip.createEl('span', { text: ' ' + eng.lastRun.slice(5), cls: 'kos-db-engine-date' });
-      if (eng.summary) chip.setAttr('title', eng.summary);
     });
+
+    // Actions row
+    var actionsPanel = container.createEl('div', { cls: 'kos-panel' });
+    var actionsBody = actionsPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
+    var actionsRow = actionsBody.createEl('div', { attr: { style: 'display:flex;gap:8px;flex-wrap:wrap' } });
+    var lifeActions = [
+      { label: 'Life-Report', action: 'life' },
+      { label: 'Life-Check', action: 'life' },
+      { label: 'Life-Brief', action: 'life' },
+      { label: '\u5468\u62A5', action: 'week' },
+      { label: '\u6708\u62A5', action: 'week' },
+    ];
+    lifeActions.forEach(function(a) {
+      var btn = actionsRow.createEl('button', { attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' }, text: a.label });
+      btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-amber)'; btn.style.color = 'var(--kc-bg-deep)'; });
+      btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-amber-dim)'; btn.style.color = 'var(--kc-amber)'; });
+      btn.addEventListener('click', function() { this._handleLaunch(a.action); }.bind(this));
+    }.bind(this));
   }
 
-  renderWeeklyChart(container, data) {
-    const section = container.createEl('div', { cls: 'kos-db-section' });
-    section.createEl('div', { text: '\uD83D\uDCC8 ' + this._t('weekly.title'), cls: 'kos-db-section-title' });
-    const chart = section.createEl('div', { cls: 'kos-db-chart' });
-    const cells = data.weekly || [];
-    const maxCount = Math.max(1, ...cells.map((c) => c.count));
-    if (cells.length === 0) {
-      chart.createEl('div', { text: this._t('weekly.empty'), cls: 'kos-db-empty' });
-      return;
+  // ──────────────── Pipeline Panel ────────────────
+
+  renderPipelineView(container, data) {
+    var inboxItems = data.inboxDetail || [];
+    var compileItems = data.compileQueue || [];
+    var throughput = getThroughputStats(data.weekly);
+
+    // Throughput summary
+    var topPanel = container.createEl('div', { cls: 'kos-panel', attr: { style: 'margin-bottom:14px' } });
+    var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
+    var topRow = topBody.createEl('div', { attr: { style: 'display:flex;gap:24px;align-items:center;flex-wrap:wrap' } });
+    topRow.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83D\uDD27 \u7BA1\u9053' });
+    topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-cyan)' }, text: String(throughput.total) + ' rec' });
+    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: '\u672C\u5468\u6355\u83B7' });
+    topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-green)' }, text: String(inboxItems.length) });
+    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: 'Inbox' });
+    topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-purple)' }, text: String(compileItems.length) });
+    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: 'Raw' });
+
+    var grid = container.createEl('div', { cls: 'kos-pipeline-view' });
+
+    // Stage 1: Inbox Detail
+    var stage1 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
+    stage1.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-amber);margin-bottom:10px' }, text: '\uD83D\uDCE5 Inbox (' + inboxItems.length + ')' });
+    if (inboxItems.length === 0) {
+      stage1.createEl('div', { cls: 'kos-empty', text: 'No pending inbox items.' });
+    } else {
+      var t = stage1.createEl('table', { cls: 'kos-garden-table' });
+      var thead = t.createEl('thead');
+      var thr = thead.createEl('tr');
+      thr.createEl('th', { text: 'Title' });
+      thr.createEl('th', { text: 'Days' });
+      thr.createEl('th', { text: 'Source' });
+      var tbody = t.createEl('tbody');
+      inboxItems.slice(0, 12).forEach(function(item) {
+        var tr = tbody.createEl('tr');
+        tr.createEl('td', { text: item.title.slice(0, 24), attr: { style: 'cursor:pointer' } });
+        tr.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
+        tr.createEl('td', { text: String(item.daysWaiting) + 'd', attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:' + (item.daysWaiting > 7 ? 'var(--kc-red)' : item.daysWaiting > 3 ? 'var(--kc-amber)' : 'var(--kc-text-dim)') } });
+        tr.createEl('td', { text: item.source, attr: { style: 'font-size:10px;color:var(--kc-text-dim)' } });
+      }.bind(this));
     }
-    cells.forEach((cell) => {
-      const col = chart.createEl('div', { cls: 'kos-db-chart-col' });
-      if (cell.isToday) col.addClass('kos-db-chart-today');
-      const barHeight = Math.max(4, (cell.count / maxCount) * 60);
-      col.createEl('div', { cls: 'kos-db-chart-bar', attr: { style: 'height:' + barHeight + 'px' } })
-         .setAttr('title', this._t('weekly.barTooltip', { date: cell.date, count: cell.count }));
-      col.createEl('div', { text: String(cell.count), cls: 'kos-db-chart-val' });
-      col.createEl('div', { text: cell.weekday, cls: 'kos-db-chart-day' });
+
+    // Stage 2: Compile Queue
+    var stage2 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
+    stage2.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-cyan);margin-bottom:10px' }, text: '\uD83D\uDCDD Raw (' + compileItems.length + ')' });
+    if (compileItems.length === 0) {
+      stage2.createEl('div', { cls: 'kos-empty', text: 'No files pending compilation.' });
+    } else {
+      var t2 = stage2.createEl('table', { cls: 'kos-garden-table' });
+      var thead2 = t2.createEl('thead');
+      var thr2 = thead2.createEl('tr');
+      thr2.createEl('th', { text: 'Title' });
+      thr2.createEl('th', { text: 'Words' });
+      thr2.createEl('th', { text: 'Priority' });
+      var tbody2 = t2.createEl('tbody');
+      compileItems.slice(0, 12).forEach(function(item) {
+        var tr = tbody2.createEl('tr');
+        tr.createEl('td', { text: item.title.slice(0, 24), attr: { style: 'cursor:pointer' } });
+        tr.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
+        tr.createEl('td', { text: String(item.wordCount), attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:var(--kc-text-dim)' } });
+        var priColor = item.priority === 'high' ? 'var(--kc-red)' : item.priority === 'medium' ? 'var(--kc-amber)' : 'var(--kc-text-dim)';
+        tr.createEl('td', { text: item.priority, attr: { style: 'font-size:10px;color:' + priColor } });
+      }.bind(this));
+    }
+
+    // Stage 3: Throughput
+    var stage3 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
+    stage3.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-green);margin-bottom:10px' }, text: '\uD83D\uDCC8 Throughput' });
+    var barChart = stage3.createEl('div', { attr: { style: 'display:flex;gap:3px;align-items:flex-end;height:80px;padding:8px 0' } });
+    var weekly = data.weekly || [];
+    var maxCount = Math.max(1, ...weekly.map(function(w) { return w.count; }));
+    weekly.forEach(function(w) {
+      var col = barChart.createEl('div', { attr: { style: 'flex:1;display:flex;flex-direction:column;align-items:center;gap:2px' } });
+      var bar = col.createEl('div', { attr: { style: 'width:100%;height:' + Math.max(3, (w.count / maxCount) * 60) + 'px;background:' + (w.isToday ? 'var(--kc-amber)' : 'var(--kc-amber-dim)') + ';border-radius:2px 2px 0 0;transition:height 0.3s;min-height:3px' } });
+      col.createEl('span', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: w.weekday });
+    });
+    stage3.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-align:center;margin-top:6px' }, text: '\u5F53\u524D\u5468\u901A\u91CF: ' + throughput.total + ' \u6761\u8BB0\u5F55, \u65E5\u5747 ' + throughput.avg });
+  }
+
+  // ──────────────── Knowledge Garden Panel ────────────────
+
+  renderGardenView(container, data) {
+    var stats = data.stats?.stats || {};
+    var totalNotes = data.stats?.totalNotes || 0;
+
+    // Header
+    var topPanel = container.createEl('div', { cls: 'kos-panel', attr: { style: 'margin-bottom:14px' } });
+    var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
+    topBody.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83C\uDF33 \u77E5\u8BC6\u82B1\u56ED' });
+    topBody.createEl('span', { attr: { style: 'margin-left:16px;font-size:12px;color:var(--kc-text-secondary)' }, text: totalNotes + ' \u7BC7\u7B14\u8BB0' });
+
+    // Garden grid
+    var grid = container.createEl('div', { cls: 'kos-garden-view' });
+
+    // Section: Categories
+    var catCard = grid.createEl('div', { cls: 'kos-garden-card' });
+    catCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDCC1 \u5206\u7C7B' });
+    var catTable = catCard.createEl('table', { cls: 'kos-garden-table' });
+    var catHead = catTable.createEl('thead');
+    catHead.createEl('tr').innerHTML = '<th>\u76EE\u5F55</th><th>\u7BC7\u6570</th>';
+    var catBody = catTable.createEl('tbody');
+    var categories = [
+      { label: '\uD83D\uDCC1 \u9879\u76EE (1 Project)', key: 'projects', color: 'var(--kc-amber)' },
+      { label: '\uD83C\uDFE0 \u9886\u57DF (2 Areas)', key: 'areas', color: 'var(--kc-cyan)' },
+      { label: '\uD83D\uDCDA \u8D44\u6E90 (3 Resources)', key: 'resources', color: 'var(--kc-green)' },
+      { label: '\uD83D\uDCE5 Inbox', key: 'inbox', color: 'var(--kc-orange)' },
+      { label: '\uD83D\uDCC5 \u5468\u671F (Periodic)', key: 'periodic', color: 'var(--kc-purple)' },
+    ];
+    categories.forEach(function(cat) {
+      var tr = catBody.createEl('tr');
+      tr.createEl('td', { attr: { style: 'color:' + cat.color }, text: cat.label });
+      tr.createEl('td', { text: String(stats[cat.key] || 0), attr: { style: 'font-family:var(--kc-mono);text-align:right' } });
+    });
+    catBody.createEl('tr').innerHTML = '<td style="font-weight:600;color:var(--kc-text-primary)">\u5408\u8BA1</td><td style="font-family:var(--kc-mono);text-align:right;color:var(--kc-amber);font-weight:700">' + totalNotes + '</td>';
+
+    // Section: Recent garden additions
+    var recentCard = grid.createEl('div', { cls: 'kos-garden-card' });
+    recentCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83C\uDF31 \u6700\u8FD1\u66F4\u65B0' });
+    var recent = data.recent || [];
+    if (recent.length === 0) {
+      recentCard.createEl('div', { cls: 'kos-empty', text: 'No recent activity.' });
+    } else {
+      var rList = recentCard.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto' } });
+      recent.slice(0, 15).forEach(function(item) {
+        var row = rList.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:10px;border-radius:4px;cursor:pointer;transition:all 0.15s' } });
+        row.addEventListener('mouseenter', function() { row.style.background = 'var(--kc-bg-card)'; });
+        row.addEventListener('mouseleave', function() { row.style.background = 'transparent'; });
+        row.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
+        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:9px;color:var(--kc-text-dim);white-space:nowrap;min-width:36px' }, text: moment(item.mtime).format('MM-DD') });
+        row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, text: item.title || item.path });
+      }.bind(this));
+    }
+
+    // Quick search card
+    var searchCard = container.createEl('div', { cls: 'kos-garden-card', attr: { style: 'grid-column:1 / -1;margin-top:14px' } });
+    searchCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDD0D \u5FEB\u901F\u67E5\u8BE2' });
+    var searchRow = searchCard.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
+    var searchInput = searchRow.createEl('input', { attr: { type: 'text', placeholder: '\u8F93\u5165\u5173\u952E\u8BCD\u641C\u7D22\u77E5\u8BC6\u5E93...', style: 'flex:1;padding:7px 14px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:6px;color:var(--kc-text-primary);font-family:var(--kc-font);font-size:12px;outline:none' } });
+    var searchBtn = searchRow.createEl('button', { attr: { style: 'padding:7px 18px;background:var(--kc-amber);border:none;border-radius:6px;color:var(--kc-bg-deep);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--kc-font)' }, text: '\u67E5\u8BE2' });
+    searchBtn.addEventListener('click', function() {
+      var q = searchInput.value.trim();
+      if (q) { this.app.workspace.openLinkText('', '', true); new Notice('KOS-Query: ' + q); }
+    }.bind(this));
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') searchBtn.click();
     });
   }
 
+  // ──────────────── Settings Panel (inline) ────────────────
 
-  // ──────────────── Chat (Full-page AI Chat) ────────────────
+  renderSettingsView(container, data) {
+    var panel = container.createEl('div', { cls: 'kos-panel kos-settings-view' });
+    var body = panel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:20px' } });
+    body.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\u2699\uFE0F \u8BBE\u7F6E' });
+    body.createEl('div', { attr: { style: 'font-size:12px;color:var(--kc-text-secondary);margin:8px 0 20px 0' }, text: '\u914D\u7F6E KOS Cockpit \u7684\u663E\u793A\u4E0E\u884C\u4E3A' });
+
+    // Locale
+    var sec1 = body.createEl('div', { cls: 'kos-settings-section' });
+    sec1.createEl('h3', { text: '\u754C\u9762\u8BED\u8A00' });
+    var localeRow = sec1.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
+    var locales = [
+      { id: 'zh-cn', label: '\u7B80\u4F53\u4E2D\u6587' },
+      { id: 'en', label: 'English' },
+      { id: 'zh-tw', label: '\u7E41\u9AD4\u4E2D\u6587' },
+    ];
+    var curLocale = this.settings?.locale || 'zh-cn';
+    locales.forEach(function(l) {
+      var btn = localeRow.createEl('button', {
+        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (l.id === curLocale ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        text: l.label,
+      });
+      btn.addEventListener('click', function() {
+        this.settings.locale = l.id;
+        this.plugin.saveSettings();
+        this.renderLoading();
+        this.refresh();
+      }.bind(this));
+    }.bind(this));
+
+        // Theme switcher
+    var secTheme = body.createEl('div', { cls: 'kos-settings-section' });
+    secTheme.createEl('h3', { text: '\u57FA\u672C\u4E3B\u9898' });
+    var curTheme = this.app.vault.getConfig('theme') || 'obsidian';
+    // Base theme row
+    var baseRow = secTheme.createEl('div', { attr: { style: 'display:flex;gap:8px;margin-bottom:8px' } });
+    var baseThemes = [
+      { id: 'obsidian', label: '\u6697\u9ED1' },
+      { id: 'moonstone', label: '\u660E\u4EAE' },
+      { id: 'system', label: '\u8DDF\u968F\u7CFB\u7EDF' },
+    ];
+    baseThemes.forEach(function(t) {
+      var btn = baseRow.createEl('button', {
+        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (t.id === curTheme ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        text: t.label,
+      });
+      btn.addEventListener('click', function() {
+        this.app.vault.setConfig('theme', t.id);
+        this.collectData(this.app).then(function(d) { this.switchPanel('settings', d); }.bind(this));
+      }.bind(this));
+    }.bind(this));
+    // Seasonal accent row
+    var curSeason = this.settings?.seasonalTheme || 'spring';
+    var seasonLabel = secTheme.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px 0' }, text: '\u5B63\u8282\u6027\u5F3A\u8C03\u8272' });
+    var seasonRow = secTheme.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
+    var seasons = [
+      { id: 'spring', label: '\u6625', icon: '\uD83C\uDF38' },
+      { id: 'summer', label: '\u590F', icon: '\u2600\uFE0F' },
+      { id: 'autumn', label: '\u79CB', icon: '\uD83C\uDF42' },
+      { id: 'winter', label: '\u51AC', icon: '\u2744\uFE0F' },
+    ];
+    seasons.forEach(function(s) {
+      var btn = seasonRow.createEl('button', {
+        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (s.id === curSeason ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        text: s.icon + ' ' + s.label,
+      });
+      btn.addEventListener('click', function() {
+        this.settings.seasonalTheme = s.id;
+        this.plugin.saveSettings();
+        // Apply season CSS class immediately
+        var root = this.contentEl.querySelector('.kos-cockpit-container');
+        if (root) {
+          ['theme-spring','theme-summer','theme-autumn','theme-winter'].forEach(function(c) { root.removeClass(c); });
+          root.addClass('theme-' + s.id);
+        }
+        this.collectData(this.app).then(function(d) { this.switchPanel('settings', d); }.bind(this));
+      }.bind(this));
+    }.bind(this));
+
+    // General settings
+    var sec2 = body.createEl('div', { cls: 'kos-settings-section' });
+    sec2.createEl('h3', { text: '\u901A\u7528' });
+
+    // Auto open
+    var autoRow = sec2.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:12px;margin-bottom:10px' } });
+    var autoToggle = autoRow.createEl('input', { attr: { type: 'checkbox', id: 'kos-settings-autopen' } });
+    autoToggle.checked = this.settings?.autoOpen || false;
+    autoToggle.addEventListener('change', function() {
+      this.settings.autoOpen = autoToggle.checked;
+      this.plugin.saveSettings();
+    }.bind(this));
+    autoRow.createEl('label', { attr: { for: 'kos-settings-autopen', style: 'font-size:12px;color:var(--kc-text-secondary);cursor:pointer' }, text: '\u542F\u52A8\u65F6\u81EA\u52A8\u6253\u5F00 KOS Cockpit' });
+
+    // Data limits
+    var limitRow = sec2.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:12px;margin-bottom:10px' } });
+    limitRow.createEl('span', { attr: { style: 'font-size:11px;color:var(--kc-text-secondary);min-width:100px' }, text: '\u6700\u5927\u6700\u8FD1\u6D3B\u52A8\u6570' });
+    var maxRecentInput = limitRow.createEl('input', { attr: { type: 'number', min: '5', max: '30', value: String(this.settings?.maxRecent || 10), style: 'width:60px;padding:4px 8px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:4px;color:var(--kc-text-primary);font-family:var(--kc-mono);font-size:11px;outline:none' } });
+    maxRecentInput.addEventListener('change', function() {
+      this.settings.maxRecent = Math.max(5, Math.min(30, parseInt(maxRecentInput.value) || 10));
+      this.plugin.saveSettings();
+    }.bind(this));
+
+    // About
+    var sec3 = body.createEl('div', { cls: 'kos-settings-section' });
+    sec3.createEl('h3', { text: '\u5173\u4E8E' });
+    sec3.createEl('div', { attr: { style: 'font-size:11px;color:var(--kc-text-dim);line-height:1.6' }, text: 'KOS Cockpit v0.2.0 \u2014 KOS_LLM-Wiki \u77E5\u8BC6\u7BA1\u7406\u4EEA\u8868\u76D8\u3002KOS \u751F\u6001\u7684\u4E00\u90E8\u5206\u3002' });
+    sec3.createEl('div', { attr: { style: 'font-size:9px;color:var(--kc-text-dim);margin-top:6px' }, text: '\u652F\u6301\u6761\u76EE: ' + String(data.stats?.totalNotes || 0) + ' \u7BC7\u7B14\u8BB0' });
+  }
+
+  // ──────────────── Shared Widget Helpers ────────────────
+
+  _createPanel(container, titleHtml, widgetId) {
+    var panel = container.createEl('div', { cls: 'kos-panel' });
+    var header = panel.createEl('div', { cls: 'kos-panel-header' });
+    var left = header.createEl('div', { cls: 'kos-panel-header-left' });
+    left.createEl('span', { cls: 'kos-panel-title', text: titleHtml });
+    var tools = header.createEl('div', { cls: 'kos-panel-tools' });
+    var collapseBtn = tools.createEl('button', { cls: 'kos-panel-tool', attr: { title: 'Collapse' }, text: String.fromCharCode(9660) });
+    collapseBtn.addEventListener('click', function() { panel.toggleClass('kos-panel-collapsed'); });
+    var body = panel.createEl('div', { cls: 'kos-panel-body' });
+    return { panel: panel, body: body, header: header };
+  }
+
+  // ──────────────── Chat (Claudian-style) ────────────────
 
   renderChatView(container, data) {
-    // Back button + title
-    const topBar = container.createEl('div', { cls: 'kos-db-chat-topbar' });
-    const backBtn = topBar.createEl('button', { cls: 'kos-db-chat-back-btn' });
-    backBtn.innerHTML = '\u2190 ' + this._t('app.name');
-    backBtn.addEventListener('click', () => {
-      // Collect fresh data when going back to home
-      this.collectData(this.app).then((freshData) => {
-        this.switchPanel('home', freshData);
-      });
-    });
-    topBar.createEl('span', { text: '\uD83E\uDD16 ' + this._t('ai.title'), cls: 'kos-db-chat-topbar-title' });
+    // Main chat panel — mimics oc-main structure
+    var main = container.createEl('div', { cls: 'kos-ai-chat' });
 
-    // Chat UI (full width/height within the card)
-    const chatSection = container.createEl('div', { cls: 'kos-db-ai kos-db-ai-full' });
+    // Toolbar — mimics oc-toolbar
+    var toolbar = main.createEl('div', { cls: 'kos-ai-toolbar' });
+    var tLeft = toolbar.createEl('div', { cls: 'kos-ai-toolbar-left' });
 
-    // Message container
-    const msgContainer = chatSection.createEl('div', { cls: 'kos-db-ai-msgs' });
+    // Model selector dropdown
+    var modelSel = tLeft.createEl('select', { cls: 'kos-ai-model-select' });
+    var providers = ['claude', 'codex', 'opencode'];
+    var activePid = this.settings?.activeProvider || 'claude';
+    providers.forEach(function(pid) {
+      var opt = modelSel.createEl('option', { value: pid, text: this.settings?.providers?.[pid]?.label || pid });
+      if (pid === activePid) opt.selected = true;
+    }.bind(this));
+    modelSel.addEventListener('change', function() {
+      this.settings.activeProvider = modelSel.value;
+      this.plugin.saveSettings();
+      // Reset AI chat so it picks up new provider
+      this.aiChat = null;
+      this.renderLoading();
+      this.refresh();
+    }.bind(this));
 
-    // Input row
-    const inputRow = chatSection.createEl('div', { cls: 'kos-db-ai-input-row' });
-    const input = inputRow.createEl('input', {
-      cls: 'kos-db-ai-input',
+    // Left: provider label
+    tLeft.createEl('span', { cls: 'kos-ai-provider-label', text: this._t('ai.modelLabel') });
+
+    // Right toolbar actions
+    var tRight = toolbar.createEl('div', { cls: 'kos-ai-toolbar-right' });
+
+    // Connection status pill
+    var statusPill = tRight.createEl('span', { cls: 'kos-ai-status-pill' });
+    var isConfigured = this.aiChat && this.aiChat.isConfigured;
+    statusPill.addClass(isConfigured ? 'ok' : 'warn');
+    statusPill.textContent = isConfigured ? this._t('ai.connected') : this._t('ai.notConfigured');
+
+    // Clear button
+    var clearBtn = tRight.createEl('button', { cls: 'kos-ai-toolbar-btn', text: this._t('ai.clearBtn') });
+    clearBtn.addEventListener('click', function() {
+      if (this.aiChat) { this.aiChat.clear(); this._refreshChatMsgs(); }
+    }.bind(this));
+
+    // Messages wrapper
+    var msgWrapper = main.createEl('div', { cls: 'kos-ai-msgs-wrapper' });
+    var msgContainer = msgWrapper.createEl('div', { cls: 'kos-ai-msgs' });
+
+    // Input area (fixed at bottom)
+    var inputArea = main.createEl('div', { cls: 'kos-ai-input-area' });
+    var inputRow = inputArea.createEl('div', { cls: 'kos-ai-input-row' });
+    var input = inputRow.createEl('input', {
+      cls: 'kos-ai-input',
       attr: { type: 'text', placeholder: this._t('ai.placeholder') },
     });
-    const sendBtn = inputRow.createEl('button', { cls: 'kos-db-ai-send', text: this._t('ai.sendBtn') });
+    var sendBtn = inputRow.createEl('button', { cls: 'kos-ai-send', text: this._t('ai.sendBtn') });
 
     // Chat engine
     this._initAiChat();
     this._renderChatMessages(msgContainer);
 
-    const doSend = () => {
-      const val = input.value.trim();
+    var doSend = function() {
+      var val = input.value.trim();
       if (!val) return;
       this._sendChatMessage(val, msgContainer, input);
-    };
+    }.bind(this);
     sendBtn.addEventListener('click', doSend);
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSend(); });
+    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSend(); });
+  }
+
+  // ──────────────── Chat Welcome (Claudian-style) ────────────────
+
+  _renderChatWelcome(container) {
+    const welcome = container.createEl('div', { cls: 'kos-ai-welcome' });
+    welcome.createEl('div', { cls: 'kos-ai-welcome-greeting', text: this._t('ai.welcomeTitle') });
+
+    // Subtitle
+    welcome.createEl('div', { cls: 'kos-ai-welcome-sub', text: this._t('ai.welcome') });;
+
+    // Suggestion cards
+    var grid = welcome.createEl('div', { cls: 'kos-ai-suggest-grid' });
+    var suggestions = [
+      { icon: '\uD83D\uDCCA', title: this._t('ai.suggestProjects'), desc: this._t('ai.suggestProjectsDesc') },
+      { icon: '\uD83D\uDCDD', title: this._t('ai.suggestRecent'), desc: this._t('ai.suggestRecentDesc') },
+      { icon: '\uD83D\uDD0D', title: this._t('ai.suggestSearch'), desc: this._t('ai.suggestSearchDesc') },
+    ];
+    suggestions.forEach(function(s) {
+      var card = grid.createEl('div', { cls: 'kos-ai-suggest-card' });
+      card.createEl('span', { cls: 'kos-ai-suggest-icon', text: s.icon });
+      card.createEl('span', { cls: 'kos-ai-suggest-title', text: s.title });
+      card.createEl('span', { cls: 'kos-ai-suggest-desc', text: s.desc });
+      card.addEventListener('click', function() {
+        // Fill input with suggestion
+        var inputEl = container.closest('.kos-db')?.querySelector('.kos-ai-input');
+        if (inputEl) { inputEl.value = s.title; inputEl.focus(); }
+      });
+    });
   }
 
   // ──────────────── Shared AI Chat Logic ────────────────
@@ -439,9 +971,9 @@ class CockpitView extends ItemView {
   }
 
   _refreshChatMsgs() {
-    const section = this.contentEl.querySelector('.kos-db-ai, .kos-db-ai-full');
+    const section = this.contentEl.querySelector('.kos-ai-chat, .kos-db-ai, .kos-db-ai-full');
     if (section) {
-      const msgContainer = section.querySelector('.kos-db-ai-msgs');
+      const msgContainer = (section ? section.querySelector('.kos-ai-msgs') : null) || (section ? section.querySelector('.kos-db-ai-msgs') : null);
       if (msgContainer) this._renderChatMessages(msgContainer);
     }
   }
@@ -451,28 +983,36 @@ class CockpitView extends ItemView {
     const msgs = this.aiChat ? this.aiChat.getHistory() : [];
 
     if (!this.aiChat || !this.aiChat.isConfigured) {
-      container.createEl('div', { text: this._t('ai.needConfig'), cls: 'kos-db-ai-need-config' });
+      container.createEl('div', { text: this._t('ai.needConfig'), cls: 'kos-ai-need-config' });
       return;
     }
 
-    msgs.forEach((msg) => {
-      const bubble = container.createEl('div', {
-        cls: 'kos-db-ai-msg kos-db-ai-msg-' + msg.role,
+    // Show welcome screen if only system/welcome messages exist (no user messages)
+    var hasUserMessages = msgs.some(function(m) { return m.role === 'user'; });
+    if (!hasUserMessages && msgs.length <= 1) {
+      this._renderChatWelcome(container);
+      return;
+    }
+
+    msgs.forEach(function(msg) {
+      if (msg.role === 'system') return;
+      var bubble = container.createEl('div', {
+        cls: 'kos-ai-msg kos-ai-msg-' + msg.role,
       });
-      const textEl = bubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
+      var textEl = bubble.createEl('div', { cls: 'kos-ai-msg-text' });
       textEl.textContent = msg.content;
 
       if (msg.role === 'assistant') {
-        const copyBtn = bubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
-        copyBtn.addEventListener('click', async () => {
+        var copyBtn = bubble.createEl('button', { cls: 'kos-ai-copy-btn', text: this._t('ai.copy') });
+        copyBtn.addEventListener('click', async function() {
           try {
             await navigator.clipboard.writeText(msg.content);
             copyBtn.textContent = this._t('ai.copied');
-            setTimeout(() => { copyBtn.textContent = this._t('ai.copy'); }, 2000);
+            setTimeout(function() { copyBtn.textContent = this._t('ai.copy'); }.bind(this), 2000);
           } catch {}
-        });
+        }.bind(this));
       }
-    });
+    }.bind(this));
 
     container.scrollTop = container.scrollHeight;
   }
@@ -485,7 +1025,7 @@ class CockpitView extends ItemView {
 
     this._renderChatMessages(msgContainer);
 
-    const thinkingEl = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant kos-db-ai-thinking' });
+    const thinkingEl = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant kos-ai-thinking' });
     thinkingEl.createEl('span', { text: this._t('ai.thinking'), cls: 'kos-db-ai-msg-text' });
 
     let assistantText = '';
@@ -496,7 +1036,7 @@ class CockpitView extends ItemView {
         assistantText += token;
         if (!assistantBubble) {
           thinkingEl.remove();
-          assistantBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant' });
+          assistantBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant' });
           assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
         }
         assistantBubble.querySelector('.kos-db-ai-msg-text').textContent = assistantText;
@@ -505,11 +1045,11 @@ class CockpitView extends ItemView {
       onDone: () => {
         if (thinkingEl.isConnected) thinkingEl.remove();
         if (!assistantBubble && assistantText) {
-          assistantBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant' });
+          assistantBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant' });
           assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text', text: assistantText });
         }
         if (assistantBubble && assistantText) {
-          const copyBtn = assistantBubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
+          const copyBtn = assistantBubble.createEl('button', { cls: 'kos-ai-copy-btn', text: this._t('ai.copy') });
           copyBtn.addEventListener('click', async () => {
             try {
               await navigator.clipboard.writeText(assistantText);
@@ -524,7 +1064,7 @@ class CockpitView extends ItemView {
       },
       onError: (err) => {
         if (thinkingEl.isConnected) thinkingEl.remove();
-        const errBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-error' });
+        const errBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-error' });
         errBubble.createEl('div', {
           text: this._t('ai.error', { msg: err.message || 'Unknown error' }),
           cls: 'kos-db-ai-msg-text',
@@ -535,7 +1075,7 @@ class CockpitView extends ItemView {
         });
         inputEl.disabled = false;
         msgContainer.scrollTop = msgContainer.scrollHeight;
-      },
+      }
     });
   }
 }

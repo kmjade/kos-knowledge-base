@@ -5,6 +5,7 @@ const { PluginSettingTab, Setting } = require('obsidian');
 const { t, LOCALE_KEYS } = require('./locale');
 
 const DEFAULT_SETTINGS = {
+  seasonalTheme: 'spring',
   locale: 'zh-cn',
   autoOpen: true,
 

@@ -1,11 +1,35 @@
 {
+  "seasonalTheme": "spring",
   "locale": "zh-cn",
   "autoOpen": false,
+  "activeProvider": "claude",
+  "providers": {
+    "claude": {
+      "label": "Claude",
+      "endpoint": "https://api.deepseek.com/v1",
+      "apiKey": "sk-77230ea1581847cf9072bbe0f20b9124",
+      "model": "deepseek-v4-flash",
+      "systemPrompt": ""
+    },
+    "codex": {
+      "label": "Codex",
+      "endpoint": "https://api.deepseek.com/v1",
+      "apiKey": "sk-77230ea1581847cf9072bbe0f20b9124",
+      "model": "deepseek-v4-flash",
+      "systemPrompt": ""
+    },
+    "opencode": {
+      "label": "OpenCode",
+      "endpoint": "https://api.deepseek.com/v1",
+      "apiKey": "sk-77230ea1581847cf9072bbe0f20b9124",
+      "model": "deepseek-v4-flash",
+      "systemPrompt": ""
+    }
+  },
   "showTodayTasks": true,
   "showInboxFiles": true,
   "showEngineState": true,
   "showWeeklyChart": true,
-  "showAiChat": true,
   "showProjectCards": true,
   "showRecentActivity": true,
   "showVaultStats": true,
@@ -13,6 +37,7 @@
   "maxRecentItems": 7,
   "maxTaskItems": 3,
   "maxInboxItems": 6,
+  "showAiChat": true,
   "aiEndpoint": "https://api.deepseek.com/anthropic",
   "aiApiKey": "https://platform.deepseek.com",
   "aiModel": "deepseek-v4-flash",
