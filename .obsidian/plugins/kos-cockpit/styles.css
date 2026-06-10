@@ -1,0 +1,163 @@
+/* KOS Cockpit v6 — CSS natural reflow (FLOWnote pattern, no JS width detection) */
+
+.kos-cockpit-container { height: 100%; overflow-y: auto; background: var(--background-primary); }
+.kos-db { max-width: 1100px; margin: 0 auto; padding: 20px 24px 48px; }
+
+.kos-cockpit-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; gap: 12px; color: var(--text-muted); }
+.kos-cockpit-loading-spinner { width: 28px; height: 28px; border: 3px solid var(--background-modifier-border); border-top-color: var(--interactive-accent); border-radius: 50%; animation: kos-spin 0.8s linear infinite; }
+@keyframes kos-spin { to { transform: rotate(360deg); } }
+
+.kos-db-empty { font-size: 0.82em; color: var(--text-muted); font-style: italic; }
+.kos-db-section-title { font-size: 0.82em; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.kos-db-section { margin-bottom: 20px; }
+
+/* --- Header --- */
+.kos-db-header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--interactive-accent); }
+.kos-db-header-date { font-size: 1.15em; font-weight: 700; color: var(--text-normal); }
+.kos-db-header-status { font-size: 0.82em; color: var(--text-muted); flex: 1 1 auto; min-width: 200px; }
+.kos-db-refresh-btn { margin-left: auto; background: var(--interactive-normal); border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 1em; color: var(--text-muted); }
+.kos-db-refresh-btn:hover { background: var(--interactive-hover); color: var(--text-normal); }
+
+/* --- Quick Actions (natural wrap) --- */
+.kos-db-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.kos-db-action-btn {
+  background: var(--interactive-normal); border: 1px solid var(--background-modifier-border);
+  border-radius: 6px; padding: 6px 14px; cursor: pointer;
+  font-size: 0.82em; font-weight: 500; color: var(--text-normal); white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.kos-db-action-btn:hover { background: var(--interactive-hover); border-color: var(--interactive-accent); }
+
+/* --- Today's Task Panel --- */
+.kos-db-today-tasks { background: var(--background-secondary); border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 14px; }
+.kos-db-today-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.kos-db-today-header .kos-db-section-title { margin-bottom: 0; }
+.kos-db-today-count { font-size: 0.78em; font-weight: 600; color: var(--text-muted); }
+.kos-db-today-done { color: var(--color-green, #27ae60); }
+.kos-db-today-list { display: flex; flex-direction: column; gap: 3px; }
+.kos-db-today-item { display: flex; align-items: flex-start; gap: 6px; padding: 3px 0; font-size: 0.82em; color: var(--text-normal); }
+.kos-db-today-item-done { opacity: 0.5; text-decoration: line-through; }
+.kos-db-today-cb { font-size: 1em; flex-shrink: 0; }
+.kos-db-today-text { word-break: break-word; }
+
+/* --- Project Cards (auto-fill grid) --- */
+.kos-db-project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.kos-db-project-card {
+  background: var(--background-secondary); border: 1px solid var(--background-modifier-border);
+  border-radius: 8px; padding: 14px; cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.kos-db-project-card:hover { border-color: var(--interactive-accent); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.kos-db-project-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.kos-db-project-title { font-size: 0.88em; font-weight: 600; color: var(--text-normal); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.kos-db-badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 0.7em; font-weight: 700; flex-shrink: 0; }
+.kos-db-badge-p1, .kos-db-badge-high { background: #e74c3c20; color: #e74c3c; }
+.kos-db-badge-p2, .kos-db-badge-medium { background: #f39c1220; color: #d68910; }
+.kos-db-badge-p3, .kos-db-badge-low { background: var(--background-modifier-border); color: var(--text-muted); }
+
+/* Progress bar via CSS custom property */
+.kos-db-progress { height: 6px; background: var(--background-modifier-border); border-radius: 3px; overflow: hidden; position: relative; margin-bottom: 3px; }
+.kos-db-progress::before {
+  content: ''; position: absolute; left: 0; top: 0; height: 100%;
+  width: var(--progress, 0%); background: var(--interactive-accent); border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.kos-db-progress-label { font-size: 0.65em; color: var(--text-muted); text-align: right; }
+
+/* --- Two Columns --- */
+.kos-db-cols { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+.kos-db-col {
+  flex: 1 1 280px; min-width: 240px;
+  background: var(--background-secondary); border: 1px solid var(--background-modifier-border);
+  border-radius: 8px; padding: 14px;
+}
+
+.kos-db-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.kos-db-metric { text-align: center; padding: 10px; background: var(--background-primary); border-radius: 6px; }
+.kos-db-metric-val { font-size: 1.4em; font-weight: 700; color: var(--interactive-accent); }
+.kos-db-metric-label { font-size: 0.72em; color: var(--text-muted); margin-top: 2px; }
+
+.kos-db-sub-metrics { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; padding-top: 8px; border-top: 1px solid var(--background-modifier-border); }
+.kos-db-sub-metric { font-size: 0.72em; color: var(--text-muted); }
+.kos-db-sub-metric-val { font-weight: 600; color: var(--text-normal); }
+.kos-db-sub-metric-label { color: var(--text-muted); }
+
+.kos-db-recent-list { max-height: 320px; overflow-y: auto; }
+.kos-db-recent-item { padding: 4px 0; font-size: 0.82em; display: flex; gap: 6px; }
+.kos-db-recent-time { color: var(--text-muted); font-size: 0.9em; white-space: nowrap; font-family: monospace; }
+.kos-db-recent-link { cursor: pointer; color: var(--text-accent); text-decoration: none; }
+.kos-db-recent-link:hover { text-decoration: underline; }
+
+/* --- Navigation --- */
+.kos-db-nav { background: var(--background-secondary); border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 14px; margin-bottom: 20px; }
+.kos-db-nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.kos-db-nav-link {
+  padding: 4px 12px; background: var(--background-primary); border: 1px solid var(--background-modifier-border);
+  border-radius: 4px; font-size: 0.82em; cursor: pointer; color: var(--text-normal); text-decoration: none;
+  transition: border-color 0.15s;
+}
+.kos-db-nav-link:hover { border-color: var(--interactive-accent); color: var(--interactive-accent); }
+
+/* --- Inbox File List --- */
+.kos-db-inbox { background: var(--background-secondary); border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 14px; }
+.kos-db-inbox-list { display: flex; flex-direction: column; gap: 3px; }
+.kos-db-inbox-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--background-modifier-border); font-size: 0.82em; }
+.kos-db-inbox-item:last-child { border-bottom: none; }
+.kos-db-inbox-link { cursor: pointer; color: var(--text-accent); text-decoration: none; }
+.kos-db-inbox-link:hover { text-decoration: underline; }
+.kos-db-inbox-time { font-size: 0.85em; color: var(--text-muted); font-family: monospace; }
+.kos-db-inbox-more { padding-top: 6px; font-size: 0.82em; }
+
+/* --- Engine State --- */
+.kos-db-engine-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.kos-db-engine-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border); border-radius: 12px;
+  font-size: 0.78em; cursor: default;
+}
+.kos-db-engine-done { border-color: var(--interactive-accent); background: var(--interactive-accent); color: var(--text-on-accent); }
+.kos-db-engine-idle { opacity: 0.6; }
+.kos-db-engine-name { font-weight: 600; }
+.kos-db-engine-date { opacity: 0.8; font-family: monospace; }
+
+/* --- Weekly Chart --- */
+.kos-db-chart { display: flex; gap: 4px; align-items: flex-end; padding: 12px 0; overflow-x: auto; }
+.kos-db-chart-col { flex: 1; min-width: 28px; display: flex; flex-direction: column; align-items: center; }
+.kos-db-chart-bar {
+  width: 100%; max-width: 36px; background: var(--background-modifier-border);
+  border-radius: 3px 3px 0 0; transition: height 0.3s ease; min-height: 4px;
+}
+.kos-db-chart-today .kos-db-chart-bar { background: var(--interactive-accent) !important; }
+.kos-db-chart-today .kos-db-chart-val { color: var(--interactive-accent); font-weight: 700; }
+.kos-db-chart-val { font-size: 0.7em; color: var(--text-muted); margin-top: 3px; }
+.kos-db-chart-day { font-size: 0.65em; color: var(--text-muted); margin-top: 2px; }
+
+/* --- AI Chat --- */
+.kos-db-ai { background: var(--background-secondary); border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 14px; }
+.kos-db-ai-placeholder { font-size: 0.8em; color: var(--text-muted); font-style: italic; margin-bottom: 8px; }
+.kos-db-ai-input-row { display: flex; gap: 6px; }
+.kos-db-ai-input {
+  flex: 1; background: var(--background-primary); border: 1px solid var(--background-modifier-border);
+  border-radius: 4px; padding: 6px 10px; font-size: 0.82em; color: var(--text-normal);
+}
+.kos-db-ai-input:focus { outline: none; border-color: var(--interactive-accent); }
+.kos-db-ai-send { background: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; padding: 6px 14px; cursor: pointer; font-size: 0.82em; transition: opacity 0.15s; }
+.kos-db-ai-send:hover { opacity: 0.85; }
+
+/* --- Narrow pane overrides (via Obsidian sidebar class) --- */
+.mod-sidebar .kos-db { padding: 12px; }
+.mod-sidebar .kos-db-header-date { font-size: 0.9em; }
+.mod-sidebar .kos-db-header-status { font-size: 0.72em; }
+.mod-sidebar .kos-db-action-btn { padding: 3px 8px; font-size: 0.75em; }
+.mod-sidebar .kos-db-project-grid { grid-template-columns: 1fr; gap: 6px; }
+.mod-sidebar .kos-db-project-card { padding: 8px; }
+.mod-sidebar .kos-db-project-title { font-size: 0.82em; }
+.mod-sidebar .kos-db-metric-val { font-size: 1em; }
+.mod-sidebar .kos-db-chart { padding: 8px 0; }
+.mod-sidebar .kos-db-chart-bar { max-width: 24px; }
+.mod-sidebar .kos-db-nav-link { padding: 2px 8px; font-size: 0.75em; }
+.mod-sidebar .kos-db-today-item { font-size: 0.75em; }
+.mod-sidebar .kos-db-engine-chip { font-size: 0.7em; padding: 2px 8px; }
+.mod-sidebar .kos-db-inbox-item { font-size: 0.75em; }
