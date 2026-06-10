@@ -165,7 +165,7 @@ class CockpitSettingTab extends PluginSettingTab {
       { key: 'showInboxFiles', name: 'Inbox Files', desc: 'List of pending files in 0 Inbox/.' },
       { key: 'showEngineState', name: 'Engine State', desc: 'Triage/Compile/Link engine status chips.' },
       { key: 'showWeeklyChart', name: 'Weekly Chart', desc: 'Bar chart of weekly daily-note captures.' },
-      { key: 'showAiChat', name: 'AI Chat', desc: 'AI chat with LLM provider.' },
+
     ];
 
     sections.forEach(({ key, name, desc }) => {

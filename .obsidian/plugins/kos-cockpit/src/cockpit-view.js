@@ -1,5 +1,5 @@
-// KOS Cockpit v9 — CSS-driven natural reflow
-// + Settings-aware + locale i18n + AI Chat (OpenAI-compatible)
+// KOS Cockpit v10 — FLOWnote-style panel switching (home / chat)
+// + Settings-aware + locale i18n + AI Chat with FLOWnote auto-detect
 
 const { ItemView, moment } = require('obsidian');
 const { t } = require('./locale');
@@ -17,19 +17,16 @@ class CockpitView extends ItemView {
     super(leaf);
     this.plugin = plugin;
     this.aiChat = null;
+    this.activePanel = 'home'; // 'home' | 'chat'
   }
 
   getViewType() { return VIEW_TYPE_COCKPIT; }
-  getDisplayText() { return 'KOS Cockpit'; }
+  getDisplayText() { return this.activePanel === 'chat' ? 'KOS AI Chat' : 'KOS Cockpit'; }
   getIcon() { return 'gauge'; }
 
-  get settings() {
-    return this.plugin ? this.plugin.settings : null;
-  }
+  get settings() { return this.plugin ? this.plugin.settings : null; }
 
-  _t(key, params) {
-    return t(key, this.settings?.locale || 'zh-cn', params);
-  }
+  _t(key, params) { return t(key, this.settings?.locale || 'zh-cn', params); }
 
   get _dayNames() {
     return [
@@ -68,7 +65,7 @@ class CockpitView extends ItemView {
   async refresh() {
     try {
       const data = await this.collectData(this.app);
-      this.renderDashboard(data);
+      this.renderPanel(data);
     } catch (e) {
       console.error('KOS Cockpit refresh error:', e);
       this.renderError(e?.message);
@@ -89,24 +86,44 @@ class CockpitView extends ItemView {
     return { today, projects, stats, recent, hot, weekly, engines, inboxFiles };
   }
 
-  renderDashboard(data) {
+  /** Switch between 'home' and 'chat' panels */
+  switchPanel(panel, data) {
+    this.activePanel = panel;
+    this.renderPanel(data || null);
+  }
+
+  // ──────────────── Panel Router ────────────────
+
+  renderPanel(data) {
     const container = this.contentEl;
     container.empty();
     const main = container.createEl('div', { cls: 'kos-db' });
 
-    this.renderHeader(main, data);
-    this.renderQuickActions(main);
-
-    if (this.settings?.showTodayTasks !== false) this.renderTodayTasks(main, data);
-    if (this.settings?.showVaultStats !== false || this.settings?.showRecentActivity !== false) {
-      this.renderTwoColumns(main, data);
+    if (this.activePanel === 'chat') {
+      this.renderChatView(main, data);
+    } else {
+      this.renderHomeView(main, data);
     }
-    if (this.settings?.showNav !== false) this.renderNav(main);
-    if (this.settings?.showInboxFiles !== false) this.renderInboxFiles(main, data);
-    if (this.settings?.showProjectCards !== false) this.renderProjects(main, data);
-    if (this.settings?.showEngineState !== false) this.renderEngineState(main, data);
-    if (this.settings?.showWeeklyChart !== false) this.renderWeeklyChart(main, data);
-    if (this.settings?.showAiChat !== false) this.renderAIChat(main);
+  }
+
+  // ──────────────── Home (Dashboard) ────────────────
+
+  renderHomeView(container, data) {
+    this.renderHeader(container, data);
+    this.renderQuickActions(container);
+
+    if (this.settings?.showTodayTasks !== false) this.renderTodayTasks(container, data);
+    if (this.settings?.showVaultStats !== false || this.settings?.showRecentActivity !== false) {
+      this.renderTwoColumns(container, data);
+    }
+    if (this.settings?.showNav !== false) this.renderNav(container);
+    if (this.settings?.showInboxFiles !== false) this.renderInboxFiles(container, data);
+    if (this.settings?.showProjectCards !== false) this.renderProjects(container, data);
+    if (this.settings?.showEngineState !== false) this.renderEngineState(container, data);
+    if (this.settings?.showWeeklyChart !== false) this.renderWeeklyChart(container, data);
+
+    // AI Chat entry button (always at bottom)
+    this.renderChatEntryBtn(container);
   }
 
   renderHeader(container, data) {
@@ -166,7 +183,6 @@ class CockpitView extends ItemView {
     }
   }
 
-  // ── Today's Task Panel ──
   renderTodayTasks(container, data) {
     const section = container.createEl('div', { cls: 'kos-db-section kos-db-today-tasks' });
     const header = section.createEl('div', { cls: 'kos-db-today-header' });
@@ -218,7 +234,6 @@ class CockpitView extends ItemView {
 
   renderTwoColumns(container, data) {
     const cols = container.createEl('div', { cls: 'kos-db-cols' });
-
     if (this.settings?.showVaultStats !== false) {
       const left = cols.createEl('div', { cls: 'kos-db-col' });
       left.createEl('div', { text: '\uD83D\uDCCA ' + this._t('stats.title'), cls: 'kos-db-section-title' });
@@ -250,7 +265,6 @@ class CockpitView extends ItemView {
         });
       }
     }
-
     if (this.settings?.showRecentActivity !== false) {
       const right = cols.createEl('div', { cls: 'kos-db-col' });
       right.createEl('div', { text: '\uD83D\uDD04 ' + this._t('recent.title'), cls: 'kos-db-section-title' });
@@ -289,7 +303,6 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ── Inbox File List ──
   renderInboxFiles(container, data) {
     const files = data.inboxFiles || [];
     if (files.length === 0) return;
@@ -312,7 +325,6 @@ class CockpitView extends ItemView {
     }
   }
 
-  // ── Engine State Display ──
   renderEngineState(container, data) {
     const engines = data.engines || {};
     const section = container.createEl('div', { cls: 'kos-db-section' });
@@ -358,19 +370,40 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ──────────────── AI Chat ────────────────
-  renderAIChat(container) {
-    const section = container.createEl('div', { cls: 'kos-db-section kos-db-ai' });
-    const headerRow = section.createEl('div', { cls: 'kos-db-ai-header' });
-    headerRow.createEl('div', { text: '\uD83E\uDD16 ' + this._t('ai.title'), cls: 'kos-db-section-title' });
-    const clearBtn = headerRow.createEl('button', { cls: 'kos-db-ai-clear', text: this._t('ai.clearBtn') });
-    clearBtn.addEventListener('click', () => { this._clearChat(); });
+  // ─── AI Chat Entry Button (always at bottom of home) ───
+
+  renderChatEntryBtn(container) {
+    const section = container.createEl('div', { cls: 'kos-db-section' });
+    const btn = section.createEl('button', { cls: 'kos-db-ai-entry-btn' });
+    btn.innerHTML = '\uD83E\uDD16 ' + this._t('ai.title') + ' \u2192';
+    btn.addEventListener('click', () => {
+      this.switchPanel('chat', null);
+    });
+  }
+
+  // ──────────────── Chat (Full-page AI Chat) ────────────────
+
+  renderChatView(container, data) {
+    // Back button + title
+    const topBar = container.createEl('div', { cls: 'kos-db-chat-topbar' });
+    const backBtn = topBar.createEl('button', { cls: 'kos-db-chat-back-btn' });
+    backBtn.innerHTML = '\u2190 ' + this._t('app.name');
+    backBtn.addEventListener('click', () => {
+      // Collect fresh data when going back to home
+      this.collectData(this.app).then((freshData) => {
+        this.switchPanel('home', freshData);
+      });
+    });
+    topBar.createEl('span', { text: '\uD83E\uDD16 ' + this._t('ai.title'), cls: 'kos-db-chat-topbar-title' });
+
+    // Chat UI (full width/height within the card)
+    const chatSection = container.createEl('div', { cls: 'kos-db-ai kos-db-ai-full' });
 
     // Message container
-    const msgContainer = section.createEl('div', { cls: 'kos-db-ai-msgs' });
+    const msgContainer = chatSection.createEl('div', { cls: 'kos-db-ai-msgs' });
 
     // Input row
-    const inputRow = section.createEl('div', { cls: 'kos-db-ai-input-row' });
+    const inputRow = chatSection.createEl('div', { cls: 'kos-db-ai-input-row' });
     const input = inputRow.createEl('input', {
       cls: 'kos-db-ai-input',
       attr: { type: 'text', placeholder: this._t('ai.placeholder') },
@@ -379,11 +412,8 @@ class CockpitView extends ItemView {
 
     // Chat engine
     this._initAiChat();
-
-    // Render existing messages
     this._renderChatMessages(msgContainer);
 
-    // Wire up input
     const doSend = () => {
       const val = input.value.trim();
       if (!val) return;
@@ -393,11 +423,12 @@ class CockpitView extends ItemView {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSend(); });
   }
 
+  // ──────────────── Shared AI Chat Logic ────────────────
+
   _initAiChat() {
     if (this.aiChat && this.aiChat.isConfigured) return;
     if (this.aiChat) return;
 
-    // Phase 1: try auto-detecting FLOWnote's provider config
     const self = this;
     resolveFlownoteProvider(this.app.vault.adapter).then((flownoteConfig) => {
       if (flownoteConfig) {
@@ -409,15 +440,9 @@ class CockpitView extends ItemView {
           systemPrompt: self.settings?.aiSystemPrompt || '',
           providerLabel: flownoteConfig.label,
         });
-        const section = self.contentEl.querySelector('.kos-db-ai');
-        if (section) {
-          const msgContainer = section.querySelector('.kos-db-ai-msgs');
-          if (msgContainer) self._renderChatMessages(msgContainer);
-        }
+        self._refreshChatMsgs();
         return;
       }
-
-      // Phase 2: fall back to manual Cockpit settings
       const baseUrl = (self.settings?.aiEndpoint || '').trim();
       const apiKey = (self.settings?.aiApiKey || '').trim();
       const model = (self.settings?.aiModel || '').trim();
@@ -430,21 +455,13 @@ class CockpitView extends ItemView {
           systemPrompt: self.settings?.aiSystemPrompt || '',
           providerLabel: 'Manual',
         });
-        const section = self.contentEl.querySelector('.kos-db-ai');
-        if (section) {
-          const msgContainer = section.querySelector('.kos-db-ai-msgs');
-          if (msgContainer) self._renderChatMessages(msgContainer);
-        }
+        self._refreshChatMsgs();
       }
     });
   }
 
-  _clearChat() {
-    if (this.aiChat) {
-      this.aiChat.abort();
-      this.aiChat.clear();
-    }
-    const section = this.contentEl.querySelector('.kos-db-ai');
+  _refreshChatMsgs() {
+    const section = this.contentEl.querySelector('.kos-db-ai, .kos-db-ai-full');
     if (section) {
       const msgContainer = section.querySelector('.kos-db-ai-msgs');
       if (msgContainer) this._renderChatMessages(msgContainer);
@@ -467,7 +484,6 @@ class CockpitView extends ItemView {
       const textEl = bubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
       textEl.textContent = msg.content;
 
-      // Copy button on assistant messages
       if (msg.role === 'assistant') {
         const copyBtn = bubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
         copyBtn.addEventListener('click', async () => {
@@ -486,18 +502,14 @@ class CockpitView extends ItemView {
   _sendChatMessage(text, msgContainer, inputEl) {
     if (!this.aiChat || !this.aiChat.isConfigured) return;
 
-    // Disable input during request
     inputEl.disabled = true;
     inputEl.value = '';
 
-    // Show user message immediately
     this._renderChatMessages(msgContainer);
 
-    // Add a "thinking" placeholder
     const thinkingEl = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant kos-db-ai-thinking' });
     thinkingEl.createEl('span', { text: this._t('ai.thinking'), cls: 'kos-db-ai-msg-text' });
 
-    // Stream response into a temporary assistant bubble
     let assistantText = '';
     let assistantBubble = null;
 
@@ -513,14 +525,11 @@ class CockpitView extends ItemView {
         msgContainer.scrollTop = msgContainer.scrollHeight;
       },
       onDone: () => {
-        // Remove thinking if still present
         if (thinkingEl.isConnected) thinkingEl.remove();
         if (!assistantBubble && assistantText) {
-          // Fallback: if no tokens arrived via onToken but onDone has content
           assistantBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant' });
           assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text', text: assistantText });
         }
-        // Add copy button
         if (assistantBubble && assistantText) {
           const copyBtn = assistantBubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
           copyBtn.addEventListener('click', async () => {
@@ -542,7 +551,6 @@ class CockpitView extends ItemView {
           text: this._t('ai.error', { msg: err.message || 'Unknown error' }),
           cls: 'kos-db-ai-msg-text',
         });
-        // Retry button
         const retryBtn = errBubble.createEl('button', { cls: 'kos-db-ai-retry-btn', text: this._t('ai.retry') });
         retryBtn.addEventListener('click', () => {
           this._sendChatMessage(text, msgContainer, inputEl);
