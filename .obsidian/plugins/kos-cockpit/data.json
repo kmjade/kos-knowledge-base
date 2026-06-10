@@ -1,0 +1,16 @@
+{
+  "locale": "zh-cn",
+  "autoOpen": false,
+  "showTodayTasks": true,
+  "showInboxFiles": true,
+  "showEngineState": true,
+  "showWeeklyChart": true,
+  "showAiChat": true,
+  "showProjectCards": true,
+  "showRecentActivity": true,
+  "showVaultStats": true,
+  "showNav": true,
+  "maxRecentItems": 7,
+  "maxTaskItems": 3,
+  "maxInboxItems": 6
+}

@@ -1,8 +1,9 @@
-// KOS Cockpit v8 — CSS-driven natural reflow
-// + Settings-aware: section toggles, data limits, locale i18n (t())
+// KOS Cockpit v9 — CSS-driven natural reflow
+// + Settings-aware + locale i18n + AI Chat (OpenAI-compatible)
 
 const { ItemView, moment } = require('obsidian');
 const { t } = require('./locale');
+const { AIChat } = require('./ai-chat');
 const {
   getTodayState, getInboxFiles, getDashboardStats,
   getRecentActivity, getHotContext, getWeeklyRecords,
@@ -15,6 +16,7 @@ class CockpitView extends ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
+    this.aiChat = null;
   }
 
   getViewType() { return VIEW_TYPE_COCKPIT; }
@@ -25,12 +27,10 @@ class CockpitView extends ItemView {
     return this.plugin ? this.plugin.settings : null;
   }
 
-  /** Translate with current locale */
   _t(key, params) {
     return t(key, this.settings?.locale || 'zh-cn', params);
   }
 
-  /** Day names as array indexed 0=Sun..6=Sat */
   get _dayNames() {
     return [
       this._t('day.sun'), this._t('day.mon'), this._t('day.tue'),
@@ -158,10 +158,7 @@ class CockpitView extends ItemView {
       }
       case 'settings': {
         const setting = this.app.setting;
-        if (setting) {
-          setting.open();
-          setting.openTabById('kos-cockpit');
-        }
+        if (setting) { setting.open(); setting.openTabById('kos-cockpit'); }
         break;
       }
       default:
@@ -169,19 +166,18 @@ class CockpitView extends ItemView {
     }
   }
 
-  // --- Today's Task Panel ---
+  // ── Today's Task Panel ──
   renderTodayTasks(container, data) {
     const section = container.createEl('div', { cls: 'kos-db-section kos-db-today-tasks' });
     const header = section.createEl('div', { cls: 'kos-db-today-header' });
     header.createEl('div', { text: '\u2705 ' + this._t('task.title'), cls: 'kos-db-section-title' });
     if (data.today?.tasks) {
-      const { open, done, total, completionRate } = data.today.tasks;
+      const { done, total, completionRate } = data.today.tasks;
       header.createEl('span', {
         text: this._t('task.progress', { done, total, rate: completionRate }),
         cls: 'kos-db-today-count ' + (total > 0 && completionRate >= 100 ? 'kos-db-today-done' : ''),
       });
     }
-
     const list = section.createEl('div', { cls: 'kos-db-today-list' });
     const maxItems = this.settings?.maxTaskItems || 12;
     const items = (data.today?.taskItems || []).slice(0, maxItems);
@@ -223,7 +219,6 @@ class CockpitView extends ItemView {
   renderTwoColumns(container, data) {
     const cols = container.createEl('div', { cls: 'kos-db-cols' });
 
-    // --- Left: Vault Stats ---
     if (this.settings?.showVaultStats !== false) {
       const left = cols.createEl('div', { cls: 'kos-db-col' });
       left.createEl('div', { text: '\uD83D\uDCCA ' + this._t('stats.title'), cls: 'kos-db-section-title' });
@@ -239,7 +234,6 @@ class CockpitView extends ItemView {
         item.createEl('div', { text: m.value, cls: 'kos-db-metric-val' });
         item.createEl('div', { text: m.label, cls: 'kos-db-metric-label' });
       });
-
       if (data.stats?.stats) {
         const s = data.stats.stats;
         const subStats = [
@@ -257,7 +251,6 @@ class CockpitView extends ItemView {
       }
     }
 
-    // --- Right: Recent Activity ---
     if (this.settings?.showRecentActivity !== false) {
       const right = cols.createEl('div', { cls: 'kos-db-col' });
       right.createEl('div', { text: '\uD83D\uDD04 ' + this._t('recent.title'), cls: 'kos-db-section-title' });
@@ -296,16 +289,14 @@ class CockpitView extends ItemView {
     });
   }
 
-  // --- Inbox File List ---
+  // ── Inbox File List ──
   renderInboxFiles(container, data) {
     const files = data.inboxFiles || [];
     if (files.length === 0) return;
-
     const maxItems = this.settings?.maxInboxItems || 6;
     const section = container.createEl('div', { cls: 'kos-db-section kos-db-inbox' });
     section.createEl('div', { text: '\uD83D\uDCE5 ' + this._t('inbox.title', { count: files.length }), cls: 'kos-db-section-title' });
     const list = section.createEl('div', { cls: 'kos-db-inbox-list' });
-
     files.slice(0, maxItems).forEach((file) => {
       const row = list.createEl('div', { cls: 'kos-db-inbox-item' });
       const name = row.createEl('a', { text: file.basename || file.path, cls: 'kos-db-inbox-link' });
@@ -314,7 +305,6 @@ class CockpitView extends ItemView {
         row.createEl('span', { text: moment(file.stat.mtime).format('MM-DD HH:mm'), cls: 'kos-db-inbox-time' });
       }
     });
-
     if (files.length > maxItems) {
       const more = section.createEl('div', { cls: 'kos-db-inbox-more' });
       more.createEl('a', { text: this._t('inbox.more', { count: files.length - maxItems }), cls: 'kos-db-inbox-link' })
@@ -322,21 +312,18 @@ class CockpitView extends ItemView {
     }
   }
 
-  // --- Engine State Display ---
+  // ── Engine State Display ──
   renderEngineState(container, data) {
     const engines = data.engines || {};
     const section = container.createEl('div', { cls: 'kos-db-section' });
     section.createEl('div', { text: '\u2699\uFE0F ' + this._t('engine.title'), cls: 'kos-db-section-title' });
-
     const grid = section.createEl('div', { cls: 'kos-db-engine-grid' });
     const primaryEngines = ['triage', 'compile', 'link', 'daily', 'project', 'archive'];
     const hasData = primaryEngines.some((e) => engines[e]?.lastRun || engines[e]?.summary);
-
     if (!hasData) {
       grid.createEl('div', { text: this._t('engine.empty'), cls: 'kos-db-empty' });
       return;
     }
-
     primaryEngines.forEach((key) => {
       const eng = engines[key] || {};
       const chip = grid.createEl('div', {
@@ -345,12 +332,8 @@ class CockpitView extends ItemView {
           + (eng.lastRun ? '' : ' kos-db-engine-idle'),
       });
       chip.createEl('span', { text: key, cls: 'kos-db-engine-name' });
-      if (eng.lastRun) {
-        chip.createEl('span', { text: ' ' + eng.lastRun.slice(5), cls: 'kos-db-engine-date' });
-      }
-      if (eng.summary) {
-        chip.setAttr('title', eng.summary);
-      }
+      if (eng.lastRun) chip.createEl('span', { text: ' ' + eng.lastRun.slice(5), cls: 'kos-db-engine-date' });
+      if (eng.summary) chip.setAttr('title', eng.summary);
     });
   }
 
@@ -375,26 +358,165 @@ class CockpitView extends ItemView {
     });
   }
 
+  // ──────────────── AI Chat ────────────────
   renderAIChat(container) {
     const section = container.createEl('div', { cls: 'kos-db-section kos-db-ai' });
-    section.createEl('div', { text: '\uD83E\uDD16 ' + this._t('ai.title'), cls: 'kos-db-section-title' });
-    const body = section.createEl('div', { cls: 'kos-db-ai-body' });
-    body.createEl('div', { text: this._t('ai.placeholder'), cls: 'kos-db-ai-placeholder' });
-    const inputRow = body.createEl('div', { cls: 'kos-db-ai-input-row' });
+    const headerRow = section.createEl('div', { cls: 'kos-db-ai-header' });
+    headerRow.createEl('div', { text: '\uD83E\uDD16 ' + this._t('ai.title'), cls: 'kos-db-section-title' });
+    const clearBtn = headerRow.createEl('button', { cls: 'kos-db-ai-clear', text: this._t('ai.clearBtn') });
+    clearBtn.addEventListener('click', () => { this._clearChat(); });
+
+    // Message container
+    const msgContainer = section.createEl('div', { cls: 'kos-db-ai-msgs' });
+
+    // Input row
+    const inputRow = section.createEl('div', { cls: 'kos-db-ai-input-row' });
     const input = inputRow.createEl('input', {
       cls: 'kos-db-ai-input',
-      attr: { type: 'text', placeholder: this._t('ai.inputPlaceholder') },
+      attr: { type: 'text', placeholder: this._t('ai.placeholder') },
     });
-    const sendBtn = inputRow.createEl('button', { cls: 'kos-db-ai-send', text: this._t('ai.send') });
+    const sendBtn = inputRow.createEl('button', { cls: 'kos-db-ai-send', text: this._t('ai.sendBtn') });
 
-    sendBtn.addEventListener('click', () => {
+    // Chat engine
+    this._initAiChat();
+
+    // Render existing messages
+    this._renderChatMessages(msgContainer);
+
+    // Wire up input
+    const doSend = () => {
       const val = input.value.trim();
       if (!val) return;
-      this.app.workspace.openLinkText('_meta/hot.md', '', true);
-      input.value = '';
+      this._sendChatMessage(val, msgContainer, input);
+    };
+    sendBtn.addEventListener('click', doSend);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSend(); });
+  }
+
+  _initAiChat() {
+    if (this.aiChat && this.aiChat.isConfigured) return; // already initialised
+    if (!this.aiChat) {
+      this.aiChat = new AIChat({
+        locale: this.settings?.locale || 'zh-cn',
+        aiEndpoint: this.settings?.aiEndpoint || '',
+        aiApiKey: this.settings?.aiApiKey || '',
+        aiModel: this.settings?.aiModel || 'gpt-4o',
+        aiSystemPrompt: this.settings?.aiSystemPrompt || '',
+      });
+    }
+  }
+
+  _clearChat() {
+    if (this.aiChat) {
+      this.aiChat.abort();
+      this.aiChat.clear();
+    }
+    const section = this.contentEl.querySelector('.kos-db-ai');
+    if (section) {
+      const msgContainer = section.querySelector('.kos-db-ai-msgs');
+      if (msgContainer) this._renderChatMessages(msgContainer);
+    }
+  }
+
+  _renderChatMessages(container) {
+    container.empty();
+    const msgs = this.aiChat ? this.aiChat.getHistory() : [];
+
+    if (!this.aiChat || !this.aiChat.isConfigured) {
+      container.createEl('div', { text: this._t('ai.needConfig'), cls: 'kos-db-ai-need-config' });
+      return;
+    }
+
+    msgs.forEach((msg) => {
+      const bubble = container.createEl('div', {
+        cls: 'kos-db-ai-msg kos-db-ai-msg-' + msg.role,
+      });
+      const textEl = bubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
+      textEl.textContent = msg.content;
+
+      // Copy button on assistant messages
+      if (msg.role === 'assistant') {
+        const copyBtn = bubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(msg.content);
+            copyBtn.textContent = this._t('ai.copied');
+            setTimeout(() => { copyBtn.textContent = this._t('ai.copy'); }, 2000);
+          } catch {}
+        });
+      }
     });
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
+
+    container.scrollTop = container.scrollHeight;
+  }
+
+  _sendChatMessage(text, msgContainer, inputEl) {
+    if (!this.aiChat || !this.aiChat.isConfigured) return;
+
+    // Disable input during request
+    inputEl.disabled = true;
+    inputEl.value = '';
+
+    // Show user message immediately
+    this._renderChatMessages(msgContainer);
+
+    // Add a "thinking" placeholder
+    const thinkingEl = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant kos-db-ai-thinking' });
+    thinkingEl.createEl('span', { text: this._t('ai.thinking'), cls: 'kos-db-ai-msg-text' });
+
+    // Stream response into a temporary assistant bubble
+    let assistantText = '';
+    let assistantBubble = null;
+
+    this.aiChat.sendMessage(text, {
+      onToken: (token) => {
+        assistantText += token;
+        if (!assistantBubble) {
+          thinkingEl.remove();
+          assistantBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant' });
+          assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
+        }
+        assistantBubble.querySelector('.kos-db-ai-msg-text').textContent = assistantText;
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      },
+      onDone: () => {
+        // Remove thinking if still present
+        if (thinkingEl.isConnected) thinkingEl.remove();
+        if (!assistantBubble && assistantText) {
+          // Fallback: if no tokens arrived via onToken but onDone has content
+          assistantBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-assistant' });
+          assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text', text: assistantText });
+        }
+        // Add copy button
+        if (assistantBubble && assistantText) {
+          const copyBtn = assistantBubble.createEl('button', { cls: 'kos-db-ai-copy-btn', text: this._t('ai.copy') });
+          copyBtn.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(assistantText);
+              copyBtn.textContent = this._t('ai.copied');
+              setTimeout(() => { copyBtn.textContent = this._t('ai.copy'); }, 2000);
+            } catch {}
+          });
+        }
+        inputEl.disabled = false;
+        inputEl.focus();
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      },
+      onError: (err) => {
+        if (thinkingEl.isConnected) thinkingEl.remove();
+        const errBubble = msgContainer.createEl('div', { cls: 'kos-db-ai-msg kos-db-ai-msg-error' });
+        errBubble.createEl('div', {
+          text: this._t('ai.error', { msg: err.message || 'Unknown error' }),
+          cls: 'kos-db-ai-msg-text',
+        });
+        // Retry button
+        const retryBtn = errBubble.createEl('button', { cls: 'kos-db-ai-retry-btn', text: this._t('ai.retry') });
+        retryBtn.addEventListener('click', () => {
+          this._sendChatMessage(text, msgContainer, inputEl);
+        });
+        inputEl.disabled = false;
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      },
     });
   }
 }

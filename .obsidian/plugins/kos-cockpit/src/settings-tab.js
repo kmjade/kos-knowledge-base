@@ -23,6 +23,12 @@ const DEFAULT_SETTINGS = {
   maxRecentItems: 8,
   maxTaskItems: 12,
   maxInboxItems: 6,
+
+  // AI Chat provider
+  aiEndpoint: '',
+  aiApiKey: '',
+  aiModel: 'gpt-4o',
+  aiSystemPrompt: '',
 };
 
 class CockpitSettingTab extends PluginSettingTab {
@@ -41,6 +47,7 @@ class CockpitSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     this.renderGeneralSection(containerEl);
+    this.renderAiSection(containerEl);
     this.renderDashboardSection(containerEl);
     this.renderDataLimitsSection(containerEl);
     this.renderAboutSection(containerEl);
@@ -49,7 +56,6 @@ class CockpitSettingTab extends PluginSettingTab {
   renderGeneralSection(containerEl) {
     containerEl.createEl('h3', { text: this._t('settings.general') });
 
-    // Language selector
     new Setting(containerEl)
       .setName(this._t('settings.language'))
       .setDesc(this._t('settings.languageDesc'))
@@ -62,12 +68,10 @@ class CockpitSettingTab extends PluginSettingTab {
           .onChange(async (v) => {
             this.plugin.settings.locale = v;
             await this.plugin.saveSettings();
-            // Re-render settings tab with new language
             this.display();
           });
       });
 
-    // Auto-open toggle
     new Setting(containerEl)
       .setName(this._t('settings.autoOpen'))
       .setDesc(this._t('settings.autoOpenDesc'))
@@ -81,6 +85,70 @@ class CockpitSettingTab extends PluginSettingTab {
       );
   }
 
+  renderAiSection(containerEl) {
+    containerEl.createEl('h3', { text: this._t('ai.providerSection') });
+    containerEl.createEl('p', {
+      text: this._t('ai.providerSectionDesc'),
+      cls: 'setting-item-description',
+    });
+
+    new Setting(containerEl)
+      .setName(this._t('ai.apiEndpoint'))
+      .setDesc('https://api.openai.com/v1')
+      .addText((text) =>
+        text
+          .setPlaceholder('https://api.openai.com/v1')
+          .setValue(this.plugin.settings.aiEndpoint || '')
+          .onChange(async (v) => {
+            this.plugin.settings.aiEndpoint = v.trim();
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName(this._t('ai.apiKey'))
+      .setDesc('sk-...')
+      .addText((text) => {
+        text
+          .setPlaceholder('sk-...')
+          .setValue(this.plugin.settings.aiApiKey || '')
+          .onChange(async (v) => {
+            this.plugin.settings.aiApiKey = v.trim();
+            await this.plugin.saveSettings();
+          });
+        text.inputEl.type = 'password';
+      });
+
+    new Setting(containerEl)
+      .setName(this._t('ai.model'))
+      .setDesc('gpt-4o, claude-3.5-sonnet, deepseek-chat, ...')
+      .addText((text) =>
+        text
+          .setPlaceholder('gpt-4o')
+          .setValue(this.plugin.settings.aiModel || 'gpt-4o')
+          .onChange(async (v) => {
+            this.plugin.settings.aiModel = v.trim() || 'gpt-4o';
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName(this._t('ai.systemPrompt'))
+      .setDesc(this._t('ai.systemPromptPlaceholder'))
+      .addTextArea((text) => {
+        text
+          .setPlaceholder(this._t('ai.systemPromptPlaceholder'))
+          .setValue(this.plugin.settings.aiSystemPrompt || '')
+          .onChange(async (v) => {
+            this.plugin.settings.aiSystemPrompt = v.trim();
+            await this.plugin.saveSettings();
+          });
+        text.inputEl.rows = 4;
+        text.inputEl.cols = 60;
+        text.inputEl.addClass('kos-cockpit-textarea');
+      });
+  }
+
   renderDashboardSection(containerEl) {
     containerEl.createEl('h3', { text: this._t('settings.dashboard') });
     containerEl.createEl('p', {
@@ -89,7 +157,7 @@ class CockpitSettingTab extends PluginSettingTab {
     });
 
     const sections = [
-      { key: 'showTodayTasks', nameKey: 'settings.showTodayTasks', name: 'Today\'s Tasks', desc: 'Daily note task list and progress.' },
+      { key: 'showTodayTasks', name: 'Today\'s Tasks', desc: 'Daily note task list and progress.' },
       { key: 'showProjectCards', name: 'Active Projects', desc: 'Project cards with priority and progress.' },
       { key: 'showVaultStats', name: 'Vault Statistics', desc: 'Total notes, active projects, inbox count.' },
       { key: 'showRecentActivity', name: 'Recent Activity', desc: 'Recently modified files.' },
@@ -97,7 +165,7 @@ class CockpitSettingTab extends PluginSettingTab {
       { key: 'showInboxFiles', name: 'Inbox Files', desc: 'List of pending files in 0 Inbox/.' },
       { key: 'showEngineState', name: 'Engine State', desc: 'Triage/Compile/Link engine status chips.' },
       { key: 'showWeeklyChart', name: 'Weekly Chart', desc: 'Bar chart of weekly daily-note captures.' },
-      { key: 'showAiChat', name: 'AI Chat', desc: 'AI chat input placeholder.' },
+      { key: 'showAiChat', name: 'AI Chat', desc: 'AI chat with LLM provider.' },
     ];
 
     sections.forEach(({ key, name, desc }) => {
@@ -165,9 +233,7 @@ class CockpitSettingTab extends PluginSettingTab {
     containerEl.createEl('h3', { text: this._t('settings.about') });
 
     const desc = document.createDocumentFragment();
-    desc.createEl('span', {
-      text: this._t('settings.versionDesc'),
-    });
+    desc.createEl('span', { text: this._t('settings.versionDesc') });
 
     new Setting(containerEl)
       .setName(this._t('settings.version'))

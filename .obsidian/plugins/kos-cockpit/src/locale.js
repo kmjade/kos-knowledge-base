@@ -16,7 +16,7 @@ const LOCALES = {
     'header.todayFocus': '今日聚焦: {focus}',
     'header.focusNotSet': '(未设定)',
 
-    // Day names (short, single character)
+    // Day names
     'day.sun': '日',
     'day.mon': '一',
     'day.tue': '二',
@@ -72,9 +72,25 @@ const LOCALES = {
 
     // AI Chat
     'ai.title': 'AI 对话',
-    'ai.placeholder': '在此处嵌入 AI 对话视图。目前使用命令面板或侧栏进行 AI 交互。',
-    'ai.inputPlaceholder': '输入命令或问题……',
-    'ai.send': '发送',
+    'ai.placeholder': '询问 KOS 知识库...',
+    'ai.welcome': '你好！我是 KOS AI 助手。你可以问我关于知识库、项目状态或任何 KOS 相关的问题。',
+    'ai.sendBtn': '发送',
+    'ai.clearBtn': '清空对话',
+    'ai.thinking': '思考中...',
+    'ai.needConfig': '请先在设置中配置 API 密钥和模型。',
+    'ai.error': '请求失败: {msg}',
+    'ai.retry': '重试',
+    'ai.copy': '复制',
+    'ai.copied': '已复制',
+
+    // AI settings
+    'ai.providerSection': 'AI Provider',
+    'ai.providerSectionDesc': '配置 AI 对话的 API 接入参数。留空则聊天区显示为不可用。',
+    'ai.apiEndpoint': 'API Endpoint',
+    'ai.apiKey': 'API Key',
+    'ai.model': '模型名称',
+    'ai.systemPrompt': '系统提示词',
+    'ai.systemPromptPlaceholder': '你是一个知识管理助手，帮助用户处理 KOS 知识库。',
 
     // Settings
     'settings.general': 'General',
@@ -143,7 +159,7 @@ const LOCALES = {
     'recent.title': 'Recent Activity',
     'recent.empty': 'No activity yet.',
 
-    'nav.title': 'Three Pillars · Nav',
+    'nav.title': 'Three Pillars \u00B7 Nav',
 
     'inbox.title': 'Inbox ({count})',
     'inbox.more': '+{count} more...',
@@ -156,16 +172,31 @@ const LOCALES = {
     'weekly.barTooltip': '{date}: {count} items',
 
     'ai.title': 'AI Chat',
-    'ai.placeholder': 'AI chat view can be embedded here. Currently use the command palette or sidebar for AI interaction.',
-    'ai.inputPlaceholder': 'Enter command or question...',
-    'ai.send': 'Send',
+    'ai.placeholder': 'Ask about the KOS vault...',
+    'ai.welcome': 'Hello! I am the KOS AI assistant. Ask me about the knowledge base, project status, or anything KOS-related.',
+    'ai.sendBtn': 'Send',
+    'ai.clearBtn': 'Clear Chat',
+    'ai.thinking': 'Thinking...',
+    'ai.needConfig': 'Please configure API key and model in settings first.',
+    'ai.error': 'Request failed: {msg}',
+    'ai.retry': 'Retry',
+    'ai.copy': 'Copy',
+    'ai.copied': 'Copied',
+
+    'ai.providerSection': 'AI Provider',
+    'ai.providerSectionDesc': 'Configure API access for the AI chat. Leave empty to show chat as unavailable.',
+    'ai.apiEndpoint': 'API Endpoint',
+    'ai.apiKey': 'API Key',
+    'ai.model': 'Model Name',
+    'ai.systemPrompt': 'System Prompt',
+    'ai.systemPromptPlaceholder': 'You are a knowledge management assistant helping the user navigate their KOS vault.',
 
     'settings.general': 'General',
     'settings.language': 'Interface Language',
     'settings.languageDesc': 'Choose the display language for the dashboard.',
-    'settings.langZhCN': '简体中文',
+    'settings.langZhCN': '\u7B80\u4F53\u4E2D\u6587',
     'settings.langEn': 'English',
-    'settings.langZhTW': '繁體中文',
+    'settings.langZhTW': '\u7E41\u9AD4\u4E2D\u6587',
     'settings.autoOpen': 'Auto-open on startup',
     'settings.autoOpenDesc': 'Automatically open the KOS Cockpit when Obsidian starts.',
     'settings.dashboard': 'Dashboard Sections',
@@ -179,7 +210,7 @@ const LOCALES = {
     'settings.maxInboxDesc': 'Number of inbox file names to show (max 20).',
     'settings.about': 'About',
     'settings.version': 'Version',
-    'settings.versionDesc': 'KOS Cockpit v0.2.0 — A knowledge management dashboard for the KOS_LLM-Wiki vault. Part of the KOS ecosystem.',
+    'settings.versionDesc': 'KOS Cockpit v0.2.0 \u2014 A knowledge management dashboard for the KOS_LLM-Wiki vault. Part of the KOS ecosystem.',
   },
 
   'zh-tw': {
@@ -239,9 +270,24 @@ const LOCALES = {
     'weekly.barTooltip': '{date}: {count} 條',
 
     'ai.title': 'AI 對話',
-    'ai.placeholder': '在此處嵌入 AI 對話檢視。目前使用命令面板或側欄進行 AI 互動。',
-    'ai.inputPlaceholder': '輸入命令或問題……',
-    'ai.send': '發送',
+    'ai.placeholder': '詢問 KOS 知識庫...',
+    'ai.welcome': '你好！我是 KOS AI 助手。你可以問我關於知識庫、專案狀態或任何 KOS 相關的問題。',
+    'ai.sendBtn': '發送',
+    'ai.clearBtn': '清空對話',
+    'ai.thinking': '思考中...',
+    'ai.needConfig': '請先在設定中配置 API 密鑰和模型。',
+    'ai.error': '請求失敗: {msg}',
+    'ai.retry': '重試',
+    'ai.copy': '複製',
+    'ai.copied': '已複製',
+
+    'ai.providerSection': 'AI Provider',
+    'ai.providerSectionDesc': '配置 AI 對話的 API 接入參數。留空則聊天區顯示為不可用。',
+    'ai.apiEndpoint': 'API Endpoint',
+    'ai.apiKey': 'API Key',
+    'ai.model': '模型名稱',
+    'ai.systemPrompt': '系統提示詞',
+    'ai.systemPromptPlaceholder': '你是一個知識管理助手，幫助用戶處理 KOS 知識庫。',
 
     'settings.general': '一般',
     'settings.language': '介面語言',
@@ -274,13 +320,11 @@ function t(key, locale, params = {}) {
   const dict = LOCALES[locale] || LOCALES['zh-cn'];
   let text = dict[key];
   if (text === undefined) {
-    // Fallback: try zh-cn
     text = LOCALES['zh-cn'][key];
   }
   if (text === undefined) {
-    return key; // last resort: show the key itself
+    return key;
   }
-  // Replace {placeholders}
   for (const [k, v] of Object.entries(params)) {
     text = String(text).replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
   }
