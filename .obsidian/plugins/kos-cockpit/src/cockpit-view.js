@@ -370,16 +370,6 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ─── AI Chat Entry Button (always at bottom of home) ───
-
-  renderChatEntryBtn(container) {
-    const section = container.createEl('div', { cls: 'kos-db-section' });
-    const btn = section.createEl('button', { cls: 'kos-db-ai-entry-btn' });
-    btn.innerHTML = '\uD83E\uDD16 ' + this._t('ai.title') + ' \u2192';
-    btn.addEventListener('click', () => {
-      this.switchPanel('chat', null);
-    });
-  }
 
   // ──────────────── Chat (Full-page AI Chat) ────────────────
 
