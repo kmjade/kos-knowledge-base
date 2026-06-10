@@ -65,8 +65,8 @@ tags: [udc/004.8]    # 标签（用于 Obsidian 图谱/搜索）
 | `3 Resources/PARA/*` | `#udc/001.8-005` |
 | `3 Resources/UDC/*` | `#udc/025.4` |
 | `3 Resources/People/*` | `#udc/929` |
-| `_logs/operations/*` | `#udc/004.8-005.1` |
-| `_logs/reports/*` | `#udc/001.8-311` |
+| `_meta/system/logs/operations/*` | `#udc/004.8-005.1` |
+| `_meta/system/logs/reports/*` | `#udc/001.8-311` |
 | `Periodic/*` | `#udc/001.8-004.8` |
 
 ## Dataview 查询
@@ -87,7 +87,7 @@ WHERE udc LIKE "004.%"
 ## 标签维护
 
 - 新增 UDC 类号需先在 `_meta/udc-keywords.json` 的映射表中注册
-- 标签分组同步更新到 `_meta/🔗 知识关联/Index/_index.md`
+- 标签分组同步更新到 `_meta/index/links/Index/_index.md`
 - 复合类号标签统一使用 `-` 替换 `:`
 
 ## 参考

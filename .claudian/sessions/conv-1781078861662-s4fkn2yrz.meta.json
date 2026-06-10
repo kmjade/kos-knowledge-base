@@ -1,0 +1,23 @@
+{
+  "id": "conv-1781078861662-s4fkn2yrz",
+  "providerId": "opencode",
+  "title": "研讨 KOS 为主干吸收 AH 后淘汰",
+  "titleGenerationStatus": "success",
+  "createdAt": 1781078861663,
+  "updatedAt": 1781094969661,
+  "lastResponseAt": 1781086531352,
+  "sessionId": "ses_14f6d3ce4ffedbZm33P5PC8FZZ",
+  "providerState": {
+    "databasePath": "C:\\Users\\Administrator\\AppData\\Roaming\\opencode\\opencode.db"
+  },
+  "usage": {
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 68480,
+    "contextTokens": 68580,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "inputTokens": 100,
+    "model": "opencode:opencode/big-pickle",
+    "percentage": 34
+  }
+}

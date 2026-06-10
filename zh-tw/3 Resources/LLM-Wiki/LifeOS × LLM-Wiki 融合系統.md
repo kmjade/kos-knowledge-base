@@ -30,7 +30,7 @@ reviewed: true
 | 01-Projects / 02-Areas | 1 Projects/ / 2 Areas/ |
 | 03-Resources/{raw,wiki} | 3 Resources/ 含 raw/wiki |
 | 04-Archive | 4 Archives/ |
-| AI-Log/ | _logs/ |
+| AI-Log/ | _meta/system/logs/ |
 | CLAUDE.md（憲法） | AGENTS.md |
 | /triage 分揀引擎 | KOS-Triage |
 | /wiki-compile 編譯引擎 | KOS-Wiki-Compile |

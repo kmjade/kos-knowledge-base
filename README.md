@@ -1,4 +1,3 @@
-
 # KOS_LLM-Wiki
 
 **Knowledge Organization System + LLM-Wiki** — v3.0
@@ -15,23 +14,28 @@
 
 ```
 KOS_LLM-Wiki/
-├── 0 Inbox/          # 待分拣笔记（根目录 .md；_processed/ 内忽略）
-├── 1 Projects/       # 有目标与截止日期的项目
-├── 2 Areas/          # 持续关注的长期领域
-├── 3 Resources/      # 参考资料与知识库（LLM-Wiki, PARA, UDC, People）
-│   └── 000-Knowledge/raw/ + wiki/
-├── 4 Archives/       # 已完成项目（gitignored）
-├── Periodic/         # 周期笔记（日/周/月/年；gitignored）
-├── _meta/            # 系统元数据（hot.md, 模板, ADR, 索引, manifest）
-├── _logs/            # 审计层（triage, compile, maintenance, reports）
-├── _agents/          # AI 角色定义（简报员, 分析师, 协作者）
-├── _attachments/     # 附件/画布资源
-├── en/ + zh-tw/      # 多语言镜像
-├── .claude/           # Claude Code 配置 + hooks + skills
-├── .opencode/         # OpenCode 配置 + skills
-├── _meta/scripts/    # 工具脚本（wiki-lock.py）
-├── AGENTS.md         # AI 行为规范（主）
-└── CLAUDE.md         # Claude Code 快速参考
+├── 0 Inbox/              # 待分拣笔记
+├── 1 Projects/           # 活跃项目
+├── 2 Areas/              # 长期领域
+│   ├── 生活/ 学习/ 工作/ 知识组织
+├── 3 Resources/          # 知识库
+├── 4 Archives/           # 归档（gitignored）
+├── Periodic/             # 周期笔记（gitignored）
+│
+├── _meta/                # 系统元数据
+│   ├── architecture/     # 架构设计（adr + design；私密）
+│   ├── index/            # 导航（links / queries / indices）
+│   ├── system/           # 运维（templates / scripts / config / logs）
+│   ├── ai/               # AI（skills / memory / agents）
+│   └── assets/           # 架构图
+│
+├── _attachments/         # 媒体附件（canvases / images / pdfs）
+├── en/ + zh-tw/          # 多语言镜像
+│
+├── .claude/ .codex/ .opencode/   # AI 平台配置
+├── AGENTS.md             # AI 行为规范
+├── CLAUDE.md             # Claude Code 快速参考
+└── README.md
 ```
 
 ---
@@ -41,7 +45,7 @@ KOS_LLM-Wiki/
 ### Obsidian 用户
 
 1. 用 [Obsidian](https://obsidian.md) 打开本仓库
-2. 启用核心插件「模板」，模板文件夹设为 `_meta/Templates/`
+2. 启用核心插件「模板」，模板文件夹设为 `_meta/system/templates/`
 
 ### AI Agent 用户
 
@@ -53,7 +57,7 @@ KOS_LLM-Wiki/
 | `KOS-Triage [--file <path>]` | 分拣 Inbox 收件箱 |
 | `KOS-Wiki-Compile [--topic <name>]` | 编译 raw/ 到 wiki/ |
 | `KOS-Link [--path <dir>] [--fix]` | 健康检查（Frontmatter/UDC/链接/跨语言） |
-| `KOS-Query [quick|standard|deep] <问题>` | 三级知识查询 |
+| `KOS-Query [quick\|standard\|deep] <问题>` | 三级知识查询 |
 | `Daily Open` / `Day-Review` | 今日笔记 / 每日回顾 |
 
 ---
@@ -64,10 +68,10 @@ KOS_LLM-Wiki/
 |------|:----:|------|
 | **热缓存 (hot.md)** | 可用 | `_meta/hot.md` 会话上下文；hooks 自动读写 |
 | **生命周期 Hooks** | 可用 | `.claude/hooks.json` — SessionStart / PostCompact / PostToolUse / Stop |
-| **文件锁** | 可用 | `_meta/scripts/wiki-lock.py` — 多 agent 并发写入安全保护 |
+| **文件锁** | 可用 | `_meta/system/scripts/wiki-lock.py` — 多 agent 并发写入安全保护 |
 | **三级查询** | 可用 | Quick / Standard / Deep — Token 分层消耗 |
 | **KOS 引擎** | 可用 | 9 引擎：triage/compile/link/daily/canvas/init/project/archive/life |
-| **UDC 自动分类** | 可用 | 四层管道：模板->目录->关键词->AI 兜底 |
+| **UDC 自动分类** | 可用 | 四层管道：模板→目录→关键词→AI 兜底 |
 | **三语言镜像** | 可用 | CN / EN / TW 全对齐，含跨语言链接规则 |
 | **People CRM** | 可用 | 三级人物体系（Tier 1-3），隐私保护 |
 | **周期回顾** | 可用 | 日/周/月/季/年，模板化自动化 |
@@ -112,9 +116,9 @@ KOS_LLM-Wiki/
 
 | 语言 | 首页 | 索引 |
 |------|------|------|
-| **简体中文** | [[Home]] | [[_meta/🔗 知识关联/Index/_index-zh-cn|索引]] |
-| **English** | [[en/Home]] | [[en/_meta/Knowledge-Links/Index/_index-en|Index]] |
-| **繁體中文** | [[zh-tw/首頁]] | [[zh-tw/_meta/🔗 知识关联/Index/_index|索引]] |
+| **简体中文** | [[Home]] | [[_meta/index/links/Index/_index-zh-cn\|索引]] |
+| **English** | [[en/Home]] | [[en/_meta/index/links/Index/_index-en\|Index]] |
+| **繁體中文** | [[zh-tw/首頁]] | [[zh-tw/_meta/index/links/Index/_index\|索引]] |
 
 ---
 
@@ -122,9 +126,9 @@ KOS_LLM-Wiki/
 
 | 版本 | 日期 | 概要 |
 |------|------|------|
-| **v3.0** | 2026-06-09 | 三平台 Skill 架构 - KOS 引擎 9 技能 - 热缓存 - 文件锁 - 三级查询 - Canvas - Delta 追踪 |
-| v2.0 | 2026-06-07 | LifeOS x LLM-Wiki 融合 - Codex 适配 - 三语言镜像 |
-| v1.1 | 2026-06-07 | KOS-Compile 引擎 - 周期自动化 - 搜索层 |
+| **v3.0** | 2026-06-09 | 三平台 Skill 架构 / KOS 引擎 / 热缓存 / 文件锁 / 三级查询 / Canvas / 结构重组 |
+| v2.0 | 2026-06-07 | LifeOS x LLM-Wiki 融合 / Codex 适配 / 三语言镜像 |
+| v1.1 | 2026-06-07 | KOS-Compile 引擎 / 周期自动化 / 搜索层 |
 | v1.0 | 2026-06-03 | 初始系统构建 |
 
 ---
@@ -134,9 +138,7 @@ KOS_LLM-Wiki/
 - `AGENTS.md` — AI 行为规范（引擎命令、规则、模板）
 - `CLAUDE.md` — Claude Code 快速上手
 - `_meta/hot.md` — 热缓存：最近会话上下文
-- `_meta/🔗 知识关联/Index/_index-zh-cn.md` — 主索引
-- `_meta/design/` — 架构与设计文档
-- `_meta/adr/` — 架构决策记录
+- `_meta/index/links/Index/_index-zh-cn.md` — 主索引
 - `.claude/hooks.json` — 生命周期 hooks
 
 ---

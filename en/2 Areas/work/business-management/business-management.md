@@ -39,4 +39,4 @@ Quarter-end -> business review + tax prep
 ## Links
 
 - [[../work|Work Index]]
-- [[../../_meta/design/企业管理-架构设计.md|Architecture Design]]
+- [[../../_meta/architecture/design/企业管理-架构设计.md|Architecture Design]]

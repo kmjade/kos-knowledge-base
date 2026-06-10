@@ -171,7 +171,7 @@ description: "应用 10 原则思维循环（OBSERVE-OBSERVE-LISTEN-THINK-CONNEC
 | FEEL | KOS-Triage | 无法路由时标记 `needs-mapping` 而非强塞 |
 | ACCEPT | 全部 | 如实报告断链、矛盾、udc 缺失 |
 | CREATE | 全部 | 写入文件、更新 manifest、生成报告 |
-| GROW | 全部 | 操作日志、_logs/reports/、批次折叠 |
+| GROW | 全部 | 操作日志、_meta/system/logs/reports/、批次折叠 |
 
 ---
 

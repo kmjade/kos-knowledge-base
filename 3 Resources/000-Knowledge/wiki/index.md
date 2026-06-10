@@ -76,7 +76,7 @@ tags: [wiki-index, kos, classification]
 
 ## 关联索引
 
-- 主索引：[[_meta/🔗 知识关联/Index/_index-zh-cn\|总索引]]
+- 主索引：[[_meta/index/links/Index/_index-zh-cn\|总索引]]
 - AI/LLM 专题：[[../004-人工智能/raw/004-LLM-Wiki/004-LLM-Wiki\|004-LLM-Wiki]]
 - UDC 分类法：[[../raw/articles/025-Classification-Metadata/025-UDC/025-UDC\|025-UDC]]
 - PARA 方法：[[../raw/articles/001-PARA/001-PARA\|001-PARA]]

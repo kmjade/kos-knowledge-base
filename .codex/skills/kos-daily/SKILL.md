@@ -15,10 +15,10 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 |------|---------|---------|
 | `Daily Open` | `Periodic/YYYY/MM/YYYY-MM-DD.md` | 活跃工单未完成任务 |
 | `Day-Review` | `Periodic/YYYY/MM/YYYY-MM-DD.md` | 当日活动总结 |
-| `Week-Review` | `_logs/reports/YYYY-WW.md` | triage/compile 统计 + 日记数 + 项目状态 |
-| `Month-Review` | `_logs/reports/YYYY-MM.md` | 聚合周报 + 子库增长统计 |
-| `Quarter-Review` | `_logs/reports/YYYY-QQ.md` | 聚合月报 + 项目完成统计 |
-| `Year-Review` | `_logs/reports/YYYY.md` | 聚合季度 + ADR 变更历史 |
+| `Week-Review` | `_meta/system/logs/reports/YYYY-WW.md` | triage/compile 统计 + 日记数 + 项目状态 |
+| `Month-Review` | `_meta/system/logs/reports/YYYY-MM.md` | 聚合周报 + 子库增长统计 |
+| `Quarter-Review` | `_meta/system/logs/reports/YYYY-QQ.md` | 聚合月报 + 项目完成统计 |
+| `Year-Review` | `_meta/system/logs/reports/YYYY.md` | 聚合季度 + ADR 变更历史 |
 
 ---
 
@@ -26,9 +26,9 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 
 1. 检查 `Periodic/YYYY/MM/YYYY-MM-DD.md` 是否存在
 2. 若存在 → 跳过（幂等）
-3. 若不存在 → 使用 `_meta/Templates/每日笔记模板.md` 创建
+3. 若不存在 → 使用 `_meta/system/templates/每日笔记模板.md` 创建
 4. 填充：当前活跃工单、未完成任务、待处理 Inbox 数量
-5. 日志写入 `_logs/operations/maintenance.md`
+5. 日志写入 `_meta/system/logs/operations/maintenance.md`
 
 ---
 
@@ -37,7 +37,7 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 1. 读取今日笔记内容
 2. 汇总已完成/未完成任务
 3. 更新笔记中的回顾部分
-4. 更新全局状态 `_meta/ai-memory/全局状态.md`
+4. 更新全局状态 `_meta/ai/memory/全局状态.md`
 
 ---
 
@@ -50,8 +50,8 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 3. 处理本周残留记录（四选一：转任务 / 已处理 / 延期 / 转 kos-compile）
 4. 引导反思：成就 / 挑战 / 洞察 / 改进（用户互动，原话优先）
 5. 生成下周框架建议 → 用户确认 → 写入 `## 下周计划`
-6. 写入 `_logs/reports/YYYY-WW.md`
-7. 更新 `_logs/operations/maintenance.md`
+6. 写入 `_meta/system/logs/reports/YYYY-WW.md`
+7. 更新 `_meta/system/logs/operations/maintenance.md`
 
 ---
 
@@ -64,8 +64,8 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 3. 残留清零：处理本月未完成记录 + "以后再说"缓冲（逐条定去向）
 4. 领域检查：各领域进展（用户互动）
 5. 下月规划：对齐年度方向，生成下月框架 → 用户确认
-6. 写入 `_logs/reports/YYYY-MM.md`
-7. 更新 `_logs/operations/maintenance.md`
+6. 写入 `_meta/system/logs/reports/YYYY-MM.md`
+7. 更新 `_meta/system/logs/operations/maintenance.md`
 
 ---
 
@@ -75,8 +75,8 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 
 1. 聚合本季度月报
 2. 项目完成统计
-3. 写入 `_logs/reports/YYYY-QQ.md`
-4. 更新 `_logs/operations/maintenance.md`
+3. 写入 `_meta/system/logs/reports/YYYY-QQ.md`
+4. 更新 `_meta/system/logs/operations/maintenance.md`
 
 ---
 
@@ -88,14 +88,14 @@ description: 创建每日笔记与周期回顾。幂等操作（已存在则跳�
 2. 对照分析：年初计划 vs 全年执行 → 完成/部分完成/未完成 + 原因
 3. 引导年度反思：成就 / 挑战 / 成长 / 关系 / 价值观（用户互动）
 4. 生成新年框架建议（含延续事项 + 新方向 + 启动动作）→ 用户确认
-5. 写入 `_logs/reports/YYYY.md`（年度回顾 + 下一年计划）
-6. 更新 `_logs/operations/maintenance.md`
+5. 写入 `_meta/system/logs/reports/YYYY.md`（年度回顾 + 下一年计划）
+6. 更新 `_meta/system/logs/operations/maintenance.md`
 
 ---
 
 ## 关于模板
 
-所有周期笔记使用 `_meta/Templates/` 下对应模板：
+所有周期笔记使用 `_meta/system/templates/` 下对应模板：
 - 每日笔记 → `每日笔记模板.md`
 - 周记 → `周记模板.md`
 - 月记 → `月记模板.md`

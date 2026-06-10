@@ -24,13 +24,13 @@ description: "分拣 0 Inbox/ 待处理笔记。按时效性/主题/类型/复�
 
 ### 锁协议
 
-if python3 _meta/scripts/wiki-lock.py acquire "$TARGET"; then
+if python3 _meta/system/scripts/wiki-lock.py acquire "$TARGET"; then
     # ... 写入 ...
-    python3 _meta/scripts/wiki-lock.py release "$TARGET"
+    python3 _meta/system/scripts/wiki-lock.py release "$TARGET"
 else
     sleep 2
-    if python3 _meta/scripts/wiki-lock.py acquire "$TARGET"; then
-        python3 _meta/scripts/wiki-lock.py release "$TARGET"
+    if python3 _meta/system/scripts/wiki-lock.py acquire "$TARGET"; then
+        python3 _meta/system/scripts/wiki-lock.py release "$TARGET"
     fi
 fi
 
@@ -119,7 +119,7 @@ fi
 
 ## 渐进处理追踪
 
-每次 triage 执行后更新 _meta/ai-memory/全局状态.md 的 inbox 区块。
+每次 triage 执行后更新 _meta/ai/memory/全局状态.md 的 inbox 区块。
 记录：已处理数/总数/上次处理时间/残留去向统计。
 
 ---

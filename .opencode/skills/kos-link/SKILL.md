@@ -1,6 +1,6 @@
 ---
 name: kos-link
-description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目状态。支持 --fix 自动修复。
+description: 校验 vault 健康度。六级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目状态 → L6 空正文检测。支持 --fix 自动修复。
 ---
 
 # KOS-Link：链接与健康度校验引擎
@@ -9,13 +9,13 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 
 ---
 
-## 五级检查体系
+## 六级检查体系
 
 ### L1 — Frontmatter 完整性
 
 | 检查项 | 排除目录 |
 |--------|---------|
-| created/updated 字段存在 | `_logs/`、`0 Inbox/` |
+| created/updated 字段存在 | `_meta/system/logs/`、`0 Inbox/` |
 | 日期格式 YYYY-MM-DD | — |
 | udc 字段存在 | — |
 | tags 字段存在 | — |
@@ -24,7 +24,7 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 
 | 检查项 | 排除目录 |
 |--------|---------|
-| 格式 `\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*` | `_logs/`、`0 Inbox/`、`Periodic/`、`_meta/` |
+| 格式 `\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*` | `_meta/system/logs/`、`0 Inbox/`、`Periodic/`、`_meta/` |
 | 类号是否在映射表中 | 同上 |
 
 ### L3 — 链接完整性
@@ -40,7 +40,7 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 
 | 检查项 | 排除目录 |
 |--------|---------|
-| 三语言镜像齐全 | `_logs/`、`0 Inbox/`、`Periodic/` |
+| 三语言镜像齐全 | `_meta/system/logs/`、`0 Inbox/`、`Periodic/` |
 | udc/tags 一致 | 同上 |
 
 ### L5 — 项目状态
@@ -49,6 +49,17 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 |--------|
 | `status: completed` 仍留在 `1 Projects/` |
 | `[x]` 任务但 status: active |
+
+### L6 — 空正文检测
+
+| 检查项 | 排除目录 |
+|--------|---------|
+| 文件是否仅含 frontmatter 无正文（`---\n...\n---\nEOF`） | `_meta/system/logs/`、`0 Inbox/`、`.git/`、`.obsidian/` |
+| `--fix` 时自动从备份恢复 | 同上 |
+
+**恢复优先级（`--fix`）：**
+1. 同仓库 `_meta/` 下同名文件（支持 KOS 前缀变体）
+2. 其他备份源
 
 ---
 
@@ -61,6 +72,7 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 | created/updated 缺失 | 用当前日期填充 |
 | UDC 格式错误 | 标准化（不改类号） |
 | 跨语言文件缺失 | 复制骨架文件 |
+| L6: 空正文（有备份时） | 从备份恢复 |
 
 ### 不可自动修复
 
@@ -69,6 +81,7 @@ description: 校验 vault 健康度。五级检查：L1 Frontmatter → L2 UDC �
 | udc/tags 缺失 | 报错，人工处理 |
 | 断链 | 报错，人工处理 |
 | 项目状态不一致 | 报错，人工处理 |
+| L6: 空正文（无备份时） | 报错，人工从 git 或备用源恢复 |
 
 ---
 
@@ -103,7 +116,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 | # | 原则 | 在本引擎中的应用 |
 |---|------|----------------|
 | 1 | OBSERVE | 完整扫描文件，不预设问题清单 |
-| 4 | THINK | 五级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目 |
+| 4 | THINK | 六级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目 → L6 空正文 |
 | 6 | CONNECT(sys) | 检查后更新 manifest.engines.link |
 | 8 | ACCEPT | 断链和缺失如实报告，不加滤镜 |
 | 9 | CREATE | 生成扫描报告 |

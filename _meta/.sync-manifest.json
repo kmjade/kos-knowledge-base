@@ -1,0 +1,634 @@
+{
+  "version": 2,
+  "updated": "2026-06-10T09:51:21.777527",
+  "entries": {
+    ".gitignore": {
+      "hash": "e74e7cb0af07921449cab585cfd72ef37a1f85c2eb87886f3c85fd0a95dcf29a",
+      "synced_at": "2026-06-10T02:51:55.826891"
+    },
+    "AGENTS.md": {
+      "hash": "bfd089e217c7c3f62ec1b3380bf65703f76c14fed694ccc77364f31d8edd6698",
+      "synced_at": "2026-06-10T02:51:55.830647"
+    },
+    "CLAUDE.md": {
+      "hash": "79dd85f2b03cddf1a77ef644f3e51af0ecd914b66659bf9e54183496662fca81",
+      "synced_at": "2026-06-10T02:51:55.831391"
+    },
+    "GEMINI.md": {
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synced_at": "2026-06-10T02:51:55.832435"
+    },
+    "Home.md": {
+      "hash": "8bc9720c85350824c757c840be1b2aa52c92848acad4c8ca892d421523bce105",
+      "synced_at": "2026-06-10T02:51:55.864167"
+    },
+    "LICENSE": {
+      "hash": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "synced_at": "2026-06-10T02:51:55.884157"
+    },
+    "README.md": {
+      "hash": "a3fe8dc123125e95fb72028cc0f247720391d651c28a4426df648f044fe53596",
+      "synced_at": "2026-06-10T02:51:55.885318"
+    },
+    "🏠Home.md": {
+      "hash": "46ff91d221c9b904e1b4076092053f39b3d2ff1c5b9a3b2f7761be081fc734a3",
+      "synced_at": "2026-06-10T02:51:55.911501"
+    },
+    "tests/test_wiki_lock.py": {
+      "hash": "da629486f7aaf08605923e4bc631dbf6618c7e0c14034721893d187efe036558",
+      "synced_at": "2026-06-10T02:51:55.919938"
+    },
+    "_agents/_agents.md": {
+      "hash": "1c009d8420f9d11a93d1047fba019e1cdce2948ee23c4416f446cf56646c97fe",
+      "synced_at": "2026-06-10T02:51:55.921730"
+    },
+    "_attachments/.gitkeep": {
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synced_at": "2026-06-10T02:51:55.922487"
+    },
+    "_logs/_index.md": {
+      "hash": "e913ff2b7568c526d800f8bf42f38bd77d22b2e35d5cc44019eed8b4ee07c694",
+      "synced_at": "2026-06-10T02:51:55.925227"
+    },
+    "_meta/.agents_implant_review.md": {
+      "hash": "573e2ceb8ae9286c137a320677010c231246a7b0fe4b9dc2379688afa046bce8",
+      "synced_at": "2026-06-10T02:51:55.926124"
+    },
+    "_meta/.manifest.json": {
+      "hash": "673b4c45e3525ab123ffc39c42c7e0cd9ebb844695b46a7695036945168858ab",
+      "synced_at": "2026-06-10T02:51:55.926943"
+    },
+    "_meta/hot.md": {
+      "hash": "134df2e2a2dbaa862d0021b477716632a1c08184165f3728a0ebbdc25cb3ac6b",
+      "synced_at": "2026-06-10T09:51:20.738903"
+    },
+    "_prototype/README.md": {
+      "hash": "6ab8d19a4ff7c2cd863862ec0221e63f91b6da068982edea2afee92b8012d2c0",
+      "synced_at": "2026-06-10T02:51:55.931696"
+    },
+    "_prototype-life-ai/prototype-test.md": {
+      "hash": "2101214394fd1fb13f8eec53bb0f091147107ef1cf976968498476f640382dd3",
+      "synced_at": "2026-06-10T02:51:55.933646"
+    },
+    "_prototype-life-ai/_prototype-life-ai.md": {
+      "hash": "1b61aaebc2b5a0f5fb2c1d5be833430a3b6eee682a8f2e9e184260ebe2c37ec9",
+      "synced_at": "2026-06-10T02:51:55.934832"
+    },
+    "_prototype-life-ai/0-Inbox/2026-06-08-健身房续费.md": {
+      "hash": "79e27f45348d23106d16f4934294fd68963ab2f16acf5a98924a41a60537c3d4",
+      "synced_at": "2026-06-10T02:51:55.935991"
+    },
+    "_prototype-life-ai/_agents/分析师.md": {
+      "hash": "dd7c2dcbef1a2ca25333066895c78f78182333df83267b09866ac909bf5156ec",
+      "synced_at": "2026-06-10T02:51:55.938612"
+    },
+    "_prototype-life-ai/_agents/协作者.md": {
+      "hash": "00bbbd9a5cc78d7e2e9a7208016e4597e32349407f59732f8f4181b2c8cf64cd",
+      "synced_at": "2026-06-10T02:51:55.939310"
+    },
+    "_prototype-life-ai/_agents/简报员.md": {
+      "hash": "447ac72663c4a0921eefc945094d3485c9e0fd49d88b5ea6e43687706c70b25a",
+      "synced_at": "2026-06-10T02:51:55.940160"
+    },
+    "_prototype-life-ai/_direction/产品经理.md": {
+      "hash": "6dc80888628097e570cf23fbbfeca5674689caa67e0b0dfbaa34bc0098eda541",
+      "synced_at": "2026-06-10T02:51:55.941200"
+    },
+    "_prototype-life-ai/_direction/创作者.md": {
+      "hash": "35bee69d4377d76e6c130e35db428d44970a34a1d4b887ff5354ef47af57b83f",
+      "synced_at": "2026-06-10T02:51:55.941921"
+    },
+    "_prototype-life-ai/_direction/学习者.md": {
+      "hash": "10eda7f042ac521c67facdcb16da3a4e63e114032e472aa53f719866a18323c0",
+      "synced_at": "2026-06-10T02:51:55.942620"
+    },
+    "_prototype-life-ai/_direction/家人.md": {
+      "hash": "726c4736bdc8208b482fc62ed4b19c31b873c096071593b90dcec1effe349b6e",
+      "synced_at": "2026-06-10T02:51:55.943327"
+    },
+    "_prototype-life-ai/_direction/投资者.md": {
+      "hash": "dfb0c142b31a4e741787bb805b83926fb2d01aff90c17306939d1ca703fee1cf",
+      "synced_at": "2026-06-10T02:51:55.944060"
+    },
+    "_prototype-life-ai/_workflows/output-alert-2026-06-08.md": {
+      "hash": "2a5abc28f23ff58b3fb7d60420dc896844a5f5386f97adc8674aacad5c649907",
+      "synced_at": "2026-06-10T02:51:55.944896"
+    },
+    "_prototype-life-ai/_workflows/output-analysis-weekly-2026-W23.md": {
+      "hash": "60f89f27a4494cafe022775d73adde44a0e01ec8ab995735c4e27d0298b2be90",
+      "synced_at": "2026-06-10T02:51:55.945627"
+    },
+    "_prototype-life-ai/_workflows/output-briefing-2026-06-08.md": {
+      "hash": "530d03e8bb461cafde84139a1c18dcfe3793ff125ec6ad803edc7d74fc331a9b",
+      "synced_at": "2026-06-10T02:51:55.946317"
+    },
+    "_prototype-life-ai/_workflows/output-review-2026-06-08.md": {
+      "hash": "76dabbec7087821db14f4937dd1f5b65f2488a05ae9e3b2b3bee328352c88256",
+      "synced_at": "2026-06-10T02:51:55.946984"
+    },
+    "_prototype-life-ai/_workflows/pipeline.md": {
+      "hash": "d09b84419c1c2de979cb6e78ff338133fe7c5659d91207bbf74e445bf27b01b4",
+      "synced_at": "2026-06-10T02:51:55.947670"
+    },
+    "_prototype-life-ai/2-Areas/01-life/_index.md": {
+      "hash": "1a6a919f6edc05f51ccf47c6d9a83d252ff4e5442ae63d7d6db8a76d330b2ab2",
+      "synced_at": "2026-06-10T02:51:55.949014"
+    },
+    "_prototype-life-ai/2-Areas/02-learning/_index.md": {
+      "hash": "6309adb2c82b9d244ecc98c63d6a14a572c1608026df2e1f890d4469aca0f168",
+      "synced_at": "2026-06-10T02:51:55.949841"
+    },
+    "_prototype-life-ai/2-Areas/03-work/_index.md": {
+      "hash": "080fa0e4861c7c6a8ef0d8cb8ebe335dc7b99c01cb5824a3f8f6fc29e13eaee4",
+      "synced_at": "2026-06-10T02:51:55.950626"
+    },
+    "_prototype-life-ai/1-Projects/learn-obsidian/README.md": {
+      "hash": "a0b9c4acb5ae40667ebbe2e2fea974fc3ba0e81501296b089122c827b8de8956",
+      "synced_at": "2026-06-10T02:51:55.951667"
+    },
+    "_prototype-life-ai/1-Projects/life-finance/README.md": {
+      "hash": "06a42547dec852ac444fddcc82a9f6ec6e77c036e66bfca6ff9e5a54e8ffeb86",
+      "synced_at": "2026-06-10T02:51:55.952486"
+    },
+    "_prototype-life-ai/1-Projects/work-management/README.md": {
+      "hash": "b2e9fed238a4332ff872ba9b2287fc45d837f4272891328f8bad4df98505c31e",
+      "synced_at": "2026-06-10T02:51:55.953296"
+    },
+    "_prototype/cycles/cycle-001-啟動周.md": {
+      "hash": "331eb57ae745749be958f7425cc37bf51f1dcee84d57a628caaabc5d1b12a49a",
+      "synced_at": "2026-06-10T02:51:55.954554"
+    },
+    "_meta/adr/2026-06-10_不需要简体中文镜像目录.md": {
+      "hash": "c3de5dc87c19793b2ae8c66529bffb5fabbd4df80242ae940252947e06e4df68",
+      "synced_at": "2026-06-10T02:51:55.955545"
+    },
+    "_meta/adr/2026-06-10_公共框架库与私有库双库架构.md": {
+      "hash": "3fbd2c848aeb4fc5bdadc950806903a28a2cbd048265456c07e889954a83f3d5",
+      "synced_at": "2026-06-10T02:51:55.956357"
+    },
+    "_meta/adr/2026-06-10_多媒体库语言镜像策略.md": {
+      "hash": "eb2f5f4625012e7f107e47901d9350aeed210308149603226bff569ccb3f30bd",
+      "synced_at": "2026-06-10T02:51:55.957364"
+    },
+    "_meta/adr/ADR-001-目录结构命名规范.md": {
+      "hash": "13ecf95ab08274c079d3244de8b1e8b566c3ea92f814a0da8f06bcd66288bdfc",
+      "synced_at": "2026-06-10T02:51:55.958436"
+    },
+    "_meta/adr/ADR-002-日志系统设计.md": {
+      "hash": "6c493af9d7eb3b824292b9dc65bfd4a8d91789bce10f6e97a6ccacce78738364",
+      "synced_at": "2026-06-10T02:51:55.959431"
+    },
+    "_meta/adr/ADR-003-多语言同步策略.md": {
+      "hash": "2174c9531d5952546dd9158db890bbd02a6f13599538ed64abe8bca57be09fbe",
+      "synced_at": "2026-06-10T02:51:55.960152"
+    },
+    "_meta/adr/ADR-004-混合raw-wiki架构.md": {
+      "hash": "fe087393c290776bee370d8e26ad9b390ecf11d45fddcaef2062ab2f1acb9db8",
+      "synced_at": "2026-06-10T02:51:55.960913"
+    },
+    "_meta/adr/README.md": {
+      "hash": "5eea8b79db17945dadaf1ea27b299fccac4b057310ad0845ca28fed53a2d5c51",
+      "synced_at": "2026-06-10T02:51:55.961656"
+    },
+    "_meta/ai-memory/STATE.md": {
+      "hash": "775c775ab27eb6c4989df637e6374248149769cd618c2972ab263a8398e41296",
+      "synced_at": "2026-06-10T02:51:55.963475"
+    },
+    "_meta/ai-memory/会话日志-2026-06-08.md": {
+      "hash": "3ae5be022332eefa0e0f387ab4d0b52df362a12cd618da42e4381ed9a17345d9",
+      "synced_at": "2026-06-10T02:51:55.964416"
+    },
+    "_meta/ai-memory/全局状态.md": {
+      "hash": "731cb2911b01bbe2a8ad4303e8d9a2ba2ffb2b71a2571eac895c97bb951702a4",
+      "synced_at": "2026-06-10T02:51:55.965079"
+    },
+    "_meta/assets/c4-context.md": {
+      "hash": "7e0cb08520dbcd09823ed536e57d2fe596a91e9608fe48c9348883e32f829697",
+      "synced_at": "2026-06-10T02:51:55.966001"
+    },
+    "_meta/assets/KOS+LLM-Wiki 架构图.svg": {
+      "hash": "43fd776d05c9204ab929ec7701939e6fd0409eb84477a55e012ba3945df6dfad",
+      "synced_at": "2026-06-10T02:51:55.966897"
+    },
+    "_meta/assets/KOS+LLM-Wiki 架构图@2x.png": {
+      "hash": "d49a7bef59da466fbd80361b53daa3d4554bd43f425c3d3b10ba0b77c51217f1",
+      "synced_at": "2026-06-10T02:51:55.980861"
+    },
+    "_meta/design/canvas-可视层设计.md": {
+      "hash": "cd7aae19c65fcac5f52b9a7dcbeb95ab61ecfb08ad2ad12ae6721534f9b609a2",
+      "synced_at": "2026-06-10T02:51:55.982096"
+    },
+    "_meta/design/claude-obsidian分析-claude.md": {
+      "hash": "d27be8ae1f7aa5e530454f63b1d9f110f0cafcb8ab4a08834130c1cf97f3191c",
+      "synced_at": "2026-06-10T02:51:55.982882"
+    },
+    "_meta/design/claude-obsidian分析-codex.md": {
+      "hash": "a030b49457cbc86946e9a37770fc4f07a867a693f20a9977f561877f7c3dadea",
+      "synced_at": "2026-06-10T02:51:55.983621"
+    },
+    "_meta/design/claude-obsidian分析-delta-tracking.md": {
+      "hash": "00da95c860becdefa73382b9d5ce6f0b55ee44ac6a22b35d19838db61fdb4d86",
+      "synced_at": "2026-06-10T02:51:55.984433"
+    },
+    "_meta/design/claude-obsidian分析-opencode.md": {
+      "hash": "fee008aae1334b47cf5c33a7d7dce4aacbad6aea448b02d951cc94a2153d3f92",
+      "synced_at": "2026-06-10T02:51:55.985225"
+    },
+    "_meta/design/kos-init-设计.md": {
+      "hash": "cdf522bf0ec730b1354039f83c61898f33bfe229c17c2fbe9b9315152fcc63ae",
+      "synced_at": "2026-06-10T02:51:55.985923"
+    },
+    "_meta/design/KOS-LLM-Wiki架构说明v3.0.md": {
+      "hash": "77eba8fa39017c528854a4be141e133c939307e4dee0b539371c8a025719ec67",
+      "synced_at": "2026-06-10T02:51:55.987024"
+    },
+    "_meta/design/Life+AI-会话协议.md": {
+      "hash": "e531d5e52dc8a9d38eb053d2b1420b4782fd5f1a52b9417c59fd12780e69d073",
+      "synced_at": "2026-06-10T02:51:55.987696"
+    },
+    "_meta/design/Life+AI-架构设计.md": {
+      "hash": "096d64a39941d0e13f6a7894dc458e7ee8affa7ba2e17b89783fe6bd4744109a",
+      "synced_at": "2026-06-10T02:51:55.988354"
+    },
+    "_meta/design/mobile-capture.md": {
+      "hash": "4bce0a8b29562dfb7e6c037eefcbe6e517b3506ca3370ee6431deab1fc5e7d7f",
+      "synced_at": "2026-06-10T02:51:55.989024"
+    },
+    "_meta/design/plugin-guide.md": {
+      "hash": "27a3a9ed5d44f8366cb401b34326c9e8fd42fa11e7e10ef82bddd410bb695d4b",
+      "synced_at": "2026-06-10T02:51:55.989681"
+    },
+    "_meta/design/skills体系分析.md": {
+      "hash": "071d8deaf2c91115f307accbe0095e52696ce17d4c8db12338daa0b0ac31d570",
+      "synced_at": "2026-06-10T02:51:55.990681"
+    },
+    "_meta/design/UDC+LLM-Wiki 整合可行性分析.md": {
+      "hash": "32f68a970c48ed3f30edb91aaf096032f6cae8ee2c9353c10c404dff6d5f4f18",
+      "synced_at": "2026-06-10T02:51:55.991631"
+    },
+    "_meta/design/v1.1-子模块分解.md": {
+      "hash": "7fc09b8fae9dfdb61251eab82d5559e5b3f86f28924484beab2ab84a0f395e1c",
+      "synced_at": "2026-06-10T02:51:55.992561"
+    },
+    "_meta/design/v1.1规划.md": {
+      "hash": "8fd367149940d940333a6214054523eae648e89c06689754974c154a57b210a3",
+      "synced_at": "2026-06-10T02:51:55.993316"
+    },
+    "_meta/design/v3.0-release-notes.md": {
+      "hash": "ea73c0ef6549875e6040929ea07c345d84c334d30ddb3874e73b7748e8351dc9",
+      "synced_at": "2026-06-10T02:51:55.994026"
+    },
+    "_meta/design/workflow.md": {
+      "hash": "ae5d5df40dcbb6cdc3ccff40ce793589e76bf7f1a14972f9f7d760a305239ced",
+      "synced_at": "2026-06-10T02:51:55.994845"
+    },
+    "_meta/design/个人财务系统-原型设计.md": {
+      "hash": "0ce2714cc5c7a1cdc556a21ad6cbde564326bfa2f4e99dbfe01f67534fb22c2d",
+      "synced_at": "2026-06-10T02:51:55.995557"
+    },
+    "_meta/design/个人财务系统-架构设计.md": {
+      "hash": "65affa3064fb16c741e925eb87c6407feb6186502e99ec489bbbff6221145ed4",
+      "synced_at": "2026-06-10T02:51:55.996239"
+    },
+    "_meta/design/个人财务系统-详细设计.md": {
+      "hash": "faa9a0c33deed7eb21f29f6dede54256f04a72ea15dd72b2a642e8a37946fba7",
+      "synced_at": "2026-06-10T02:51:55.996946"
+    },
+    "_meta/design/企业管理-原型设计.md": {
+      "hash": "05c7710dd14bf760f7087b6aabd2a5e9939060ee3512e85eac0ba08b2b30b358",
+      "synced_at": "2026-06-10T02:51:55.997742"
+    },
+    "_meta/design/企业管理-架构设计.md": {
+      "hash": "2e39416294e607f6588324f88a10cab08c0c41be03053de54ab81874295760cd",
+      "synced_at": "2026-06-10T02:51:55.998479"
+    },
+    "_meta/design/企业管理-详细设计.md": {
+      "hash": "ed4c1af75152ee1a347b405b8378c4e6083148454ddbf21d489363389e796417",
+      "synced_at": "2026-06-10T02:51:55.999208"
+    },
+    "_meta/design/学习管理-原型设计.md": {
+      "hash": "4f8c42b1e7615ca76c34fa67407a1daff91016cfbbe2aae7a1895bbd606e3d5b",
+      "synced_at": "2026-06-10T02:51:55.999856"
+    },
+    "_meta/design/学习管理-架构设计.md": {
+      "hash": "c67d8395a945f3232b457c107f9cf0726269c286d5f4916d02c861f9f0b9707c",
+      "synced_at": "2026-06-10T02:51:56.000546"
+    },
+    "_meta/design/学习管理-详细设计.md": {
+      "hash": "4c4d063e52f1602376560dccaa6905cbe0cacb3091623a23ea7f1b4171d4f38d",
+      "synced_at": "2026-06-10T02:51:56.001385"
+    },
+    "_meta/design/架构说明书.md": {
+      "hash": "3bbc533aaf9b9673c1ddc858d4088fb0277a5cb590494b2dbfda4dc58262b31a",
+      "synced_at": "2026-06-10T02:51:56.002211"
+    },
+    "_meta/design/热缓存设计研讨.md": {
+      "hash": "31e57e614c29e9243c3238c643261bc8e57cdaf602facf0a936d12aeaf8fca39",
+      "synced_at": "2026-06-10T02:51:56.002932"
+    },
+    "_meta/design/错误处理流程.md": {
+      "hash": "dbf6a78123696a9a05117d0da25080b5269178162f7dc344f8eee6dfdad2d7fa",
+      "synced_at": "2026-06-10T02:51:56.003644"
+    },
+    "_meta/design/隔离区架构全流程设计.md": {
+      "hash": "d0446b466dc974907dd16040ce3bd1a00acecc6b094b5fe422be8771a68b9080",
+      "synced_at": "2026-06-10T02:51:56.004396"
+    },
+    "_meta/design/隔离区架构闪念.md": {
+      "hash": "f79dbe6516d59e4ac70995a299a9d589798d54dbfef3ac85fd5caf776f21ee7e",
+      "synced_at": "2026-06-10T02:51:56.005120"
+    },
+    "_meta/link/DDC-UDC 对照表.md": {
+      "hash": "63b5c5b65323970a7a30c47fdfc005166d3bfb8523bd10582c55c05651bd2f84",
+      "synced_at": "2026-06-10T02:51:56.005913"
+    },
+    "_meta/queries/active-projects.md": {
+      "hash": "4efee5349bc882826cd161c156e3df446bdf17b5df27205e74af5d06f9b57fdf",
+      "synced_at": "2026-06-10T02:51:56.006836"
+    },
+    "_meta/queries/by-tag.md": {
+      "hash": "ac1f99e26c65a6799f39f37c3cc494015d63bf0d34b8149ed2a7a137f8b59e2e",
+      "synced_at": "2026-06-10T02:51:56.007839"
+    },
+    "_meta/queries/by-udc.md": {
+      "hash": "3725c76f5eb56dc595c3f59d5d3bc66d92587a91a1ac98b9e3f7368669761e84",
+      "synced_at": "2026-06-10T02:51:56.008837"
+    },
+    "_meta/queries/i18n-status.md": {
+      "hash": "86632a88fd576ba07b163e9fa28e6f9a9bae51b39bf6acd7a6a5dda07b697cae",
+      "synced_at": "2026-06-10T02:51:56.009543"
+    },
+    "_meta/queries/inbox-pending.md": {
+      "hash": "6edd6ecaea26d4e17b4a25b3736bd28598d58272b0d0110b39bd88786464678e",
+      "synced_at": "2026-06-10T02:51:56.010228"
+    },
+    "_meta/queries/llm-wiki-pages.md": {
+      "hash": "567dee158a103d1af90bece014b70f80287efba74b907a084758741dcebaba09",
+      "synced_at": "2026-06-10T02:51:56.010919"
+    },
+    "_meta/queries/recently-modified.md": {
+      "hash": "9fe786eca53bf8372403df3fa38cd9bb3fe164cd4ce71425d638c8a820881425",
+      "synced_at": "2026-06-10T02:51:56.011602"
+    },
+    "_meta/queries/迭代看板.md": {
+      "hash": "d1c79e3cc166cea1197c364a7eb08e11d5bc92b3edc383ff8b9a196998620d5d",
+      "synced_at": "2026-06-10T02:51:56.012310"
+    },
+    "_meta/scripts/apply-arch-update.ps1": {
+      "hash": "2c7c9a1d0dd7cd9c2bbd8b2e9cfa9caad7ba2fea67854ef2c67cec9b8e1dfd47",
+      "synced_at": "2026-06-10T02:51:56.019373"
+    },
+    "_meta/scripts/wiki-lock.py": {
+      "hash": "2ce4b53c4f37f7eba8be4584ffa23e3474ee961f30455bcc37c2d4dcee2ce635",
+      "synced_at": "2026-06-10T02:51:56.022007"
+    },
+    "_meta/skills/skills.md": {
+      "hash": "1a4c70a8069beaa71582f4a5e98c8360ae88035de0da8ce520c5a3fdbcc31cac",
+      "synced_at": "2026-06-10T02:51:56.022824"
+    },
+    "_meta/Templates/adr-template.md": {
+      "hash": "a984834af896cc24e1bfad4044430f66b0c8fb9bf07dcdc12cf54f8736e5a998",
+      "synced_at": "2026-06-10T02:51:56.023865"
+    },
+    "_meta/Templates/context-template.md": {
+      "hash": "246cf2c129909dc5190de5f0720caf1297b3bb4c49d7f1cde407de266ffd12b7",
+      "synced_at": "2026-06-10T02:51:56.024866"
+    },
+    "_meta/Templates/EA-回测分析报告模板.md": {
+      "hash": "31bbabc8f701ca2a3edac308534480ffabf180533935b34dda0e5298994b1064",
+      "synced_at": "2026-06-10T02:51:56.025805"
+    },
+    "_meta/Templates/person-核心人物.md": {
+      "hash": "c1bfed891e343eac5394fd5021b0e44aa7611b074e64d7d86a6ce9bee9431f35",
+      "synced_at": "2026-06-10T02:51:56.026570"
+    },
+    "_meta/Templates/person-背景人物.md": {
+      "hash": "f94a3e52c267002bb937e51b5799f38c61ccca1b67977ba5ddc905b20f98133b",
+      "synced_at": "2026-06-10T02:51:56.027269"
+    },
+    "_meta/Templates/person-重要联系人.md": {
+      "hash": "f4eb417f0ab5505b9b0e71973c4e52d4714e5f92cf1507d5479b0f621641daea",
+      "synced_at": "2026-06-10T02:51:56.027991"
+    },
+    "_meta/Templates/weekly-template.md": {
+      "hash": "aed8d70228c18b594923de7e19b27d5764b6c7e4d24a664315d922d58e35f39a",
+      "synced_at": "2026-06-10T02:51:56.028708"
+    },
+    "_meta/Templates/周记模板.md": {
+      "hash": "deedcb21b94b204d45998ebaed0474c043d49eeb0e93c8c5572455f0a3178ef1",
+      "synced_at": "2026-06-10T02:51:56.029398"
+    },
+    "_meta/Templates/季度模板.md": {
+      "hash": "a1a9dbc7c0ec702e57c5df074bb778b039ec5e45238049264c7d421ca49a1e31",
+      "synced_at": "2026-06-10T02:51:56.030082"
+    },
+    "_meta/Templates/实体模板.md": {
+      "hash": "abba88e2fbf734b96e10da3a2e34ac3077fb503b71b0cdfd3b883b5bd334e9a7",
+      "synced_at": "2026-06-10T02:51:56.030740"
+    },
+    "_meta/Templates/年度模板.md": {
+      "hash": "d45869a7e07ff22c781104ab1f232a957551d7032b3c019dc638115c5265c77b",
+      "synced_at": "2026-06-10T02:51:56.031659"
+    },
+    "_meta/Templates/月记模板.md": {
+      "hash": "96761d67ec347466d1864de7d877e64aa2a2d92e3e3ae2b7aa29648802c57252",
+      "synced_at": "2026-06-10T02:51:56.032817"
+    },
+    "_meta/Templates/来源模板.md": {
+      "hash": "606aa8dd150ff4e0d5ad8dba51b1dd306784986e329fede98f502867a3557548",
+      "synced_at": "2026-06-10T02:51:56.033690"
+    },
+    "_meta/Templates/概念模板.md": {
+      "hash": "a0b16b21dca806c820209a77c9668ce42c085374e502b738788be7738b47f65b",
+      "synced_at": "2026-06-10T02:51:56.034474"
+    },
+    "_meta/Templates/每日笔记模板.md": {
+      "hash": "150847f7fff5c424a2de7ec7b07bd17ddedb390ecb26b7591e44351137cbd181",
+      "synced_at": "2026-06-10T02:51:56.035259"
+    },
+    "_meta/Templates/资源模板.md": {
+      "hash": "c26fbbeb6283c215adc475827d8f0023ef5f426d661afbaf4a7fe2e776aa5938",
+      "synced_at": "2026-06-10T02:51:56.036027"
+    },
+    "_meta/Templates/项目模板.md": {
+      "hash": "50097050d07f3aa3748498e9b2a6b25f29a8a186105d4dab8d8a5609b8342f77",
+      "synced_at": "2026-06-10T02:51:56.036811"
+    },
+    "_meta/Templates/领域模板.md": {
+      "hash": "435fa1060ab93a7fb315de4feb72236fe8bfcd43ddf1e65d673bbea5b7332515",
+      "synced_at": "2026-06-10T02:51:56.037499"
+    },
+    "_meta/⚙️ 系统配置/系统配置.md": {
+      "hash": "09b6fb0899265b0e80b5dd82765bd5615b6991ce532607d184c389e4ea1e0c3d",
+      "synced_at": "2026-06-10T09:51:21.043746"
+    },
+    "_meta/索引/kb-manifest.md": {
+      "hash": "f58d9eb795b76b077a1ae3df21284d1df5da4e981bc471b6913d06517977b1e1",
+      "synced_at": "2026-06-10T02:51:56.040432"
+    },
+    "_meta/🔗 知识关联/🔗 知识关联.md": {
+      "hash": "2f480947f68996956603188b71518c0543d8e710ef80b7c97cff704227072811",
+      "synced_at": "2026-06-10T02:51:56.042517"
+    },
+    "_meta/🔗 知识关联/Dashboard/Dashboard.md": {
+      "hash": "7ab48e357ae13ae8565f9f0cd7f718b18b1f2dad1152daa7d1359ef3e1d0ccb5",
+      "synced_at": "2026-06-10T02:51:56.043523"
+    },
+    "_meta/🔗 知识关联/Dashboard/Home.md": {
+      "hash": "4058550deedee21f6d1a88b35e5b87a4520616b4eabfcd97f3faa3e401bbc7af",
+      "synced_at": "2026-06-10T02:51:56.044263"
+    },
+    "_meta/🔗 知识关联/Dashboard/Inbox Dashboard.md": {
+      "hash": "202f26fdda1e223bf3848c7b1f9c4c2e1a63d6ff110d48928512fa00f5f00335",
+      "synced_at": "2026-06-10T02:51:56.045000"
+    },
+    "_meta/🔗 知识关联/Index/Index.md": {
+      "hash": "07f31bee936d61af3b8c84cc3f4666617f1ebbede521c8e893458c6a88ebd6e4",
+      "synced_at": "2026-06-10T02:51:56.045825"
+    },
+    "_meta/🔗 知识关联/Index/_index-zh-cn.md": {
+      "hash": "957d983e0f9b2837bd4ed40ea7af542101528ad132dcf334cda1d9a02b8b35ab",
+      "synced_at": "2026-06-10T09:51:21.092339"
+    },
+    "_meta/🔗 知识关联/Index/_index.md": {
+      "hash": "08471d753cdc65d4c8c94b84385230e7070e4b7fdf9cb965512d252f9f167425",
+      "synced_at": "2026-06-10T02:51:56.047388"
+    },
+    "_meta/🔗 知识关联/MOCs/MOCs.md": {
+      "hash": "6080db99285d00b471018a5c1826742e9423196df08c99acdb8bac1ec77a889a",
+      "synced_at": "2026-06-10T02:51:56.048295"
+    },
+    "_meta/design/KOS-LLM-Wiki/KOS-LLM-Wiki.md": {
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synced_at": "2026-06-10T02:51:56.050130"
+    },
+    "_meta/ai-memory/tasks/archive.md": {
+      "hash": "f6eb324862164f88f94a4ddf2f8f0939fb837c15edcb4866a8b9a10fc0e48cad",
+      "synced_at": "2026-06-10T02:51:56.051443"
+    },
+    "_meta/ai-memory/tasks/canvas.md": {
+      "hash": "885536db548e320db1694c1478601c7d8c02712bf0c7eb6a758d16ce1078e096",
+      "synced_at": "2026-06-10T02:51:56.052516"
+    },
+    "_meta/ai-memory/tasks/compile.md": {
+      "hash": "13fb0766a76b55f650fbbb6b9abbba416ec19bea95a87ba7d0631fadc1fd09ee",
+      "synced_at": "2026-06-10T02:51:56.053275"
+    },
+    "_meta/ai-memory/tasks/daily.md": {
+      "hash": "7bc7553d06326d1b9ae2de8c3523571578c9dfa9a3bbc98fb14601461ccf7bfa",
+      "synced_at": "2026-06-10T02:51:56.054022"
+    },
+    "_meta/ai-memory/tasks/kos-init.md": {
+      "hash": "35b475b24c9703e2b91d1c42933d6b0aa5c6ea134ea941eb2cab5ac2530aba04",
+      "synced_at": "2026-06-10T02:51:56.054704"
+    },
+    "_meta/ai-memory/tasks/link.md": {
+      "hash": "440e204f65abf40db8dbd6689ee851afa4e3ac3608445af02d2cdcb4fea53472",
+      "synced_at": "2026-06-10T02:51:56.055447"
+    },
+    "_meta/ai-memory/tasks/project.md": {
+      "hash": "f9b92add662c2584b952dd0933729c20d787bc0939f4ced42e893c57f9915dc7",
+      "synced_at": "2026-06-10T02:51:56.056184"
+    },
+    "_meta/ai-memory/tasks/triage.md": {
+      "hash": "61dc4632fd231194f847bc1a33eaa0bbd23e6e3a35fdd667131a8bed2f1212aa",
+      "synced_at": "2026-06-10T02:51:56.056986"
+    },
+    "_logs/operations/2026-06-09-wiki-lock-release.md": {
+      "hash": "650e20bd760e379bcb3ea27f1674b3f48bf714646665c3d652257273bbe5d31d",
+      "synced_at": "2026-06-10T02:51:56.058640"
+    },
+    "_logs/operations/compile.md": {
+      "hash": "fa004fb442d3624e697177006015c70bbbe61099cccb7774f00eb385a47d4848",
+      "synced_at": "2026-06-10T02:51:56.059387"
+    },
+    "_logs/operations/maintenance.md": {
+      "hash": "4c6d862bc3ae6086b3554305badf04952c7ef1ccea4679958b95b8c68539ea33",
+      "synced_at": "2026-06-10T02:51:56.060270"
+    },
+    "_logs/operations/triage.md": {
+      "hash": "49ffc0230107ca96b18fb71a6e628296ff3b51741a8741093b9e758ec31bafc5",
+      "synced_at": "2026-06-10T09:51:21.134969"
+    },
+    "_logs/operations/交易系统分析记录.md": {
+      "hash": "1018412c36ce52a36f0b159d413ff3ba00c32872fc9d80987bedc9b1236d5a14",
+      "synced_at": "2026-06-10T02:51:56.061712"
+    },
+    "_logs/reports/2026-06-09_KOS-Wiki维护操作_会议记录.md": {
+      "hash": "eda2db830958571b5e95113e34cf0790d356bc26573c6b13755ea96bb95c1e82",
+      "synced_at": "2026-06-10T02:51:56.062714"
+    },
+    "_logs/reports/2026-06-09_交易系统分析_会议记录.md": {
+      "hash": "679e31fff705a7e38ddc455ed48f0f27bbebc339f8e54230b8f8c80e245fa058",
+      "synced_at": "2026-06-10T02:51:56.063493"
+    },
+    "_logs/reports/2026-06-10_知识库发展与知识迁移策略.md": {
+      "hash": "3c6f153e92efb588fb9987ac869669795b5c2df14eb4c6fc3b7edb7892276f45",
+      "synced_at": "2026-06-10T02:51:56.064299"
+    },
+    "_logs/reports/2026-06.md": {
+      "hash": "7fcd7cb33d31df2ac95df93c1919f79cb5ac99ea04bb50839352163add0d241e",
+      "synced_at": "2026-06-10T02:51:56.065025"
+    },
+    "_logs/reports/2026-W24.md": {
+      "hash": "f1389ae979b6cd08120f762a2659d1f702a57718c882235c84701568c6223d83",
+      "synced_at": "2026-06-10T02:51:56.065718"
+    },
+    "_logs/reports/audit-2026-06-07.md": {
+      "hash": "622e8d04d1145ef88c4f93f9585fb3e313917ee0bfad56e88207deb64d87dae2",
+      "synced_at": "2026-06-10T02:51:56.066437"
+    },
+    "_logs/reports/sync-enrichment-2026-06-07.md": {
+      "hash": "27c6ff8bd1b41793fc4908cf238167265b5ebf907fc0e8b3aeb324c90413e52c",
+      "synced_at": "2026-06-10T02:51:56.067167"
+    },
+    "_attachments/canvases/_index.canvas": {
+      "hash": "9c9b674f911f8d6fdf24ed7ac4391a46ddb6ad1fa37a145a94dc3ecca90af079",
+      "synced_at": "2026-06-10T02:51:56.068433"
+    },
+    "_attachments/media/.gitkeep": {
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synced_at": "2026-06-10T02:51:56.069167"
+    },
+    "_agents/kos/README.md": {
+      "hash": "287efffca1ac0ea9687f69c183ba4b3aaa722176001be2a9897dd095707fa792",
+      "synced_at": "2026-06-10T02:51:56.070846"
+    },
+    "_agents/life/分析师.md": {
+      "hash": "22fb2f25683da8f2e2d4ec1df0de9f0e0900ba7f8689e3482c19ed7e9d0c0c80",
+      "synced_at": "2026-06-10T02:51:56.071640"
+    },
+    "_agents/life/协作者.md": {
+      "hash": "f9a9bccaee0345cf60f0278e91cbeb72b7980663825591155b9cdb9eefa2f7c2",
+      "synced_at": "2026-06-10T02:51:56.072345"
+    },
+    "_agents/life/简报员.md": {
+      "hash": "072d283f985506e55ddc50a29467917ff63d219476331473f3007f4fa6ca6765",
+      "synced_at": "2026-06-10T02:51:56.073041"
+    },
+    "gemini-scribe/Prompts/example-expert.md": {
+      "hash": "8cb0453a10a1b34208c2402e3dcce22b65da4285853241bf057428364668f732",
+      "synced_at": "2026-06-10T02:51:56.089474"
+    },
+    "gemini-scribe/Scheduled-Tasks/scheduled-tasks-state.json": {
+      "hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "synced_at": "2026-06-10T02:51:56.090555"
+    },
+    "_meta/同步操作指南.md": {
+      "hash": "d815ae6d42925d00dfd7ba4dbb708675ed0864e0ed9b7a26003977dc05d13cf6",
+      "synced_at": "2026-06-10T09:51:20.744808"
+    },
+    "_meta/操作指南.md": {
+      "hash": "0b709a1281007ea1c58e87ebd8207522d0d145f87e64b26d15f3b8da2fc00fae",
+      "synced_at": "2026-06-10T09:51:20.745527"
+    },
+    "_meta/scripts/sync-vaults.py": {
+      "hash": "93f74cb3c5eedad2c90ed91b2b6ee8b8626e00ccc2a16e8ae83c5b223afb336f",
+      "synced_at": "2026-06-10T09:51:21.013790"
+    },
+    "_logs/operations/2026-06-10-300-Social-入库工单.md": {
+      "hash": "35dcc68a6e12660754228ea6a153a40134d8faa517e14b1a9eaf3843acc71c39",
+      "synced_at": "2026-06-10T09:51:21.129470"
+    }
+  }
+}

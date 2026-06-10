@@ -40,9 +40,9 @@ _meta/                           # 系统元数据（设计、ADR、模板）
 | 索引 | 路径 | 内容 |
 |------|------|------|
 | **热缓存** | `_meta/hot.md` | 最近会话上下文 (~500 字) |
-| **主索引 (CN)** | `_meta/🔗 知识关联/Index/_index-zh-cn.md` | 全库 Dataview 索引 |
-| **主索引 (EN)** | `en/_meta/Knowledge-Links/Index/_index.md` | English 镜像 |
-| **主索引 (TW)** | `zh-tw/_meta/🔗 知识关联/Index/_index.md` | 繁體镜像 |
+| **主索引 (CN)** | `_meta/index/links/Index/_index-zh-cn.md` | 全库 Dataview 索引 |
+| **主索引 (EN)** | `en/_meta/index/links/Index/_index.md` | English 镜像 |
+| **主索引 (TW)** | `zh-tw/_meta/index/links/Index/_index.md` | 繁體镜像 |
 | **UDC 分类索引** | `3 Resources/000-Knowledge/wikis/concepts/UDC 分类索引.md` | 按 UDC 类号组织的索引 |
 
 ### UDC 分类导航
@@ -63,7 +63,7 @@ _meta/                           # 系统元数据（设计、ADR、模板）
 当答案很可能在 hot.md 或索引摘要中时使用。
 
 1. **读** `_meta/hot.md`。如果回答了问题，立即回复。
-2. 如果不够，**读** `_meta/🔗 知识关联/Index/_index-zh-cn.md`。扫描描述找答案。
+2. 如果不够，**读** `_meta/index/links/Index/_index-zh-cn.md`。扫描描述找答案。
 3. 如果在索引摘要中找到，回复，**不打开任何页面**。
 4. 如果找不到，回复："Quick 缓存未命中。需要执行 Standard 查询？"
 
@@ -151,6 +151,6 @@ status: developing
 ## 跨语言查询
 
 - 默认从简体中文索引开始
-- 如果问题为英文 → 读 `en/_meta/Knowledge-Links/Index/_index.md`
-- 如果问题为繁体 → 读 `zh-tw/_meta/🔗 知识关联/Index/_index.md`
+- 如果问题为英文 → 读 `en/_meta/index/links/Index/_index.md`
+- 如果问题为繁体 → 读 `zh-tw/_meta/index/links/Index/_index.md`
 - 答案用提问的语言回复

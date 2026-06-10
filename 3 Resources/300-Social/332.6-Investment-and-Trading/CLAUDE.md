@@ -1,0 +1,51 @@
+---
+type: wiki-schema
+topic: investment-trading
+domain: 332.6
+created: 2026-05-29
+updated: 2026-06-02
+udc: "336.76"
+tags:
+  - udc/330
+---
+
+# 332.6 投资与交易 — Wiki Schema
+
+## 核心概念域
+
+- **技术分析**: K線型態、MA、MACD、RSI、布林帶、支撐阻力
+- **基本面**: 央行政策、經濟指標(CPI/NFP/PMI/GDP)、利率、通膨
+- **风险管理**: 倉位計算、凱利公式、R:R、VaR、最大回撤
+- **量化交易**: EA開發、MQL4/MQL5、回測
+- **交易心理**: 認知偏誤、紀律、復盤
+
+## Wiki 状态
+
+| 指标 | 数值 |
+|------|:---:|
+| 概念 | 16 |
+| 实体 | 12 |
+| raw/ | 4 文件 |
+| 状态 | 🟢 活跃 |
+
+## 编译规则
+
+- 公式使用 LaTeX
+- 交易平台指令使用 code block
+- 货币对、指标缩写保留英文
+- 繁體中文 + English 術語
+- raw/ 只读 · 经济日历 Cron 06:00 每日
+
+## 跨库关联
+
+| DDC | 子库         | 关系      | 连接                                   |
+| :-: | ---------- | ------- | ------------------------------------ |
+| 330 | 经济学        | 宏观 → 投资 | [[CPI]] · [[GDP]] · [[央行政策]]         |
+| 510 | 数学         | 统计基础    | [[凱利公式]] · [[倉位計算]]                  |
+| 000 | 知识管理       | 方法论     | [[交易紀律]] · [[Information-Lifecycle]] |
+|  —  | People CRM | 人物      | [[3 Resources/300 Social/332.6-Investment-and-Trading/wiki/entities/Alexander-Elder]]                  |
+
+## 使用命令
+
+- `/wiki-compile 332.6` — 编译
+- `/triage` — 经济日历入 raw/

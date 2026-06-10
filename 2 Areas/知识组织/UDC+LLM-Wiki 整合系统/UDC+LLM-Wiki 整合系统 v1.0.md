@@ -368,7 +368,7 @@ A `related` B     →  A:B
 
 ### 6.1 现有标签体系
 
-Vault 已有 `#udc/` 标签体系 (`_meta/⚙️ 系统配置/UDC 標籤體系.md`)：
+Vault 已有 `#udc/` 标签体系 (`_meta/system/config/UDC 標籤體系.md`)：
 
 ```
 #udc/0xx  — 总类
@@ -478,7 +478,7 @@ LCC:  Q325.5       (机器学习)
 
 ```
 映射数据存放:
-  _meta/⚙️ 系统配置/
+  _meta/system/config/
   ├── UDC 標籤體系.md       ← UDC 标签树
   ├── DDC-UDC 映射表.md     ← 双向映射 (待创建)
   ├── CLC 映射表.md          ← CLC 对照 (待创建)
@@ -818,7 +818,7 @@ Phase 4 (跨体系映射) — 2 周
   [ ] 建立 CLC 映射表
   [ ] 建立 LCC 映射表
   [ ] 更新 /wiki-compile 跨体系自动映射
-  [ ] 创建 _meta/⚙️ 系统配置/分类映射表归档
+  [ ] 创建 _meta/system/config/分类映射表归档
 ```
 
 ### 12.2 运营指标
@@ -995,7 +995,7 @@ compiled: false
 - [[Knowledge-Wiki 架构设计\|Knowledge-Wiki 架构 v1.0]]
 - [[1 Projects/PARA+LLM-Wiki 融合系统/设计文档/PARA+LLM-Wiki 整合系统架构设计文档 v1.0\|系统架构 v1.0]]
 - [[Skill-wiki-compile v2.0\|Wiki-Compile Skill v2.0]]
-- [[_meta/⚙️ 系统配置/UDC 標籤體系.md\|UDC 标签体系]]
+- [[_meta/system/config/UDC 標籤體系.md\|UDC 标签体系]]
 - [[3 Resources/people/wiki/entities/Paul-Otlet-奥特勒.md\|Paul Otlet 实体]]
 - [[3 Resources/people/CLAUDE.md\|People 子库 Schema]]
 - [[1 Projects/PARA+LLM-Wiki 融合系统/设计文档/diagram/knowledge-llm-wiki.svg\|Knowledge-Wiki 架构图]]

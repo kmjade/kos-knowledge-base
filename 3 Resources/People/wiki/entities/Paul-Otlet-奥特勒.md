@@ -121,7 +121,7 @@ tags:
 
 - [[raw/articles/paul-otlet-biography]] (待创建)
 - [[raw/papers/traite-de-documentation]] (待创建)
-- [[_meta/⚙️ 系统配置/UDC 標籤體系.md]]
+- [[_meta/system/config/UDC 標籤體系.md]]
 
 ---
 

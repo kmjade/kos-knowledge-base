@@ -49,6 +49,7 @@
             "type": "command",
             "command": "cd \"$PWD\" && if [ -f .vault-meta/session-changes.log ]; then CHANGED_FILES=$(git diff --name-only HEAD 2>/dev/null | grep -cE '^(_meta|0 Inbox|1 Projects|2 Areas|3 Resources|AGENTS\\.md|CLAUDE\\.md|en/|zh-tw/)' || true); if [ \"$CHANGED_FILES\" -gt 0 ]; then FILE_LIST=$(git diff --name-only HEAD 2>/dev/null | grep -E '^(_meta|0 Inbox|1 Projects|2 Areas|3 Resources|AGENTS\\.md|CLAUDE\\.md|en/|zh-tw/)' | head -20 | sed 's/^/- /'); echo \"VAULT_CHANGED: $CHANGED_FILES files modified this session.\"; echo \"$FILE_LIST\"; echo \"Update _meta/hot.md with brief summary (under 500 words). Use: Last Updated, Key Recent Facts, Recent Changes, Active Threads, Session State. Overwrite completely.\"; fi; rm -f .vault-meta/session-changes.log 2>/dev/null; fi || true"
         }
+        ]
       }
     ]
   }

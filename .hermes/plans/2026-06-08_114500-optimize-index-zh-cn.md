@@ -8,7 +8,7 @@
 
 ## Goal
 
-将 `_meta/🔗 知识关联/Index/_index-zh-cn.md` 从只有 frontmatter 的空文件，填充为与 `en/_index.md` / `zh-tw/_index.md` 同等质量的 **Dataview 自动聚合主索引**，作为简体中文 vault 的中央导航枢纽。
+将 `_meta/index/links/Index/_index-zh-cn.md` 从只有 frontmatter 的空文件，填充为与 `en/_index.md` / `zh-tw/_index.md` 同等质量的 **Dataview 自动聚合主索引**，作为简体中文 vault 的中央导航枢纽。
 
 ---
 
@@ -41,7 +41,7 @@ CN 路径的 4 个关键入口链接：
 | Home 仪表板 | `🏠Home` |
 | 000 知识库 | `3 Resources/000-Knowledge/000-Knowledge` |
 | People CRM | `3 Resources/People/wiki/index` |
-| Codex 日志 | `_logs/_index` |
+| Codex 日志 | `_meta/system/logs/_index` |
 
 ### 3. 按 PARA 分类
 - **1 — Projects**: Dataview FROM `"1 Projects"` WHERE status IN active/planning
@@ -76,13 +76,13 @@ Dataview FROM `""` WHERE outlinks > 0 OR inlinks > 0, TOP 30
 ### Step 1: 验证 Data（只读）
 - 抽查几个目标目录确认 .md 文件存在且有 frontmatter（udc/tags/status）
 - 验证路径：`1 Projects/*/README.md` 含 status 字段
-- 验证：`_logs/` 下 8 个 .md 文件
+- 验证：`_meta/system/logs/` 下 8 个 .md 文件
 - 验证：`3 Resources/People/wiki/entities/` 下有 ~30 个实体
 - 验证：`3 Resources/000-Knowledge/wiki/concepts/` 下有 ~30 个概念
-- 验证：`_meta/design/` 下 17 个设计文档
+- 验证：`_meta/architecture/design/` 下 17 个设计文档
 
 ### Step 2: 填充 `_index-zh-cn.md`
-写入完整内容到 `/mnt/j/KOS_LLM-Wiki/_meta/🔗 知识关联/Index/_index-zh-cn.md`
+写入完整内容到 `/mnt/j/KOS_LLM-Wiki/_meta/index/links/Index/_index-zh-cn.md`
 
 **关键对齐检查**:
 - [ ] 所有 Dataview FROM 路径去掉 `en/` / `zh-tw/` 前缀
@@ -94,7 +94,7 @@ Dataview FROM `""` WHERE outlinks > 0 OR inlinks > 0, TOP 30
 - [ ] UDC 总览和标签聚合使用 `""`（全局搜索）
 
 ### Step 3: 更新关联引用
-- 更新 `_meta/🔗 知识关联/🔗 知识关联.md` 中指向 `_index-zh-cn` 的链接（已有，确认无误）
+- 更新 `_meta/index/links/🔗 知识关联.md` 中指向 `_index-zh-cn` 的链接（已有，确认无误）
 - 更新 `🏠Home.md` 中的索引链接（如需要）
 - 关闭 BUG-004（标记为已修复）
 
@@ -106,7 +106,7 @@ Dataview FROM `""` WHERE outlinks > 0 OR inlinks > 0, TOP 30
 ### Step 5: 幂等性保障
 - 写入前检查目标文件当前内容
 - 不被 Obsidian 打开时写入（避免缓存冲突）
-- 完成后运行 `KOS-Link --file _meta/🔗 知识关联/Index/_index-zh-cn.md` 验证
+- 完成后运行 `KOS-Link --file _meta/index/links/Index/_index-zh-cn.md` 验证
 
 ---
 
@@ -114,8 +114,8 @@ Dataview FROM `""` WHERE outlinks > 0 OR inlinks > 0, TOP 30
 
 | 文件 | 操作 | 行数变化 |
 |------|------|----------|
-| `_meta/🔗 知识关联/Index/_index-zh-cn.md` | **重写** | 7 → ~170 行 |
-| `_meta/🔗 知识关联/🔗 知识关联.md` | 验证（无修改） | 0 |
+| `_meta/index/links/Index/_index-zh-cn.md` | **重写** | 7 → ~170 行 |
+| `_meta/index/links/🔗 知识关联.md` | 验证（无修改） | 0 |
 | `1 Projects/Bug追踪/bugs/BUG-004-*.md` | 更新状态为 closed | ~3 行 |
 
 ---
@@ -137,17 +137,17 @@ Dataview FROM `""` WHERE outlinks > 0 OR inlinks > 0, TOP 30
 执行后验证：
 ```bash
 # 1. 文件非空
-wc -l _meta/🔗 知识关联/Index/_index-zh-cn.md  # 预期 > 50
+wc -l _meta/index/links/Index/_index-zh-cn.md  # 预期 > 50
 
 # 2. 包含 Dataview 块
-grep -c '```dataview' _meta/🔗 知识关联/Index/_index-zh-cn.md  # 预期 8+
+grep -c '```dataview' _meta/index/links/Index/_index-zh-cn.md  # 预期 8+
 
 # 3. 不包含 en/ 或 zh-tw/ 前缀（确认是 CN 路径）
-grep 'en/' _meta/🔗 知识关联/Index/_index-zh-cn.md  # 预期 0
-grep 'zh-tw/' _meta/🔗 知识关联/Index/_index-zh-cn.md  # 预期 0
+grep 'en/' _meta/index/links/Index/_index-zh-cn.md  # 预期 0
+grep 'zh-tw/' _meta/index/links/Index/_index-zh-cn.md  # 预期 0
 
 # 4. KOS-Link 检查
-KOS-Link --file _meta/🔗 知识关联/Index/_index-zh-cn.md
+KOS-Link --file _meta/index/links/Index/_index-zh-cn.md
 ```
 
 ---

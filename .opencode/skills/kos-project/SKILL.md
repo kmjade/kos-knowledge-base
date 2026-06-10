@@ -57,7 +57,7 @@ allowed-tools: Read Write Edit Bash
 ```
 
 1. 创建项目目录
-2. 用 `_meta/Templates/项目模板.md` 生成 `📍 项目总览.md`
+2. 用 `_meta/system/templates/项目模板.md` 生成 `📍 项目总览.md`
 3. 填入基础字段：编号、目标、领域、优先级
 4. 确保 Dataview 面板正确（项目文件 + 最近更新）
 
@@ -78,7 +78,7 @@ allowed-tools: Read Write Edit Bash
 ```
 - 在"关联项目"区块追加新项目
 - 多领域项目同时关联多个领域页
-- 无匹配领域页 → 询问用户是否新建，用 `_meta/Templates/领域模板.md` 创建
+- 无匹配领域页 → 询问用户是否新建，用 `_meta/system/templates/领域模板.md` 创建
 
 ### 阶段五：输出结果
 

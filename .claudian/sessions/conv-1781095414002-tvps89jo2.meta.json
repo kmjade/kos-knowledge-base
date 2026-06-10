@@ -1,0 +1,24 @@
+{
+  "id": "conv-1781095414002-tvps89jo2",
+  "providerId": "opencode",
+  "title": "Brainstorm FLOWnote unified workspace",
+  "titleGenerationStatus": "success",
+  "createdAt": 1781095414003,
+  "updatedAt": 1781096503903,
+  "lastResponseAt": 1781096503903,
+  "sessionId": "ses_14e70abbaffew0hNlLx3UvGZiy",
+  "providerState": {
+    "databasePath": "C:\\Users\\Administrator\\AppData\\Roaming\\opencode\\opencode.db"
+  },
+  "currentNote": "_meta/index/links/Dashboard/Inbox Dashboard.md",
+  "usage": {
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 61952,
+    "contextTokens": 64029,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "inputTokens": 2077,
+    "model": "opencode:opencode/big-pickle",
+    "percentage": 32
+  }
+}

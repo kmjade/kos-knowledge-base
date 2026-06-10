@@ -1,25 +1,7 @@
 {
-  "nodes": [
-    {
-      "id": "title",
-      "type": "text",
-      "text": "# KOS 知识库 · 可视化总览\n\n这是 Canvas 可视层的默认入口画布。\n\n**三个知识捕获层：**\n- L1 文本综合 → KOS-Compile\n- L2 结构化知识 → KOS-Triage + KOS-Query\n- L3 可视化参考 → **Canvas** ← 当前\n\n用 `Canvas-Add-Image`、`Canvas-Add-Text`、`Canvas-Add-Note` 在此放置内容。\n用 `Canvas-Zone` 创建分组区域。",
-      "x": -400,
-      "y": -300,
-      "width": 400,
-      "height": 200,
-      "color": "6"
-    },
-    {
-      "id": "zone-default",
-      "type": "group",
-      "label": "通用",
-      "x": -400,
-      "y": -60,
-      "width": 800,
-      "height": 400,
-      "color": "4"
-    }
-  ],
-  "edges": []
+	"nodes":[
+		{"id":"title","type":"text","text":"# KOS 知识库 · 可视化总览\n\n这是 Canvas 可视层的默认入口画布。\n\n**三个知识捕获层：**\n- L1 文本综合 → KOS-Compile\n- L2 结构化知识 → KOS-Triage + KOS-Query\n- L3 可视化参考 → **Canvas** ← 当前\n\n用 `Canvas-Add-Image`、`Canvas-Add-Text`、`Canvas-Add-Note` 在此放置内容。\n用 `Canvas-Zone` 创建分组区域。","x":-400,"y":-300,"width":400,"height":200,"color":"6"},
+		{"id":"zone-default","type":"group","label":"通用","x":-400,"y":-60,"width":800,"height":400,"color":"4"}
+	],
+	"edges":[]
 }

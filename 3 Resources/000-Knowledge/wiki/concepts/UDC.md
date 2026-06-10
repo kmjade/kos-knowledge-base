@@ -173,9 +173,9 @@ UDC:  63             — 農業 (2 位)
 
 - [[entities/Paul-Otlet-奥特勒]] — UDC 創始人實體
 - [[entities/Henri-La-Fontaine]] — UDC 共同創始人實體
-- [[_meta/⚙️ 系统配置/DDC-UDC 映射表]]
-- [[_meta/⚙️ 系统配置/UDC 辅助表索引]]
-- [[_meta/⚙️ 系统配置/UDC 標籤體系]]
+- [[_meta/system/config/DDC-UDC 映射表]]
+- [[_meta/system/config/UDC 辅助表索引]]
+- [[_meta/system/config/UDC 標籤體系]]
 - [[../../../../2 Areas/UDC+LLM-Wiki 整合系统/UDC+LLM-Wiki 整合系统 v1.0]]
 - UDC Consortium (UDCC) — udcc.org
 

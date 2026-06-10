@@ -65,16 +65,16 @@ claude-obsidian 鐨勬牳蹇冩ā寮忥細
 骞跺彂瀹夊叏鏈哄埗锛屽綋澶?writer 鍚屾椂鎿嶄綔鏃堕槻姝㈠啿绐侊細
 
 ```bash
-bash _meta/scripts/wiki-lock.sh acquire "path/to/file.md"
+bash _meta/system/scripts/wiki-lock.sh acquire "path/to/file.md"
 # ... 鎵ц鍐欐搷浣?...
-bash _meta/scripts/wiki-lock.sh release "path/to/file.md"
+bash _meta/system/scripts/wiki-lock.sh release "path/to/file.md"
 ```
 
 **闂**锛氬綋鍓?vault 浣跨敤 Bash 宸ュ叿鏃舵瘡娆￠兘鏄嫭绔嬭繘绋嬶紝AGENTS.md 瀹氫箟鐨?KOS-Triage 鍜?KOS-Wiki-Compile 濡傛灉琚苟琛岃皟鐢ㄥ彲鑳藉啿绐併€?
-**瀹炵幇**锛氬彲灏?`wiki-lock.sh` 澶嶅埗鍒?vault 鐨?`_meta/scripts/` 涓嬶紝鍦ㄦ妧鑳戒腑寮曠敤銆?
+**瀹炵幇**锛氬彲灏?`wiki-lock.sh` 澶嶅埗鍒?vault 鐨?`_meta/system/scripts/` 涓嬶紝鍦ㄦ妧鑳戒腑寮曠敤銆?
 ### 4. CLI Transport 妫€娴嬫満鍒?
 ```bash
-bash _meta/scripts/detect-transport.sh
+bash _meta/system/scripts/detect-transport.sh
 # 杈撳嚭鍒?.vault-meta/transport.json
 ```
 
@@ -109,4 +109,4 @@ bash _meta/scripts/detect-transport.sh
 - 椤圭洰涓婚〉锛歨ttps://github.com/AgriciDaniel/claude-obsidian
 - 鍘熷 LLM Wiki 妯″紡锛歨ttps://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 - Obsidian Skills锛坘epano锛夛細https://github.com/kepano/obsidian-skills
-- 瀹屾暣鍒嗘瀽绗旇锛歔[_meta/design/claude-obsidian鍒嗘瀽.md|claude-obsidian 鍒嗘瀽]]
+- 瀹屾暣鍒嗘瀽绗旇锛歔[_meta/architecture/design/claude-obsidian鍒嗘瀽.md|claude-obsidian 鍒嗘瀽]]

@@ -46,4 +46,4 @@ compiled_by: "KOS-Wiki-Compile"
 ## 相關
 
 - [[3 Resources|3 Resources 總索引]]
-- [[_meta/⚙️ 系统配置/知识库结构概览|知識庫結構概覽]]
+- [[_meta/system/config/知识库结构概览|知識庫結構概覽]]

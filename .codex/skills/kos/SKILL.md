@@ -1,6 +1,6 @@
 ---
 name: kos
-description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，分发给 KOS-Triage / KOS-Compile / KOS-Link / KOS-Daily / KOS-Query / Canvas / KOS-Init / KOS-Project 子技能。
+description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，分发给 KOS-Triage / KOS-Compile / KOS-Link / KOS-Daily / KOS-Query / Canvas / KOS-Init 子技能。
 ---
 
 # KOS LLM-Wiki 知识组织引擎
@@ -34,8 +34,6 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 | 今日笔记、日回顾、周报、月报、年报 | **kos-daily** |
 | canvas、画布、可视、visual、visualize、展示 | **Canvas** |
 | 初始化、检查、修复、健康、init、setup、一键初始化 | **KOS-Init** |
-| 项目、新建、立项、创建项目 | **kos-project** |
-| 归档、结项、完成项目、项目收尾 | **kos-archive** |
 | 状态、进度、当前情况 | 显示各技能状态 |
 
 ---
@@ -43,7 +41,7 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 ## 执行步骤
 
 1. **识别意图** — 匹配用户输入到对应子技能
-2. **加载技能** — `Read .claude/skills/kos-xxx/SKILL.md`
+2. **加载技能** — `Read .opencode/skills/kos-xxx/SKILL.md`
 3. **执行任务** — 按技能指引操作
 4. **完成确认** — 询问是否继续
 
@@ -53,7 +51,7 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 
 ```yaml
 name: kos
-version: 1.1.0
+version: 1.0.0
 description: KOS LLM-Wiki 知识组织引擎统一入口
 dependencies:
   - kos-triage

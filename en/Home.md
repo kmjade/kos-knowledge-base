@@ -50,7 +50,7 @@ A modern knowledge management hub integrating **PARA**, **UDC**, and **LLM-Wiki*
 ## Language Versions
 
 - **English** — [[en/Home|English]]
-- **简体中文** — [[../_meta/🔗 知识关联/Dashboard/Home|简体中文]]
+- **简体中文** — [[../_meta/index/links/Dashboard/Home|简体中文]]
 - **繁體中文** — [[zh-tw/首頁|繁體中文]]
 
 

@@ -1,4 +1,4 @@
-﻿---
+---
 created: 2026-06-06
 updated: 2026-06-06
 udc: 025.4:001
@@ -23,9 +23,9 @@ tags: [resource, udc, classification, reference]
 | 001.8 | **知识组织与管理** | PARA 方法、KM 笔记 |
 | 001.8:005 | 知识管理方法 | PARA 方法详述 |
 | 001.8:004.8 | 知识组织与 AI | LLM 辅助知识管理、RAG |
-| 004.8:005.1 | AI 操作审计 | _logs/operations 操作日志 |
+| 004.8:005.1 | AI 操作审计 | _meta/system/logs/operations 操作日志 |
 | 001.8:025.4 | 索引与分类 | 系统索引页 |
-| 001.8:311 | 知识管理统计 | _logs/reports 周期报告 |
+| 001.8:311 | 知识管理统计 | _meta/system/logs/reports 周期报告 |
 | **004** | 计算机科学 | AI 技术基础 |
 | 004.4 | **软件** | 软件工程、项目工单 |
 | 004.8:001.8 | AI 驱动的知识组织 | LLM+KOS 交叉笔记 |

@@ -1,0 +1,25 @@
+{
+  "id": "conv-1781084624665-6hu1xxcgu",
+  "providerId": "codex",
+  "title": "Discuss _attachments vs _assets",
+  "titleGenerationStatus": "success",
+  "createdAt": 1781084624666,
+  "updatedAt": 1781102000566,
+  "lastResponseAt": 1781102000566,
+  "sessionId": "019eb0ea-9a2f-7b02-b0f7-80bdb9263a98",
+  "providerState": {
+    "threadId": "019eb0ea-9a2f-7b02-b0f7-80bdb9263a98",
+    "sessionFilePath": "C:\\Users\\Administrator\\.codex\\sessions\\2026\\06\\10\\rollout-2026-06-10T17-43-50-019eb0ea-9a2f-7b02-b0f7-80bdb9263a98.jsonl",
+    "transcriptRootPath": "C:\\Users\\Administrator\\.codex\\sessions"
+  },
+  "usage": {
+    "inputTokens": 14230,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 7040,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 14230,
+    "percentage": 6,
+    "model": "gpt-5.4-mini"
+  }
+}

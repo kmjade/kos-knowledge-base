@@ -30,7 +30,7 @@ This article proposes the **LifeOS × LLM-Wiki Fusion System** architecture — 
 | 01-Projects / 02-Areas | 1 Projects/ / 2 Areas/ |
 | 03-Resources/{raw,wiki} | 3 Resources/ with raw/wiki |
 | 04-Archive | 4 Archives/ |
-| AI-Log/ | _logs/ |
+| AI-Log/ | _meta/system/logs/ |
 | CLAUDE.md (constitution) | AGENTS.md |
 | /triage engine | KOS-Triage |
 | /wiki-compile engine | KOS-Wiki-Compile |
