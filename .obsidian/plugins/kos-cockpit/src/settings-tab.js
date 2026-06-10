@@ -1,9 +1,11 @@
 // KOS Cockpit — settings tab
 
-const { PluginSettingTab, Setting, moment } = require('obsidian');
+const { PluginSettingTab, Setting } = require('obsidian');
+const { t, LOCALE_KEYS } = require('./locale');
 
 const DEFAULT_SETTINGS = {
   // General
+  locale: 'zh-cn',
   autoOpen: true,
 
   // Dashboard section visibility
@@ -29,6 +31,11 @@ class CockpitSettingTab extends PluginSettingTab {
     this.plugin = plugin;
   }
 
+  /** Helper: translate using current locale */
+  _t(key, params) {
+    return t(key, this.plugin.settings.locale, params);
+  }
+
   display() {
     const { containerEl } = this;
     containerEl.empty();
@@ -40,11 +47,30 @@ class CockpitSettingTab extends PluginSettingTab {
   }
 
   renderGeneralSection(containerEl) {
-    containerEl.createEl('h3', { text: 'General' });
+    containerEl.createEl('h3', { text: this._t('settings.general') });
 
+    // Language selector
     new Setting(containerEl)
-      .setName('Auto-open on startup')
-      .setDesc('Automatically open the KOS Cockpit when Obsidian starts.')
+      .setName(this._t('settings.language'))
+      .setDesc(this._t('settings.languageDesc'))
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption('zh-cn', this._t('settings.langZhCN'))
+          .addOption('en', this._t('settings.langEn'))
+          .addOption('zh-tw', this._t('settings.langZhTW'))
+          .setValue(this.plugin.settings.locale)
+          .onChange(async (v) => {
+            this.plugin.settings.locale = v;
+            await this.plugin.saveSettings();
+            // Re-render settings tab with new language
+            this.display();
+          });
+      });
+
+    // Auto-open toggle
+    new Setting(containerEl)
+      .setName(this._t('settings.autoOpen'))
+      .setDesc(this._t('settings.autoOpenDesc'))
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.autoOpen)
@@ -56,14 +82,14 @@ class CockpitSettingTab extends PluginSettingTab {
   }
 
   renderDashboardSection(containerEl) {
-    containerEl.createEl('h3', { text: 'Dashboard Sections' });
+    containerEl.createEl('h3', { text: this._t('settings.dashboard') });
     containerEl.createEl('p', {
-      text: 'Toggle which sections appear on the cockpit dashboard.',
+      text: this._t('settings.dashboardDesc'),
       cls: 'setting-item-description',
     });
 
     const sections = [
-      { key: 'showTodayTasks', name: 'Today\'s Tasks', desc: 'Daily note task list and progress.' },
+      { key: 'showTodayTasks', nameKey: 'settings.showTodayTasks', name: 'Today\'s Tasks', desc: 'Daily note task list and progress.' },
       { key: 'showProjectCards', name: 'Active Projects', desc: 'Project cards with priority and progress.' },
       { key: 'showVaultStats', name: 'Vault Statistics', desc: 'Total notes, active projects, inbox count.' },
       { key: 'showRecentActivity', name: 'Recent Activity', desc: 'Recently modified files.' },
@@ -90,11 +116,11 @@ class CockpitSettingTab extends PluginSettingTab {
   }
 
   renderDataLimitsSection(containerEl) {
-    containerEl.createEl('h3', { text: 'Data Limits' });
+    containerEl.createEl('h3', { text: this._t('settings.dataLimits') });
 
     new Setting(containerEl)
-      .setName('Max recent items')
-      .setDesc('Number of recently modified files to show (max 20).')
+      .setName(this._t('settings.maxRecent'))
+      .setDesc(this._t('settings.maxRecentDesc'))
       .addText((text) =>
         text
           .setPlaceholder('8')
@@ -107,8 +133,8 @@ class CockpitSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName('Max task items')
-      .setDesc('Number of daily-note tasks to show (max 20).')
+      .setName(this._t('settings.maxTasks'))
+      .setDesc(this._t('settings.maxTasksDesc'))
       .addText((text) =>
         text
           .setPlaceholder('12')
@@ -121,8 +147,8 @@ class CockpitSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName('Max inbox items')
-      .setDesc('Number of inbox file names to show (max 20).')
+      .setName(this._t('settings.maxInbox'))
+      .setDesc(this._t('settings.maxInboxDesc'))
       .addText((text) =>
         text
           .setPlaceholder('6')
@@ -136,15 +162,15 @@ class CockpitSettingTab extends PluginSettingTab {
   }
 
   renderAboutSection(containerEl) {
-    containerEl.createEl('h3', { text: 'About' });
+    containerEl.createEl('h3', { text: this._t('settings.about') });
 
     const desc = document.createDocumentFragment();
     desc.createEl('span', {
-      text: 'KOS Cockpit v0.2.0 — A knowledge management dashboard for the KOS_LLM-Wiki vault. Part of the KOS ecosystem.',
+      text: this._t('settings.versionDesc'),
     });
 
     new Setting(containerEl)
-      .setName('Version')
+      .setName(this._t('settings.version'))
       .setDesc(desc);
   }
 }
