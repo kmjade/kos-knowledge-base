@@ -32,6 +32,7 @@ const LOCALES = {
     'action.newProject': '新建项目',
     'action.triage': 'Triage',
     'action.settings': '设置',
+'action.aiChat': 'AI Chat',
 
     // Today Tasks
     'task.title': '今日任务',
@@ -141,6 +142,7 @@ const LOCALES = {
     'action.newProject': 'New Project',
     'action.triage': 'Triage',
     'action.settings': 'Settings',
+    'action.aiChat': 'AI Chat',
 
     'task.title': 'Today\'s Tasks',
     'task.progress': '{done}/{total} ({rate}%)',
@@ -239,6 +241,7 @@ const LOCALES = {
     'action.newProject': '新建專案',
     'action.triage': 'Triage',
     'action.settings': '設定',
+    'action.aiChat': 'AI Chat',
 
     'task.title': '今日任務',
     'task.progress': '{done}/{total} ({rate}%)',

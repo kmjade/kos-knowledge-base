@@ -18,7 +18,7 @@ module.exports = class KosCockpitPlugin extends Plugin {
     });
 
     // Ribbon: AI Chat
-    this.addRibbonIcon('message-square', 'KOS AI Chat', () => {
+    this.addRibbonIcon('bot', 'KOS AI Chat', () => {
       this.openCockpit({ panel: 'chat' });
     });
 

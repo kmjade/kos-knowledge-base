@@ -156,6 +156,7 @@ class CockpitView extends ItemView {
       { label: '\uD83D\uDCCB ' + this._t('action.newProject'), cmd: 'project' },
       { label: '\uD83D\uDDC2\uFE0F ' + this._t('action.triage'), cmd: 'triage' },
       { label: '\u2699\uFE0F ' + this._t('action.settings'), cmd: 'settings' },
+      { label: '\uD83E\uDD16 ' + this._t('action.aiChat'), cmd: 'ai-chat' },
     ];
     actions.forEach((a) => {
       const btn = qa.createEl('button', { cls: 'kos-db-action-btn' });
@@ -169,6 +170,10 @@ class CockpitView extends ItemView {
       case 'daily-open': {
         const { dailyNotePath } = require('./utils');
         this.app.workspace.openLinkText(dailyNotePath(moment().format('YYYY-MM-DD')), '', true);
+        break;
+      }
+      case 'ai-chat': {
+        this.collectData(this.app).then((data) => this.switchPanel('chat', data));
         break;
       }
       case 'settings': {
