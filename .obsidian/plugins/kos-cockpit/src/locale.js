@@ -93,6 +93,18 @@ const LOCALES = {
     'ai.systemPrompt': '系统提示词',
     'ai.systemPromptPlaceholder': '你是一个知识管理助手，帮助用户处理 KOS 知识库。',
 
+    // Providers
+    'provider.claude': 'Claude',
+    'provider.codex': 'Codex',
+    'provider.opencode': 'OpenCode',
+    'provider.endpoint': 'API Endpoint',
+    'provider.apiKey': 'API Key',
+    'provider.model': 'Model',
+    'provider.systemPrompt': 'System Prompt',
+    'provider.systemPromptPlaceholder': 'You are a helpful assistant...',
+    'provider.activeProvider': 'Active AI Provider',
+    'provider.activeProviderDesc': 'Select which provider the AI Chat panel uses.',
+    'provider.settings': 'Provider Settings',
     // Settings
     'settings.general': 'General',
     'settings.language': '界面语言',

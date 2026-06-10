@@ -3,7 +3,7 @@
 
 const { ItemView, moment } = require('obsidian');
 const { t } = require('./locale');
-const { AIChat, resolveFlownoteProvider } = require('./ai-chat');
+const { AIChat, resolveProviderConfig } = require('./ai-chat');
 const {
   getTodayState, getInboxFiles, getDashboardStats,
   getRecentActivity, getHotContext, getWeeklyRecords,
@@ -423,30 +423,15 @@ class CockpitView extends ItemView {
     if (this.aiChat) return;
 
     const self = this;
-    resolveFlownoteProvider(this.app.vault.adapter).then((flownoteConfig) => {
-      if (flownoteConfig) {
+    resolveProviderConfig(self.settings, self.app.vault.adapter).then((cfg) => {
+      if (cfg) {
         self.aiChat = new AIChat({
           locale: self.settings?.locale || 'zh-cn',
-          baseUrl: flownoteConfig.baseUrl,
-          apiKey: flownoteConfig.apiKey,
-          model: flownoteConfig.model,
-          systemPrompt: self.settings?.aiSystemPrompt || '',
-          providerLabel: flownoteConfig.label,
-        });
-        self._refreshChatMsgs();
-        return;
-      }
-      const baseUrl = (self.settings?.aiEndpoint || '').trim();
-      const apiKey = (self.settings?.aiApiKey || '').trim();
-      const model = (self.settings?.aiModel || '').trim();
-      if (baseUrl && apiKey && model) {
-        self.aiChat = new AIChat({
-          locale: self.settings?.locale || 'zh-cn',
-          baseUrl,
-          apiKey,
-          model,
-          systemPrompt: self.settings?.aiSystemPrompt || '',
-          providerLabel: 'Manual',
+          baseUrl: cfg.baseUrl,
+          apiKey: cfg.apiKey,
+          model: cfg.model,
+          systemPrompt: cfg.systemPrompt || self.settings?.aiSystemPrompt || '',
+          label: cfg.label,
         });
         self._refreshChatMsgs();
       }
