@@ -1,0 +1,24 @@
+{
+  "id": "conv-1781119623437-xvfn18we8",
+  "providerId": "claude",
+  "title": "Brainstorm KOS cockpit UI",
+  "titleGenerationStatus": "success",
+  "createdAt": 1781119623437,
+  "updatedAt": 1781124240817,
+  "lastResponseAt": 1781119802175,
+  "sessionId": "619fcde9-647c-4ff6-8895-80325bf07352",
+  "providerState": {
+    "providerSessionId": "619fcde9-647c-4ff6-8895-80325bf07352"
+  },
+  "currentNote": "整体布局.md",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 171,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 72448,
+    "contextWindow": 200000,
+    "contextTokens": 72619,
+    "percentage": 36,
+    "contextWindowIsAuthoritative": true
+  }
+}

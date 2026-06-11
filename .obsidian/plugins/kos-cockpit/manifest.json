@@ -1,7 +1,7 @@
 {
   "id": "kos-cockpit",
   "name": "KOS Cockpit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "minAppVersion": "1.5.0",
   "description": "KOS knowledge management cockpit 鈥?today's focus, active projects, engine status, knowledge garden.",
   "author": "KOS",

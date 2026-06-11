@@ -20,9 +20,9 @@ cssclasses:
 const cfg = {
   daily: "Periodic/2026/06",
   highlights: "0 Index",
-  permanent: "02-培养层/永久笔记",
-  literature: "02-培养层/文献笔记",
-  topics: "02-培养层/主题笔记",
+  permanent: "0 Index",
+  literature: "0 Index",
+  topics: "0 Index",
   domains: "2 Areas",
   projects: "1 Projects",
   archives: "4 Archives",
@@ -55,9 +55,9 @@ const folders = [
   ["捕获", "划线笔记", "0 Index"],
   ["捕获", "周记", "Periodic/2026/06"],
   ["捕获", "月记", "Periodic/2026/06"],
-  ["培养", "永久笔记", "02-培养层/永久笔记"],
-  ["培养", "文献笔记", "02-培养层/文献笔记"],
-  ["培养", "主题笔记", "02-培养层/主题笔记"],
+  ["培养", "永久笔记", "0 Index"],
+  ["培养", "文献笔记", "0 Index"],
+  ["培养", "主题笔记", "0 Index"],
   ["连接", "领域页", "2 Areas"],
   ["创造", "项目", "1 Projects"],
   ["创造", "归档", "4 Archives"]
@@ -135,9 +135,9 @@ dv.list(pages.map(p => `${p.file.link} · ${p.file.mtime.toFormat("MM-dd HH:mm")
 const cfg = {
   daily: "Periodic/2026/06",
   highlights: "0 Index",
-  permanent: "02-培养层/永久笔记",
-  literature: "02-培养层/文献笔记",
-  topics: "02-培养层/主题笔记",
+  permanent: "0 Index",
+  literature: "0 Index",
+  topics: "0 Index",
   domains: "2 Areas",
   projects: "1 Projects"
 };

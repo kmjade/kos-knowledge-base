@@ -1,0 +1,24 @@
+{
+  "id": "conv-1781119656814-aeshytpnq",
+  "providerId": "opencode",
+  "title": "Brainstorm KOS cockpit UI",
+  "titleGenerationStatus": "success",
+  "createdAt": 1781119656814,
+  "updatedAt": 1781120745782,
+  "lastResponseAt": 1781119860672,
+  "sessionId": "ses_14cfebda8ffeYkSh85rn3ZkUEA",
+  "providerState": {
+    "databasePath": "C:\\Users\\Administrator\\AppData\\Roaming\\opencode\\opencode.db"
+  },
+  "currentNote": "整体布局.md",
+  "usage": {
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 38144,
+    "contextTokens": 41209,
+    "contextWindow": 200000,
+    "contextWindowIsAuthoritative": true,
+    "inputTokens": 3065,
+    "model": "opencode:opencode/big-pickle",
+    "percentage": 21
+  }
+}

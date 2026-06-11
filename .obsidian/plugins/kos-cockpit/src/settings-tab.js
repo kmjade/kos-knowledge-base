@@ -6,6 +6,7 @@ const { t, LOCALE_KEYS } = require('./locale');
 
 const DEFAULT_SETTINGS = {
   seasonalTheme: 'spring',
+  fontSize: 'medium',
   locale: 'zh-cn',
   autoOpen: true,
 
@@ -131,7 +132,7 @@ class CockpitSettingTab extends PluginSettingTab {
   }
 
   renderGeneralTab(container) {
-    container.createEl('h3', { text: 'General' });
+    container.createEl('h3', { text: this._t('settings.generalTab') });
 
     // Language
     new Setting(container)
@@ -180,14 +181,14 @@ class CockpitSettingTab extends PluginSettingTab {
     container.createEl('p', { text: this._t('settings.dashboardDesc'), cls: 'setting-item-description' });
 
     const sections = [
-      { key: 'showTodayTasks', name: 'Today\'s Tasks', desc: 'Daily note task list and progress.' },
-      { key: 'showProjectCards', name: 'Active Projects', desc: 'Project cards with priority and progress.' },
-      { key: 'showVaultStats', name: 'Vault Statistics', desc: 'Total notes, active projects, inbox count.' },
-      { key: 'showRecentActivity', name: 'Recent Activity', desc: 'Recently modified files.' },
-      { key: 'showNav', name: 'Navigation', desc: 'Quick links to areas, inbox, hot cache.' },
-      { key: 'showInboxFiles', name: 'Inbox Files', desc: 'List of pending files in 0 Inbox/.' },
-      { key: 'showEngineState', name: 'Engine State', desc: 'Triage/Compile/Link engine status chips.' },
-      { key: 'showWeeklyChart', name: 'Weekly Chart', desc: 'Bar chart of weekly daily-note captures.' },
+      { key: 'showTodayTasks', name: this._t('settings.sectionTodayTasks'), desc: this._t('settings.sectionTodayTasksDesc') },
+      { key: 'showProjectCards', name: this._t('settings.sectionProjects'), desc: this._t('settings.sectionProjectsDesc') },
+      { key: 'showVaultStats', name: this._t('settings.sectionVaultStats'), desc: this._t('settings.sectionVaultStatsDesc') },
+      { key: 'showRecentActivity', name: this._t('settings.sectionRecentActivity'), desc: this._t('settings.sectionRecentActivityDesc') },
+      { key: 'showNav', name: this._t('settings.sectionNav'), desc: this._t('settings.sectionNavDesc') },
+      { key: 'showInboxFiles', name: this._t('settings.sectionInboxFiles'), desc: this._t('settings.sectionInboxFilesDesc') },
+      { key: 'showEngineState', name: this._t('settings.sectionEngineState'), desc: this._t('settings.sectionEngineStateDesc') },
+      { key: 'showWeeklyChart', name: this._t('settings.sectionWeeklyChart'), desc: this._t('settings.sectionWeeklyChartDesc') },
     ];
 
     sections.forEach(({ key, name, desc }) => {
@@ -244,12 +245,12 @@ class CockpitSettingTab extends PluginSettingTab {
     const preset = PROVIDER_PRESETS[providerId];
     const label = provider?.label || providerId;
 
-    container.createEl('h3', { text: label + ' Settings' });
+    container.createEl('h3', { text: this._t('provider.labelSettings', { label: label }) });
 
     // API Endpoint
     new Setting(container)
       .setName(this._t('provider.endpoint'))
-      .setDesc(preset?.endpoint ? 'Default: ' + preset.endpoint : 'OpenAI-compatible endpoint URL')
+      .setDesc(preset?.endpoint ? this._t('provider.defaultEndpoint', { endpoint: preset.endpoint }) : this._t('provider.endpointDesc'))
       .addText((t) =>
         t.setPlaceholder(preset?.endpoint || 'https://api.openai.com/v1')
          .setValue(provider?.endpoint || '')
@@ -262,7 +263,7 @@ class CockpitSettingTab extends PluginSettingTab {
     // API Key
     new Setting(container)
       .setName(this._t('provider.apiKey'))
-      .setDesc('sk-... or API key')
+      .setDesc(this._t('provider.apiKeyDesc'))
       .addText((t) => {
         t.setPlaceholder('sk-...')
          .setValue(provider?.apiKey || '')
@@ -276,7 +277,7 @@ class CockpitSettingTab extends PluginSettingTab {
     // Model
     new Setting(container)
       .setName(this._t('provider.model'))
-      .setDesc(preset?.models?.length ? preset.models.join(', ') : 'Model identifier')
+      .setDesc(preset?.models?.length ? this._t('provider.presetModels', { models: preset.models.join(', ') }) : this._t('provider.modelDesc'))
       .addText((t) =>
         t.setPlaceholder(preset?.model || 'gpt-4o')
          .setValue(provider?.model || preset?.model || '')

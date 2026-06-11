@@ -4,8 +4,8 @@
   "title": "Discuss _attachments vs _assets",
   "titleGenerationStatus": "success",
   "createdAt": 1781084624666,
-  "updatedAt": 1781102000566,
-  "lastResponseAt": 1781102000566,
+  "updatedAt": 1781110179061,
+  "lastResponseAt": 1781103713598,
   "sessionId": "019eb0ea-9a2f-7b02-b0f7-80bdb9263a98",
   "providerState": {
     "threadId": "019eb0ea-9a2f-7b02-b0f7-80bdb9263a98",
@@ -13,13 +13,13 @@
     "transcriptRootPath": "C:\\Users\\Administrator\\.codex\\sessions"
   },
   "usage": {
-    "inputTokens": 14230,
+    "inputTokens": 498,
     "cacheCreationInputTokens": 0,
-    "cacheReadInputTokens": 7040,
+    "cacheReadInputTokens": 55552,
     "contextWindow": 258400,
     "contextWindowIsAuthoritative": true,
-    "contextTokens": 14230,
-    "percentage": 6,
+    "contextTokens": 498,
+    "percentage": 0,
     "model": "gpt-5.4-mini"
   }
 }

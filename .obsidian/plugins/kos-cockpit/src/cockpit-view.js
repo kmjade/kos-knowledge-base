@@ -1,4 +1,4 @@
-// KOS Cockpit v11 — Full tab navigation (home / chat / life / pipeline / garden / settings)
+﻿// KOS Cockpit v11 — Full tab navigation (home / chat / life / pipeline / garden / settings)
 // + Settings-aware + locale i18n + AI Chat with FLOWnote auto-detect
 
 const { ItemView, moment } = require('obsidian');
@@ -27,8 +27,8 @@ class CockpitView extends ItemView {
 
   getViewType() { return VIEW_TYPE_COCKPIT; }
   getDisplayText() {
-    const names = { home: 'KOS Cockpit', chat: 'KOS AI Chat', life: 'Life+AI', pipeline: 'Pipeline', garden: 'Knowledge Garden', settings: 'Settings' };
-    return names[this.activePanel] || 'KOS Cockpit';
+    const names = { home: this._t('panel.home'), chat: this._t('panel.chat'), life: this._t('panel.life'), pipeline: this._t('panel.pipeline'), garden: this._t('panel.garden'), settings: this._t('panel.settings') };
+    return names[this.activePanel] || this._t('panel.home');
   }
   getIcon() { return 'gauge'; }
 
@@ -67,7 +67,7 @@ class CockpitView extends ItemView {
     const errBox = this.contentEl.querySelector('.kos-db');
     errBox.createEl('div', { text: this._t('app.error'), cls: 'kos-db-empty' });
     if (msg) errBox.createEl('div', { text: String(msg), cls: 'kos-db-empty' });
-    const retry = errBox.createEl('button', { cls: 'kos-db-action-btn', text: '\u21BB Retry' });
+    const retry = errBox.createEl('button', { cls: 'kos-db-action-btn', text: '\u21BB ' + this._t('app.retry') });
     retry.addEventListener('click', () => { this.renderLoading(); this.refresh(); });
   }
 
@@ -108,6 +108,18 @@ class CockpitView extends ItemView {
   }
 
   
+  // ──────────────── Font Size ────────────────
+
+  _applyFontSize() {
+    var size = this.settings?.fontSize || 'medium';
+    var root = this.contentEl;
+    if (!root) return;
+    root.removeClass('font-small');
+    root.removeClass('font-medium');
+    root.removeClass('font-large');
+    root.addClass('font-' + size);
+  }
+
   // ──────────────── Seasonal Theme ────────────────
 
   _applySeasonalTheme() {
@@ -126,6 +138,7 @@ class CockpitView extends ItemView {
     const main = container.createEl('div', { cls: 'kos-db' });
 
     this._applySeasonalTheme();
+    this._applyFontSize();
     // Render tab bar for all panels
     this._renderTabBar(main);
 
@@ -150,12 +163,12 @@ class CockpitView extends ItemView {
 
   _renderTabBar(container) {
     const tabs = [
-      { id: 'home', icon: '\uD83D\uDCCA', label: '\u4EEA\u8868\u76D8' },
-      { id: 'chat', icon: '\uD83E\uDD16', label: 'AI Chat' },
-      { id: 'life', icon: '\uD83E\uDDEC', label: '\u751F\u6D3B' },
-      { id: 'pipeline', icon: '\uD83D\uDD27', label: '\u7BA1\u9053' },
-      { id: 'garden', icon: '\uD83C\uDF33', label: '\u77E5\u8BC6\u82B1\u56ED' },
-      { id: 'settings', icon: '\u2699\uFE0F', label: '\u8BBE\u7F6E' },
+      { id: 'home', icon: '\uD83D\uDCCA', label: this._t('tab.dashboard') },
+      { id: 'chat', icon: '\uD83E\uDD16', label: this._t('ai.title') },
+      { id: 'life', icon: '\uD83E\uDDEC', label: this._t('tab.life') },
+      { id: 'pipeline', icon: '\uD83D\uDD27', label: this._t('tab.pipeline') },
+      { id: 'garden', icon: '\uD83C\uDF33', label: this._t('tab.garden') },
+      { id: 'settings', icon: '\u2699\uFE0F', label: this._t('tab.settings') },
     ];
     var bar = container.createEl('div', { cls: 'kos-tabbar' });
     tabs.forEach(function(t) {
@@ -206,9 +219,15 @@ class CockpitView extends ItemView {
     badge.addEventListener('click', () => { this._handleLaunch('init'); });
     bar.createEl('div', { cls: 'kos-topbar-spacer' });
     const searchWrap = bar.createEl('div', { cls: 'kos-topbar-search' });
-    searchWrap.createEl('input', { cls: 'kos-topbar-search-input', attr: { type: 'text', placeholder: 'Search notes...' } });
+    var searchInput = searchWrap.createEl('input', { cls: 'kos-topbar-search-input', attr: { type: 'text', placeholder: this._t('search.placeholder') } });
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var val = searchInput.value.trim();
+        if (val) { this.app.workspace.getLeaf('tab').setViewState({ type: 'search', state: { query: val, matchCase: false } }); }
+      }
+    }.bind(this));
     const actions = bar.createEl('div', { cls: 'kos-topbar-actions' });
-    const refreshBtn = actions.createEl('button', { cls: 'kos-topbar-btn', text: '\u21BB', attr: { title: 'Refresh' } });
+    const refreshBtn = actions.createEl('button', { cls: 'kos-topbar-btn', text: '\u21BB', attr: { title: this._t('tooltip.refresh') } });
     refreshBtn.addEventListener('click', () => { this.renderLoading(); this.refresh(); });
     const clock = actions.createEl('div', { cls: 'kos-topbar-clock' });
     const now = moment();
@@ -227,11 +246,11 @@ class CockpitView extends ItemView {
     var body = panel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
     var flowRow = body.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center' } });
     var steps = [
-      { label: 'Inbox', count: inboxCount, color: inboxCount === 0 ? 'var(--kc-green)' : inboxCount <= 5 ? 'var(--kc-amber)' : 'var(--kc-red)', ikey: 'inbox' },
-      { label: 'Triage', count: '-', color: 'var(--kc-text-dim)', ikey: 'triage' },
-      { label: 'Raw', count: compileCount, color: compileCount === 0 ? 'var(--kc-green)' : 'var(--kc-amber)', ikey: 'compile' },
-      { label: 'Compile', count: '-', color: 'var(--kc-text-dim)', ikey: 'compile-run' },
-      { label: 'Wiki', count: wikiCount, color: wikiCount > 0 ? 'var(--kc-green)' : 'var(--kc-text-dim)', ikey: 'wiki' },
+      { label: this._t('pipeline.inbox'), count: inboxCount, color: inboxCount === 0 ? 'var(--kc-green)' : inboxCount <= 5 ? 'var(--kc-amber)' : 'var(--kc-red)', ikey: 'inbox' },
+      { label: this._t('pipeline.triage'), count: '-', color: 'var(--kc-text-dim)', ikey: 'triage' },
+      { label: this._t('pipeline.raw'), count: compileCount, color: compileCount === 0 ? 'var(--kc-green)' : 'var(--kc-amber)', ikey: 'compile' },
+      { label: this._t('pipeline.compile'), count: '-', color: 'var(--kc-text-dim)', ikey: 'compile-run' },
+      { label: this._t('pipeline.wiki'), count: wikiCount, color: wikiCount > 0 ? 'var(--kc-green)' : 'var(--kc-text-dim)', ikey: 'wiki' },
     ];
     steps.forEach(function(s, idx) {
       var el = flowRow.createEl('div', {
@@ -245,12 +264,12 @@ class CockpitView extends ItemView {
         else if (s.ikey === 'wiki') { this.app.workspace.openLinkText('3 Resources/000-Knowledge', '', true); }
       }.bind(this));
       el.createEl('span', { text: String(s.count), attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:700;color:' + s.color } });
-      el.createEl('span', { text: s.label, attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' } });
+      el.createEl('span', { text: s.label, attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' } });
       if (idx < steps.length - 1) {
-        flowRow.createEl('span', { text: String.fromCharCode(8594), attr: { style: 'color:var(--kc-text-dim);font-size:12px;margin:0 2px;opacity:0.3' } });
+        flowRow.createEl('span', { text: String.fromCharCode(8594), attr: { style: 'color:var(--kc-text-dim);font-size:var(--kc-fs-md);margin:0 2px;opacity:0.3' } });
       }
     }.bind(this));
-    body.createEl('div', { attr: { style: 'text-align:center;margin-top:6px;font-size:9px;color:var(--kc-text-dim)' }, text: 'Pipeline flow: click to navigate' });
+    body.createEl('div', { attr: { style: 'text-align:center;margin-top:6px;font-size:var(--kc-fs-xs);color:var(--kc-text-dim)' }, text: this._t('pipeline.clickNavigate') });
   }
 
   // Phase 1: Key Metrics Row
@@ -261,8 +280,8 @@ class CockpitView extends ItemView {
     metrics.forEach(function(m) {
       var card = row.createEl('div', { cls: 'kos-panel', attr: { style: 'padding:12px 14px;text-align:center;border-left:3px solid ' + m.color } });
       card.createEl('div', { attr: { style: 'font-size:24px;font-weight:700;font-family:var(--kc-mono);color:' + m.color }, text: m.value });
-      card.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px' }, text: m.label });
-      var trendEl = card.createEl('div', { attr: { style: 'margin-top:4px;font-size:9px' } });
+      card.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px' }, text: m.label });
+      var trendEl = card.createEl('div', { attr: { style: 'margin-top:4px;font-size:var(--kc-fs-xs)' } });
       var trendIcon = m.trend === 'up' ? String.fromCharCode(9650) : m.trend === 'down' ? String.fromCharCode(9660) : String.fromCharCode(8212);
       var trendColor = m.trend === 'up' ? 'var(--kc-green)' : m.trend === 'down' ? 'var(--kc-red)' : 'var(--kc-text-dim)';
       trendEl.innerHTML = '<span style="color:' + trendColor + '">' + trendIcon + '</span> <span style="color:var(--kc-text-dim)">' + m.trendLabel + '</span>';
@@ -273,7 +292,7 @@ class CockpitView extends ItemView {
 
   _renderEngineControl(container, data) {
     var engines = data.engines || {};
-    var panel = this._createPanel(container, 'Engine Control', 'engines');
+    var panel = this._createPanel(container, this._t('engine.control'), 'engines');
     var body = panel.body;
     var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr;gap:5px' } });
     var engineDefs = [
@@ -289,13 +308,13 @@ class CockpitView extends ItemView {
       card.addEventListener('mouseenter', function() { card.style.background = 'var(--kc-bg-card-hover)'; });
       card.addEventListener('mouseleave', function() { card.style.background = 'var(--kc-bg-card)'; });
       var topRow = card.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;margin-bottom:4px' } });
-      topRow.createEl('span', { attr: { style: 'font-size:11px;font-weight:500;color:var(--kc-text-primary)' }, text: def.label });
+      topRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-base);font-weight:500;color:var(--kc-text-primary)' }, text: def.label });
       var statusColor = def.status === 'done' ? 'var(--kc-green)' : def.status === 'warning' ? 'var(--kc-amber)' : 'var(--kc-text-dim)';
       topRow.createEl('span', { attr: { style: 'width:6px;height:6px;border-radius:50%;background:' + statusColor + ';flex-shrink:0' } });
       var bottomRow = card.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center' } });
-      var statusText = def.status === 'done' ? 'Ready' : def.status === 'warning' ? 'Action needed' : 'Idle';
-      bottomRow.createEl('span', { attr: { style: 'font-size:9px;color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: statusText });
-      var btn = bottomRow.createEl('button', { attr: { style: 'font-size:9px;padding:2px 10px;border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-deep);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font)' }, text: String.fromCharCode(9654) });
+      var statusText = def.status === 'done' ? this._t('engine.statusReady') : def.status === 'warning' ? this._t('engine.statusNeedsWork') : this._t('engine.statusStandby');
+      bottomRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: statusText });
+      var btn = bottomRow.createEl('button', { attr: { style: 'font-size:var(--kc-fs-xs);padding:2px 10px;border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-deep);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font)' }, text: String.fromCharCode(9654) });
       btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-bg-card-hover)'; btn.style.color = 'var(--kc-text-primary)'; });
       btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-bg-deep)'; btn.style.color = 'var(--kc-text-secondary)'; });
       btn.addEventListener('click', function(e) { e.stopPropagation(); this._handleLaunch(def.key); }.bind(this));
@@ -306,24 +325,24 @@ class CockpitView extends ItemView {
   // Phase 1: Today Focus
 
   _renderTodayFocus(container, data) {
-    var panel = this._createPanel(container, 'Today Focus', 'today');
+    var panel = this._createPanel(container, this._t('today.title'), 'today');
     var body = panel.body;
     var headerRow = body.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px' } });
     var tasks = data.today?.tasks || { done: 0, total: 0, completionRate: 0 };
-    headerRow.createEl('span', { attr: { style: 'font-size:12px;font-weight:500;color:var(--kc-text-primary)' }, text: 'Tasks' });
-    headerRow.createEl('span', { attr: { style: 'font-size:10px;font-family:var(--kc-mono);color:' + (tasks.completionRate >= 100 ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: tasks.done + '/' + tasks.total + ' (' + tasks.completionRate + '%)' });
+    headerRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-md);font-weight:500;color:var(--kc-text-primary)' }, text: this._t('today.tasks') });
+    headerRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-sm);font-family:var(--kc-mono);color:' + (tasks.completionRate >= 100 ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: tasks.done + '/' + tasks.total + ' (' + tasks.completionRate + '%)' });
     var taskList = body.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:3px;margin-bottom:10px' } });
     var items = (data.today?.taskItems || []).slice(0, 5);
     if (!data.today?.exists) {
-      taskList.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'Daily note not created.' });
-      var createBtn = body.createEl('button', { attr: { style: 'margin-top:6px;padding:4px 12px;font-size:10px;border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font)' }, text: 'Create Daily Note' });
+      taskList.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);font-style:italic' }, text: this._t('task.dailyMissing') });
+      var createBtn = body.createEl('button', { attr: { style: 'margin-top:6px;padding:4px 12px;font-size:var(--kc-fs-sm);border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font)' }, text: this._t('today.createNote') });
       createBtn.addEventListener('click', function() { this.app.workspace.openLinkText('Periodic/' + moment().format('YYYY/MM/YYYY-MM-DD'), '', true); }.bind(this));
     } else if (items.length === 0) {
-      taskList.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No tasks.' });
+      taskList.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);font-style:italic' }, text: this._t('task.none') });
     } else {
       items.forEach(function(item) {
-        var row = taskList.createEl('div', { attr: { style: 'display:flex;align-items:flex-start;gap:5px;padding:2px 0;font-size:11px' + (item.done ? ';opacity:0.5;text-decoration:line-through' : '') } });
-        row.createEl('span', { text: item.done ? '[x]' : '[ ]', attr: { style: 'flex-shrink:0;font-size:10px;font-family:var(--kc-mono)' } });
+        var row = taskList.createEl('div', { attr: { style: 'display:flex;align-items:flex-start;gap:5px;padding:2px 0;font-size:var(--kc-fs-base)' + (item.done ? ';opacity:0.5;text-decoration:line-through' : '') } });
+        row.createEl('span', { text: item.done ? '[x]' : '[ ]', attr: { style: 'flex-shrink:0;font-size:var(--kc-fs-sm);font-family:var(--kc-mono)' } });
         row.createEl('span', { text: item.text, attr: { style: 'word-break:break-word;color:var(--kc-text-secondary)' } });
       });
     }
@@ -331,22 +350,22 @@ class CockpitView extends ItemView {
     var streak = calcStreak(data.weekly);
     var streakEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
     streakEl.createEl('div', { attr: { style: 'font-size:18px;font-weight:700;font-family:var(--kc-mono);color:var(--kc-amber)' }, text: String(streak) + 'd' });
-    streakEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Streak' });
+    streakEl.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: this._t('today.streak') });
     var todayCount = getTodayCaptureCount(data.weekly);
     var weekAvg = (data.weekly || []).length > 0 ? Math.round((data.weekly || []).reduce(function(s, c) { return s + c.count; }, 0) / (data.weekly || []).length * 10) / 10 : 0;
     var captureEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
     captureEl.createEl('div', { attr: { style: 'font-size:18px;font-weight:700;font-family:var(--kc-mono);color:' + (todayCount >= weekAvg ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: String(todayCount) });
-    captureEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Today' });
+    captureEl.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: this._t('today.today') });
     var dailyEl = statsRow.createEl('div', { attr: { style: 'text-align:center;flex:1' } });
-    dailyEl.createEl('div', { attr: { style: 'font-size:12px;color:' + (data.today?.exists ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: data.today?.exists ? 'Done' : 'Pending' });
-    dailyEl.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: 'Daily' });
+    dailyEl.createEl('div', { attr: { style: 'font-size:var(--kc-fs-md);color:' + (data.today?.exists ? 'var(--kc-green)' : 'var(--kc-amber)') }, text: data.today?.exists ? this._t('today.done') : this._t('today.pending') });
+    dailyEl.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:1px' }, text: this._t('today.daily') });
   }
 
   // Widget: Vault Health
 
   _renderHealthPanel(container, data) {
     const healthScore = calcHealthScore(data);
-    const panel = this._createPanel(container, 'Vault Health', 'health');
+    const panel = this._createPanel(container, this._t('health.title'), 'health');
     const body = panel.body;
     const gaugeWrap = body.createEl('div', { cls: 'kos-gauge-wrap' });
     const ring = gaugeWrap.createEl('div', { cls: 'kos-gauge-ring' });
@@ -380,7 +399,7 @@ class CockpitView extends ItemView {
   // Widget: Active Projects
 
   _renderProjectsPanel(container, data) {
-    var panel = this._createPanel(container, 'Active Projects', 'projects');
+    var panel = this._createPanel(container, this._t('project.title'), 'projects');
     var body = panel.body;
     var list = body.createEl('div', { cls: 'kos-project-list' });
     var projects = data.projects || [];
@@ -403,7 +422,7 @@ class CockpitView extends ItemView {
   // Widget: Knowledge Growth
 
   _renderGrowthPanel(container, data) {
-    var panel = this._createPanel(container, 'Knowledge Growth', 'growth');
+    var panel = this._createPanel(container, this._t('growth.title'), 'growth');
     var body = panel.body;
     var stats = data.stats?.stats || {};
     var totalNotes = data.stats?.totalNotes || 0;
@@ -414,22 +433,22 @@ class CockpitView extends ItemView {
     chartSvg.innerHTML = '<svg viewBox="0 0 300 70" preserveAspectRatio="none" style="width:100%;height:50px"><defs><linearGradient id="g-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--kc-cyan)"/><stop offset="100%" stop-color="var(--kc-cyan)" stop-opacity="0"/></linearGradient></defs><path fill="url(#g-grad)" d="M0,65 Q40,55 80,60 T160,42 T200,25 T260,18 T300,8 L300,70 L0,70 Z" opacity="0.15"/><path fill="none" stroke="var(--kc-cyan)" stroke-width="1.5" d="M0,65 Q40,55 80,60 T160,42 T200,25 T260,18 T300,8"/></svg>';
     var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-top:8px' } });
     var items = [
-      { label: 'Pages', value: String(totalNotes) },
-      { label: 'Resources', value: String(resources) },
-      { label: 'Projects', value: String(projectsCount) },
-      { label: 'Recent', value: String(recentCount) },
+      { label: this._t('stats.totalNotes'), value: String(totalNotes) },
+      { label: this._t('stats.totalNotes') + ' (wiki)', value: String(resources) },
+      { label: this._t('stats.activeProjects'), value: String(projectsCount) },
+      { label: this._t('recent.title'), value: String(recentCount) },
     ];
     items.forEach(function(item) {
       var cell = grid.createEl('div', { attr: { style: 'text-align:center;padding:4px' } });
       cell.createEl('div', { attr: { style: 'font-size:16px;font-weight:700;font-family:var(--kc-mono);color:var(--kc-cyan)' }, text: item.value });
-      cell.createEl('div', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' }, text: item.label });
+      cell.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:0.5px' }, text: item.label });
     });
   }
 
   // Widget: Quick Launch
 
   _renderLaunchPanel(container) {
-    var panel = this._createPanel(container, 'Quick Launch', 'launch');
+    var panel = this._createPanel(container, this._t('launch.title'), 'launch');
     var body = panel.body;
     var grid = body.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr;gap:4px' } });
     var actions = [
@@ -443,7 +462,7 @@ class CockpitView extends ItemView {
       { label: 'Life+AI', action: 'life', cls: 'green' },
     ];
     actions.forEach(function(a) {
-      var btn = grid.createEl('button', { attr: { style: 'padding:7px 8px;font-size:10px;border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-card);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' + (a.cls ? ';border-left:2px solid var(--kc-' + a.cls + ')' : '') }, text: a.label });
+      var btn = grid.createEl('button', { attr: { style: 'padding:7px 8px;font-size:var(--kc-fs-sm);border-radius:4px;border:1px solid var(--kc-border);background:var(--kc-bg-card);color:var(--kc-text-secondary);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' + (a.cls ? ';border-left:2px solid var(--kc-' + a.cls + ')' : '') }, text: a.label });
       btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-bg-card-hover)'; btn.style.color = 'var(--kc-text-primary)'; });
       btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-bg-card)'; btn.style.color = 'var(--kc-text-secondary)'; });
       btn.addEventListener('click', function() { this._handleLaunch(a.action); }.bind(this));
@@ -452,16 +471,16 @@ class CockpitView extends ItemView {
 
   _handleLaunch(action) {
     var msgs = {
-      triage: 'KOS-Triage launched',
-      compile: 'KOS-Compile launched',
-      link: 'KOS-Link started',
-      query: 'KOS-Query panel opened',
-      daily: 'Daily Open creating...',
-      week: 'Week-Review generating...',
-      init: 'KOS-Init health check...',
-      life: 'Life+AI panel opened',
+      triage: this._t('notice.triage'),
+      compile: this._t('notice.compile'),
+      link: this._t('notice.link'),
+      query: this._t('notice.query'),
+      daily: this._t('notice.daily'),
+      week: this._t('notice.week'),
+      init: this._t('notice.init'),
+      life: this._t('notice.life'),
     };
-    var msg = msgs[action] || 'Executing: ' + action;
+    var msg = msgs[action] || this._t('notice.executing', { action: action });
     try {
       new Notice(msg);
     } catch (_) {}
@@ -470,20 +489,20 @@ class CockpitView extends ItemView {
   // Widget: Activity Feed
 
   _renderFeedPanel(container, data) {
-    var panel = this._createPanel(container, 'Activity Feed', 'feed');
+    var panel = this._createPanel(container, this._t('feed.title'), 'feed');
     var body = panel.body;
     var list = body.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:2px;max-height:220px;overflow-y:auto' } });
     var recent = data.recent || [];
     if (recent.length === 0) {
-      list.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No recent activity.' });
+      list.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);font-style:italic' }, text: this._t('recent.empty') });
       return;
     }
     recent.slice(0, 10).forEach(function(item) {
-      var row = list.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:10px;border-radius:4px;cursor:pointer;transition:all 0.15s' } });
+      var row = list.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:var(--kc-fs-sm);border-radius:4px;cursor:pointer;transition:all 0.15s' } });
       row.addEventListener('mouseenter', function() { row.style.background = 'var(--kc-bg-card)'; });
       row.addEventListener('mouseleave', function() { row.style.background = 'transparent'; });
       row.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
-      row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:9px;color:var(--kc-text-dim);white-space:nowrap;min-width:40px' }, text: moment(item.mtime).format('MM-DD HH:mm') });
+      row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:var(--kc-fs-xs);color:var(--kc-text-dim);white-space:nowrap;min-width:40px' }, text: moment(item.mtime).format('MM-DD HH:mm') });
       row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, text: item.title || item.path });
     }.bind(this));
   }
@@ -491,15 +510,15 @@ class CockpitView extends ItemView {
   // Widget: Hot Context
 
   _renderHotPanel(container, data) {
-    var panel = this._createPanel(container, 'Hot Context', 'hot');
+    var panel = this._createPanel(container, this._t('hot.title'), 'hot');
     var body = panel.body;
     var entries = (data.hot || []).slice(0, 4);
     if (entries.length === 0) {
-      body.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);font-style:italic' }, text: 'No hot context entries.' });
+      body.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);font-style:italic' }, text: this._t('hot.empty') });
       return;
     }
     entries.forEach(function(entry) {
-      var row = body.createEl('div', { attr: { style: 'padding:5px 8px;font-size:10px;color:var(--kc-text-secondary);font-family:var(--kc-mono);border-left:2px solid var(--kc-amber-dim);margin-bottom:4px;border-radius:2px;background:var(--kc-bg-card)' } });
+      var row = body.createEl('div', { attr: { style: 'padding:5px 8px;font-size:var(--kc-fs-sm);color:var(--kc-text-secondary);font-family:var(--kc-mono);border-left:2px solid var(--kc-amber-dim);margin-bottom:4px;border-radius:2px;background:var(--kc-bg-card)' } });
       row.createEl('span', { attr: { style: 'color:var(--kc-amber);margin-right:6px' }, text: entry.date });
       row.createEl('span', { text: entry.summary });
     });
@@ -516,43 +535,43 @@ class CockpitView extends ItemView {
     var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:16px 20px' } });
     var topRow = topBody.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:20px;flex-wrap:wrap' } });
     topRow.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83E\uDDEC Life+AI' });
-    topRow.createEl('span', { attr: { style: 'font-size:12px;color:var(--kc-text-secondary);flex:1' }, text: '\u751F\u6D3B \u00B7 \u5B66\u4E60 \u00B7 \u5DE5\u4F5C \u2014 \u4E09\u652F\u67F1\u5468\u671F\u7BA1\u7406' });
+    topRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-md);color:var(--kc-text-secondary);flex:1' }, text: this._t('life.subtitle') });
     var statusDot = topRow.createEl('span', { attr: { style: 'width:8px;height:8px;border-radius:50%;background:' + (lifeEngine.lastRun ? 'var(--kc-green)' : 'var(--kc-text-dim)') } });
 
     // Three pillars grid
     var grid = container.createEl('div', { attr: { style: 'display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px' } });
     var pillars = [
       {
-        icon: '\uD83E\uDDD1\u200D\uD83C\uDF3E', label: '\u751F\u6D3B', color: 'var(--kc-green)',
+        icon: '\uD83E\uDDD1\u200D\uD83C\uDF3E', label: this._t('life.pillarLife'), color: 'var(--kc-green)',
         items: [
-          { key: 'health', label: '\u5065\u5EB7\u8FDB\u5EA6', value: '\u2014' },
-          { key: 'habit', label: '\u4E60\u60EF\u8FFD\u8E2A', value: '\u2014' },
+          { key: 'health', label: this._t('life.healthProgress'), value: '\u2014' },
+          { key: 'habit', label: this._t('life.habitTracking'), value: '\u2014' },
         ],
       },
       {
-        icon: '\uD83D\uDCDA', label: '\u5B66\u4E60', color: 'var(--kc-cyan)',
+        icon: '\uD83D\uDCDA', label: this._t('life.pillarLearning'), color: 'var(--kc-cyan)',
         items: [
-          { key: 'learn', label: '\u5B66\u4E60\u8FDB\u5EA6', value: '\u2014' },
-          { key: 'skill', label: '\u6280\u80FD\u57F9\u517B', value: '\u2014' },
+          { key: 'learn', label: this._t('life.learningProgress'), value: '\u2014' },
+          { key: 'skill', label: this._t('life.skillBuilding'), value: '\u2014' },
         ],
       },
       {
-        icon: '\uD83D\uDCBB', label: '\u5DE5\u4F5C', color: 'var(--kc-amber)',
+        icon: '\uD83D\uDCBB', label: this._t('life.pillarWork'), color: 'var(--kc-amber)',
         items: [
-          { key: 'projects', label: '\u9879\u76EE\u8FDB\u5EA6', value: String((data.projects || []).length) + ' active' },
-          { key: 'tasks', label: '\u4ECA\u65E5\u4EFB\u52A1', value: data.today?.tasks ? String(data.today.tasks.total) + ' tasks' : '\u2014' },
+          { key: 'projects', label: this._t('life.projectProgress'), value: String((data.projects || []).length) + ' ' + this._t('life.active') },
+          { key: 'tasks', label: this._t('life.todayTasks'), value: data.today?.tasks ? String(data.today.tasks.total) + ' ' + this._t('life.tasks') : '\u2014' },
         ],
       },
     ];
     pillars.forEach(function(p) {
       var card = grid.createEl('div', { cls: 'kos-panel' });
       var header = card.createEl('div', { cls: 'kos-panel-header' });
-      header.createEl('span', { attr: { style: 'font-size:13px;font-weight:600;color:' + p.color }, text: p.icon + ' ' + p.label });
+      header.createEl('span', { attr: { style: 'font-size:var(--kc-fs-md);font-weight:600;color:' + p.color }, text: p.icon + ' ' + p.label });
       var body = card.createEl('div', { cls: 'kos-panel-body' });
       p.items.forEach(function(item) {
-        var row = body.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:11px;border-bottom:1px solid rgba(240,180,41,0.04)' } });
+        var row = body.createEl('div', { attr: { style: 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:var(--kc-fs-base);border-bottom:1px solid rgba(240,180,41,0.04)' } });
         row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary)' }, text: item.label });
-        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:var(--kc-text-primary)' }, text: item.value });
+        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:var(--kc-fs-sm);color:var(--kc-text-primary)' }, text: item.value });
       });
     });
 
@@ -564,11 +583,11 @@ class CockpitView extends ItemView {
       { label: 'Life-Report', action: 'life' },
       { label: 'Life-Check', action: 'life' },
       { label: 'Life-Brief', action: 'life' },
-      { label: '\u5468\u62A5', action: 'week' },
-      { label: '\u6708\u62A5', action: 'week' },
+      { label: this._t('life.weeklyReport'), action: 'week' },
+      { label: this._t('life.monthlyReport'), action: 'week' },
     ];
     lifeActions.forEach(function(a) {
-      var btn = actionsRow.createEl('button', { attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' }, text: a.label });
+      var btn = actionsRow.createEl('button', { attr: { style: 'padding:6px 16px;font-size:var(--kc-fs-base);border-radius:4px;border:1px solid var(--kc-amber-dim);background:var(--kc-amber-dim);color:var(--kc-amber);cursor:pointer;font-family:var(--kc-font);transition:all 0.2s' }, text: a.label });
       btn.addEventListener('mouseenter', function() { btn.style.background = 'var(--kc-amber)'; btn.style.color = 'var(--kc-bg-deep)'; });
       btn.addEventListener('mouseleave', function() { btn.style.background = 'var(--kc-amber-dim)'; btn.style.color = 'var(--kc-amber)'; });
       btn.addEventListener('click', function() { this._handleLaunch(a.action); }.bind(this));
@@ -586,73 +605,73 @@ class CockpitView extends ItemView {
     var topPanel = container.createEl('div', { cls: 'kos-panel', attr: { style: 'margin-bottom:14px' } });
     var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
     var topRow = topBody.createEl('div', { attr: { style: 'display:flex;gap:24px;align-items:center;flex-wrap:wrap' } });
-    topRow.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83D\uDD27 \u7BA1\u9053' });
+    topRow.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83D\uDD27 ' + this._t('pipeline.title') });
     topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-cyan)' }, text: String(throughput.total) + ' rec' });
-    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: '\u672C\u5468\u6355\u83B7' });
+    topRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim)' }, text: this._t('pipeline.weeklyCaptures') });
     topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-green)' }, text: String(inboxItems.length) });
-    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: 'Inbox' });
+    topRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim)' }, text: this._t('pipeline.inbox') });
     topRow.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:14px;font-weight:600;color:var(--kc-purple)' }, text: String(compileItems.length) });
-    topRow.createEl('span', { attr: { style: 'font-size:10px;color:var(--kc-text-dim)' }, text: 'Raw' });
+    topRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim)' }, text: this._t('pipeline.raw') });
 
     var grid = container.createEl('div', { cls: 'kos-pipeline-view' });
 
     // Stage 1: Inbox Detail
     var stage1 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
-    stage1.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-amber);margin-bottom:10px' }, text: '\uD83D\uDCE5 Inbox (' + inboxItems.length + ')' });
+    stage1.createEl('div', { attr: { style: 'font-size:var(--kc-fs-base);font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-amber);margin-bottom:10px' }, text: '\uD83D\uDCE5 ' + this._t('pipeline.inboxSection', { count: inboxItems.length }) });
     if (inboxItems.length === 0) {
-      stage1.createEl('div', { cls: 'kos-empty', text: 'No pending inbox items.' });
+      stage1.createEl('div', { cls: 'kos-empty', text: this._t('pipeline.noInbox') });
     } else {
       var t = stage1.createEl('table', { cls: 'kos-garden-table' });
       var thead = t.createEl('thead');
       var thr = thead.createEl('tr');
-      thr.createEl('th', { text: 'Title' });
-      thr.createEl('th', { text: 'Days' });
-      thr.createEl('th', { text: 'Source' });
+      thr.createEl('th', { text: this._t('pipeline.tableTitle') });
+      thr.createEl('th', { text: this._t('pipeline.tableDays') });
+      thr.createEl('th', { text: this._t('pipeline.tableSource') });
       var tbody = t.createEl('tbody');
       inboxItems.slice(0, 12).forEach(function(item) {
         var tr = tbody.createEl('tr');
         tr.createEl('td', { text: item.title.slice(0, 24), attr: { style: 'cursor:pointer' } });
         tr.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
-        tr.createEl('td', { text: String(item.daysWaiting) + 'd', attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:' + (item.daysWaiting > 7 ? 'var(--kc-red)' : item.daysWaiting > 3 ? 'var(--kc-amber)' : 'var(--kc-text-dim)') } });
-        tr.createEl('td', { text: item.source, attr: { style: 'font-size:10px;color:var(--kc-text-dim)' } });
+        tr.createEl('td', { text: String(item.daysWaiting) + 'd', attr: { style: 'font-family:var(--kc-mono);font-size:var(--kc-fs-sm);color:' + (item.daysWaiting > 7 ? 'var(--kc-red)' : item.daysWaiting > 3 ? 'var(--kc-amber)' : 'var(--kc-text-dim)') } });
+        tr.createEl('td', { text: item.source, attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim)' } });
       }.bind(this));
     }
 
     // Stage 2: Compile Queue
     var stage2 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
-    stage2.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-cyan);margin-bottom:10px' }, text: '\uD83D\uDCDD Raw (' + compileItems.length + ')' });
+    stage2.createEl('div', { attr: { style: 'font-size:var(--kc-fs-base);font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-cyan);margin-bottom:10px' }, text: '\uD83D\uDCDD ' + this._t('pipeline.rawSection', { count: compileItems.length }) });
     if (compileItems.length === 0) {
-      stage2.createEl('div', { cls: 'kos-empty', text: 'No files pending compilation.' });
+      stage2.createEl('div', { cls: 'kos-empty', text: this._t('pipeline.noRaw') });
     } else {
       var t2 = stage2.createEl('table', { cls: 'kos-garden-table' });
       var thead2 = t2.createEl('thead');
       var thr2 = thead2.createEl('tr');
-      thr2.createEl('th', { text: 'Title' });
-      thr2.createEl('th', { text: 'Words' });
-      thr2.createEl('th', { text: 'Priority' });
+      thr2.createEl('th', { text: this._t('pipeline.tableTitle') });
+      thr2.createEl('th', { text: this._t('pipeline.tableWords') });
+      thr2.createEl('th', { text: this._t('pipeline.tablePriority') });
       var tbody2 = t2.createEl('tbody');
       compileItems.slice(0, 12).forEach(function(item) {
         var tr = tbody2.createEl('tr');
         tr.createEl('td', { text: item.title.slice(0, 24), attr: { style: 'cursor:pointer' } });
         tr.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
-        tr.createEl('td', { text: String(item.wordCount), attr: { style: 'font-family:var(--kc-mono);font-size:10px;color:var(--kc-text-dim)' } });
+        tr.createEl('td', { text: String(item.wordCount), attr: { style: 'font-family:var(--kc-mono);font-size:var(--kc-fs-sm);color:var(--kc-text-dim)' } });
         var priColor = item.priority === 'high' ? 'var(--kc-red)' : item.priority === 'medium' ? 'var(--kc-amber)' : 'var(--kc-text-dim)';
-        tr.createEl('td', { text: item.priority, attr: { style: 'font-size:10px;color:' + priColor } });
+        tr.createEl('td', { text: item.priority, attr: { style: 'font-size:var(--kc-fs-sm);color:' + priColor } });
       }.bind(this));
     }
 
     // Stage 3: Throughput
     var stage3 = grid.createEl('div', { cls: 'kos-pipeline-stage' });
-    stage3.createEl('div', { attr: { style: 'font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-green);margin-bottom:10px' }, text: '\uD83D\uDCC8 Throughput' });
+    stage3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-base);font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--kc-green);margin-bottom:10px' }, text: '\uD83D\uDCC8 ' + this._t('pipeline.throughputSection') });
     var barChart = stage3.createEl('div', { attr: { style: 'display:flex;gap:3px;align-items:flex-end;height:80px;padding:8px 0' } });
     var weekly = data.weekly || [];
     var maxCount = Math.max(1, ...weekly.map(function(w) { return w.count; }));
     weekly.forEach(function(w) {
       var col = barChart.createEl('div', { attr: { style: 'flex:1;display:flex;flex-direction:column;align-items:center;gap:2px' } });
       var bar = col.createEl('div', { attr: { style: 'width:100%;height:' + Math.max(3, (w.count / maxCount) * 60) + 'px;background:' + (w.isToday ? 'var(--kc-amber)' : 'var(--kc-amber-dim)') + ';border-radius:2px 2px 0 0;transition:height 0.3s;min-height:3px' } });
-      col.createEl('span', { attr: { style: 'font-size:8px;color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: w.weekday });
+      col.createEl('span', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);font-family:var(--kc-mono)' }, text: w.weekday });
     });
-    stage3.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-align:center;margin-top:6px' }, text: '\u5F53\u524D\u5468\u901A\u91CF: ' + throughput.total + ' \u6761\u8BB0\u5F55, \u65E5\u5747 ' + throughput.avg });
+    stage3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);text-align:center;margin-top:6px' }, text: this._t('pipeline.currentWeek', { total: throughput.total, avg: throughput.avg }) });
   }
 
   // ──────────────── Knowledge Garden Panel ────────────────
@@ -664,60 +683,60 @@ class CockpitView extends ItemView {
     // Header
     var topPanel = container.createEl('div', { cls: 'kos-panel', attr: { style: 'margin-bottom:14px' } });
     var topBody = topPanel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:12px 14px' } });
-    topBody.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83C\uDF33 \u77E5\u8BC6\u82B1\u56ED' });
-    topBody.createEl('span', { attr: { style: 'margin-left:16px;font-size:12px;color:var(--kc-text-secondary)' }, text: totalNotes + ' \u7BC7\u7B14\u8BB0' });
+    topBody.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\uD83C\uDF33 ' + this._t('garden.title') });
+    topBody.createEl('span', { attr: { style: 'margin-left:16px;font-size:var(--kc-fs-md);color:var(--kc-text-secondary)' }, text: this._t('garden.notes', { count: totalNotes }) });
 
     // Garden grid
     var grid = container.createEl('div', { cls: 'kos-garden-view' });
 
     // Section: Categories
     var catCard = grid.createEl('div', { cls: 'kos-garden-card' });
-    catCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDCC1 \u5206\u7C7B' });
+    catCard.createEl('h3', { attr: { style: 'font-size:var(--kc-fs-md);font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDCC1 ' + this._t('garden.categorySection') });
     var catTable = catCard.createEl('table', { cls: 'kos-garden-table' });
     var catHead = catTable.createEl('thead');
-    catHead.createEl('tr').innerHTML = '<th>\u76EE\u5F55</th><th>\u7BC7\u6570</th>';
+    catHead.createEl('tr'); catHead.querySelector('tr').innerHTML = '<th>' + this._t('garden.tableDirectory') + '</th><th>' + this._t('garden.tableCount') + '</th>';
     var catBody = catTable.createEl('tbody');
     var categories = [
-      { label: '\uD83D\uDCC1 \u9879\u76EE (1 Project)', key: 'projects', color: 'var(--kc-amber)' },
-      { label: '\uD83C\uDFE0 \u9886\u57DF (2 Areas)', key: 'areas', color: 'var(--kc-cyan)' },
-      { label: '\uD83D\uDCDA \u8D44\u6E90 (3 Resources)', key: 'resources', color: 'var(--kc-green)' },
-      { label: '\uD83D\uDCE5 Inbox', key: 'inbox', color: 'var(--kc-orange)' },
-      { label: '\uD83D\uDCC5 \u5468\u671F (Periodic)', key: 'periodic', color: 'var(--kc-purple)' },
+      { label: '\uD83D\uDCC1 ' + this._t('garden.categoryProjects'), key: 'projects', color: 'var(--kc-amber)' },
+      { label: '\uD83C\uDFE0 ' + this._t('garden.categoryAreas'), key: 'areas', color: 'var(--kc-cyan)' },
+      { label: '\uD83D\uDCDA ' + this._t('garden.categoryResources'), key: 'resources', color: 'var(--kc-green)' },
+      { label: '\uD83D\uDCE5 ' + this._t('garden.categoryInbox'), key: 'inbox', color: 'var(--kc-orange)' },
+      { label: '\uD83D\uDCC5 ' + this._t('garden.categoryPeriodic'), key: 'periodic', color: 'var(--kc-purple)' },
     ];
     categories.forEach(function(cat) {
       var tr = catBody.createEl('tr');
       tr.createEl('td', { attr: { style: 'color:' + cat.color }, text: cat.label });
       tr.createEl('td', { text: String(stats[cat.key] || 0), attr: { style: 'font-family:var(--kc-mono);text-align:right' } });
     });
-    catBody.createEl('tr').innerHTML = '<td style="font-weight:600;color:var(--kc-text-primary)">\u5408\u8BA1</td><td style="font-family:var(--kc-mono);text-align:right;color:var(--kc-amber);font-weight:700">' + totalNotes + '</td>';
+    var totalRow = catBody.createEl('tr'); var totalTd1 = totalRow.createEl('td', { attr: { style: 'font-weight:600;color:var(--kc-text-primary)' }, text: this._t('garden.categoryTotal') }); var totalTd2 = totalRow.createEl('td', { attr: { style: 'font-family:var(--kc-mono);text-align:right;color:var(--kc-amber);font-weight:700' }, text: String(totalNotes) });
 
     // Section: Recent garden additions
     var recentCard = grid.createEl('div', { cls: 'kos-garden-card' });
-    recentCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83C\uDF31 \u6700\u8FD1\u66F4\u65B0' });
+    recentCard.createEl('h3', { attr: { style: 'font-size:var(--kc-fs-md);font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83C\uDF31 ' + this._t('garden.recentUpdates') });
     var recent = data.recent || [];
     if (recent.length === 0) {
-      recentCard.createEl('div', { cls: 'kos-empty', text: 'No recent activity.' });
+      recentCard.createEl('div', { cls: 'kos-empty', text: this._t('recent.empty') });
     } else {
       var rList = recentCard.createEl('div', { attr: { style: 'display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto' } });
       recent.slice(0, 15).forEach(function(item) {
-        var row = rList.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:10px;border-radius:4px;cursor:pointer;transition:all 0.15s' } });
+        var row = rList.createEl('div', { attr: { style: 'display:flex;gap:8px;padding:4px 6px;font-size:var(--kc-fs-sm);border-radius:4px;cursor:pointer;transition:all 0.15s' } });
         row.addEventListener('mouseenter', function() { row.style.background = 'var(--kc-bg-card)'; });
         row.addEventListener('mouseleave', function() { row.style.background = 'transparent'; });
         row.addEventListener('click', function() { this.app.workspace.openLinkText(item.path, '', true); }.bind(this));
-        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:9px;color:var(--kc-text-dim);white-space:nowrap;min-width:36px' }, text: moment(item.mtime).format('MM-DD') });
+        row.createEl('span', { attr: { style: 'font-family:var(--kc-mono);font-size:var(--kc-fs-xs);color:var(--kc-text-dim);white-space:nowrap;min-width:36px' }, text: moment(item.mtime).format('MM-DD') });
         row.createEl('span', { attr: { style: 'color:var(--kc-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap' }, text: item.title || item.path });
       }.bind(this));
     }
 
     // Quick search card
     var searchCard = container.createEl('div', { cls: 'kos-garden-card', attr: { style: 'grid-column:1 / -1;margin-top:14px' } });
-    searchCard.createEl('h3', { attr: { style: 'font-size:12px;font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDD0D \u5FEB\u901F\u67E5\u8BE2' });
+    searchCard.createEl('h3', { attr: { style: 'font-size:var(--kc-fs-md);font-weight:600;color:var(--kc-text-secondary);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0' }, text: '\uD83D\uDD0D ' + this._t('garden.quickSearch') });
     var searchRow = searchCard.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
-    var searchInput = searchRow.createEl('input', { attr: { type: 'text', placeholder: '\u8F93\u5165\u5173\u952E\u8BCD\u641C\u7D22\u77E5\u8BC6\u5E93...', style: 'flex:1;padding:7px 14px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:6px;color:var(--kc-text-primary);font-family:var(--kc-font);font-size:12px;outline:none' } });
-    var searchBtn = searchRow.createEl('button', { attr: { style: 'padding:7px 18px;background:var(--kc-amber);border:none;border-radius:6px;color:var(--kc-bg-deep);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--kc-font)' }, text: '\u67E5\u8BE2' });
+    var searchInput = searchRow.createEl('input', { attr: { type: 'text', placeholder: this._t('garden.searchPlaceholder'), style: 'flex:1;padding:7px 14px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:6px;color:var(--kc-text-primary);font-family:var(--kc-font);font-size:var(--kc-fs-md);outline:none' } });
+    var searchBtn = searchRow.createEl('button', { attr: { style: 'padding:7px 18px;background:var(--kc-amber);border:none;border-radius:6px;color:var(--kc-bg-deep);font-size:var(--kc-fs-md);font-weight:600;cursor:pointer;font-family:var(--kc-font)' }, text: this._t('garden.searchBtn') });
     searchBtn.addEventListener('click', function() {
       var q = searchInput.value.trim();
-      if (q) { this.app.workspace.openLinkText('', '', true); new Notice('KOS-Query: ' + q); }
+      if (q) { this.app.workspace.getLeaf('tab').setViewState({ type: 'search', state: { query: q, matchCase: false } }); }
     }.bind(this));
     searchInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') searchBtn.click();
@@ -729,46 +748,44 @@ class CockpitView extends ItemView {
   renderSettingsView(container, data) {
     var panel = container.createEl('div', { cls: 'kos-panel kos-settings-view' });
     var body = panel.createEl('div', { cls: 'kos-panel-body', attr: { style: 'padding:20px' } });
-    body.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\u2699\uFE0F \u8BBE\u7F6E' });
-    body.createEl('div', { attr: { style: 'font-size:12px;color:var(--kc-text-secondary);margin:8px 0 20px 0' }, text: '\u914D\u7F6E KOS Cockpit \u7684\u663E\u793A\u4E0E\u884C\u4E3A' });
+    body.createEl('span', { attr: { style: 'font-size:20px;font-weight:700;color:var(--kc-amber)' }, text: '\u2699\uFE0F ' + this._t('settings.title') });
+    body.createEl('div', { attr: { style: 'font-size:var(--kc-fs-md);color:var(--kc-text-secondary);margin:8px 0 20px 0' }, text: this._t('settings.desc') });
 
     // Locale
     var sec1 = body.createEl('div', { cls: 'kos-settings-section' });
-    sec1.createEl('h3', { text: '\u754C\u9762\u8BED\u8A00' });
+    sec1.createEl('h3', { text: this._t('settings.locale') });
     var localeRow = sec1.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
     var locales = [
-      { id: 'zh-cn', label: '\u7B80\u4F53\u4E2D\u6587' },
-      { id: 'en', label: 'English' },
-      { id: 'zh-tw', label: '\u7E41\u9AD4\u4E2D\u6587' },
+      { id: 'zh-cn', label: this._t('settings.langZhCN') },
+      { id: 'en', label: this._t('settings.langEn') },
+      { id: 'zh-tw', label: this._t('settings.langZhTW') },
     ];
     var curLocale = this.settings?.locale || 'zh-cn';
     locales.forEach(function(l) {
       var btn = localeRow.createEl('button', {
-        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (l.id === curLocale ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        attr: { style: 'padding:6px 16px;font-size:var(--kc-fs-base);border-radius:4px;border:1px solid ' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (l.id === curLocale ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (l.id === curLocale ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
         text: l.label,
       });
       btn.addEventListener('click', function() {
         this.settings.locale = l.id;
         this.plugin.saveSettings();
-        this.renderLoading();
-        this.refresh();
       }.bind(this));
     }.bind(this));
 
         // Theme switcher
     var secTheme = body.createEl('div', { cls: 'kos-settings-section' });
-    secTheme.createEl('h3', { text: '\u57FA\u672C\u4E3B\u9898' });
+    secTheme.createEl('h3', { text: this._t('settings.theme') });
     var curTheme = this.app.vault.getConfig('theme') || 'obsidian';
     // Base theme row
     var baseRow = secTheme.createEl('div', { attr: { style: 'display:flex;gap:8px;margin-bottom:8px' } });
     var baseThemes = [
-      { id: 'obsidian', label: '\u6697\u9ED1' },
-      { id: 'moonstone', label: '\u660E\u4EAE' },
-      { id: 'system', label: '\u8DDF\u968F\u7CFB\u7EDF' },
+      { id: 'obsidian', label: this._t('settings.themeDark') },
+      { id: 'moonstone', label: this._t('settings.themeLight') },
+      { id: 'system', label: this._t('settings.themeSystem') },
     ];
     baseThemes.forEach(function(t) {
       var btn = baseRow.createEl('button', {
-        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (t.id === curTheme ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        attr: { style: 'padding:6px 16px;font-size:var(--kc-fs-base);border-radius:4px;border:1px solid ' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (t.id === curTheme ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (t.id === curTheme ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
         text: t.label,
       });
       btn.addEventListener('click', function() {
@@ -778,22 +795,22 @@ class CockpitView extends ItemView {
     }.bind(this));
     // Seasonal accent row
     var curSeason = this.settings?.seasonalTheme || 'spring';
-    var seasonLabel = secTheme.createEl('div', { attr: { style: 'font-size:10px;color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px 0' }, text: '\u5B63\u8282\u6027\u5F3A\u8C03\u8272' });
+    var seasonLabel = secTheme.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);text-transform:uppercase;letter-spacing:1px;margin:4px 0 6px 0' }, text: this._t('settings.season') });
     var seasonRow = secTheme.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
     var seasons = [
-      { id: 'spring', label: '\u6625', icon: '\uD83C\uDF38' },
-      { id: 'summer', label: '\u590F', icon: '\u2600\uFE0F' },
-      { id: 'autumn', label: '\u79CB', icon: '\uD83C\uDF42' },
-      { id: 'winter', label: '\u51AC', icon: '\u2744\uFE0F' },
+      { id: 'spring', label: this._t('settings.seasonSpring'), icon: '\uD83C\uDF38' },
+      { id: 'summer', label: this._t('settings.seasonSummer'), icon: '\u2600\uFE0F' },
+      { id: 'autumn', label: this._t('settings.seasonAutumn'), icon: '\uD83C\uDF42' },
+      { id: 'winter', label: this._t('settings.seasonWinter'), icon: '\u2744\uFE0F' },
     ];
     seasons.forEach(function(s) {
       var btn = seasonRow.createEl('button', {
-        attr: { style: 'padding:6px 16px;font-size:11px;border-radius:4px;border:1px solid ' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (s.id === curSeason ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        attr: { style: 'padding:6px 16px;font-size:var(--kc-fs-base);border-radius:4px;border:1px solid ' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (s.id === curSeason ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (s.id === curSeason ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
         text: s.icon + ' ' + s.label,
       });
       btn.addEventListener('click', function() {
         this.settings.seasonalTheme = s.id;
-        this.plugin.saveSettings();
+        this.plugin.saveData(this.plugin.settings);
         // Apply season CSS class immediately
         var root = this.contentEl.querySelector('.kos-cockpit-container');
         if (root) {
@@ -804,9 +821,32 @@ class CockpitView extends ItemView {
       }.bind(this));
     }.bind(this));
 
+    // Font size
+    var secFont = body.createEl('div', { cls: 'kos-settings-section' });
+    secFont.createEl('h3', { text: this._t('settings.fontSize') });
+    var fontSizeRow = secFont.createEl('div', { attr: { style: 'display:flex;gap:8px' } });
+    var fontSizes = [
+      { id: 'small', label: this._t('settings.fontSmall') },
+      { id: 'medium', label: this._t('settings.fontMedium') },
+      { id: 'large', label: this._t('settings.fontLarge') },
+    ];
+    var curFontSize = this.settings?.fontSize || 'medium';
+    fontSizes.forEach(function(s) {
+      var btn = fontSizeRow.createEl('button', {
+        attr: { style: 'padding:6px 16px;font-size:var(--kc-fs-base);border-radius:4px;border:1px solid ' + (s.id === curFontSize ? 'var(--kc-amber)' : 'var(--kc-border)') + ';background:' + (s.id === curFontSize ? 'var(--kc-amber-dim)' : 'var(--kc-bg-card)') + ';color:' + (s.id === curFontSize ? 'var(--kc-amber)' : 'var(--kc-text-secondary)') + ';cursor:pointer;font-family:var(--kc-font)' },
+        text: s.label,
+      });
+      btn.addEventListener('click', function() {
+        this.settings.fontSize = s.id;
+        this.plugin.saveData(this.plugin.settings);
+        this._applyFontSize();
+        this.collectData(this.app).then(function(d) { this.switchPanel('settings', d); }.bind(this));
+      }.bind(this));
+    }.bind(this));
+
     // General settings
     var sec2 = body.createEl('div', { cls: 'kos-settings-section' });
-    sec2.createEl('h3', { text: '\u901A\u7528' });
+    sec2.createEl('h3', { text: this._t('settings.general') });
 
     // Auto open
     var autoRow = sec2.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:12px;margin-bottom:10px' } });
@@ -816,12 +856,12 @@ class CockpitView extends ItemView {
       this.settings.autoOpen = autoToggle.checked;
       this.plugin.saveSettings();
     }.bind(this));
-    autoRow.createEl('label', { attr: { for: 'kos-settings-autopen', style: 'font-size:12px;color:var(--kc-text-secondary);cursor:pointer' }, text: '\u542F\u52A8\u65F6\u81EA\u52A8\u6253\u5F00 KOS Cockpit' });
+    autoRow.createEl('label', { attr: { for: 'kos-settings-autopen', style: 'font-size:var(--kc-fs-md);color:var(--kc-text-secondary);cursor:pointer' }, text: this._t('settings.autoOpen') });
 
     // Data limits
     var limitRow = sec2.createEl('div', { attr: { style: 'display:flex;align-items:center;gap:12px;margin-bottom:10px' } });
-    limitRow.createEl('span', { attr: { style: 'font-size:11px;color:var(--kc-text-secondary);min-width:100px' }, text: '\u6700\u5927\u6700\u8FD1\u6D3B\u52A8\u6570' });
-    var maxRecentInput = limitRow.createEl('input', { attr: { type: 'number', min: '5', max: '30', value: String(this.settings?.maxRecent || 10), style: 'width:60px;padding:4px 8px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:4px;color:var(--kc-text-primary);font-family:var(--kc-mono);font-size:11px;outline:none' } });
+    limitRow.createEl('span', { attr: { style: 'font-size:var(--kc-fs-base);color:var(--kc-text-secondary);min-width:100px' }, text: this._t('settings.maxRecent') });
+    var maxRecentInput = limitRow.createEl('input', { attr: { type: 'number', min: '5', max: '30', value: String(this.settings?.maxRecent || 10), style: 'width:60px;padding:4px 8px;background:var(--kc-bg-card);border:1px solid var(--kc-border);border-radius:4px;color:var(--kc-text-primary);font-family:var(--kc-mono);font-size:var(--kc-fs-base);outline:none' } });
     maxRecentInput.addEventListener('change', function() {
       this.settings.maxRecent = Math.max(5, Math.min(30, parseInt(maxRecentInput.value) || 10));
       this.plugin.saveSettings();
@@ -829,9 +869,9 @@ class CockpitView extends ItemView {
 
     // About
     var sec3 = body.createEl('div', { cls: 'kos-settings-section' });
-    sec3.createEl('h3', { text: '\u5173\u4E8E' });
-    sec3.createEl('div', { attr: { style: 'font-size:11px;color:var(--kc-text-dim);line-height:1.6' }, text: 'KOS Cockpit v0.2.0 \u2014 KOS_LLM-Wiki \u77E5\u8BC6\u7BA1\u7406\u4EEA\u8868\u76D8\u3002KOS \u751F\u6001\u7684\u4E00\u90E8\u5206\u3002' });
-    sec3.createEl('div', { attr: { style: 'font-size:9px;color:var(--kc-text-dim);margin-top:6px' }, text: '\u652F\u6301\u6761\u76EE: ' + String(data.stats?.totalNotes || 0) + ' \u7BC7\u7B14\u8BB0' });
+    sec3.createEl('h3', { text: this._t('settings.about') });
+    sec3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-base);color:var(--kc-text-dim);line-height:1.6' }, text: this._t('settings.versionDesc') });
+    sec3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);margin-top:6px' }, text: this._t('settings.notesCount', { count: String(data.stats?.totalNotes || 0) }) });
   }
 
   // ──────────────── Shared Widget Helpers ────────────────
@@ -842,7 +882,7 @@ class CockpitView extends ItemView {
     var left = header.createEl('div', { cls: 'kos-panel-header-left' });
     left.createEl('span', { cls: 'kos-panel-title', text: titleHtml });
     var tools = header.createEl('div', { cls: 'kos-panel-tools' });
-    var collapseBtn = tools.createEl('button', { cls: 'kos-panel-tool', attr: { title: 'Collapse' }, text: String.fromCharCode(9660) });
+    var collapseBtn = tools.createEl('button', { cls: 'kos-panel-tool', attr: { title: this._t('tooltip.collapse') }, text: String.fromCharCode(9660) });
     collapseBtn.addEventListener('click', function() { panel.toggleClass('kos-panel-collapsed'); });
     var body = panel.createEl('div', { cls: 'kos-panel-body' });
     return { panel: panel, body: body, header: header };
@@ -868,7 +908,7 @@ class CockpitView extends ItemView {
     }.bind(this));
     modelSel.addEventListener('change', function() {
       this.settings.activeProvider = modelSel.value;
-      this.plugin.saveSettings();
+      this.plugin.saveData(this.plugin.settings);
       // Reset AI chat so it picks up new provider
       this.aiChat = null;
       this.renderLoading();
@@ -1081,3 +1121,10 @@ class CockpitView extends ItemView {
 }
 
 module.exports = { CockpitView, VIEW_TYPE_COCKPIT };
+
+
+
+
+
+
+
