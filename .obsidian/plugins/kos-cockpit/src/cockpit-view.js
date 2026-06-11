@@ -3,7 +3,7 @@
 
 const { ItemView, moment } = require('obsidian');
 const { t } = require('./locale');
-const { AIChat, resolveProviderConfig } = require('./ai-chat');
+const { AIChat, resolveProviderConfig } = require('./ai-chat/index');
 const {
   getTodayState, getInboxFiles, getDashboardStats,
   getRecentActivity, getHotContext, getWeeklyRecords,
@@ -23,6 +23,9 @@ class CockpitView extends ItemView {
     this.plugin = plugin;
     this.aiChat = null;
     this.activePanel = 'home'; // 'home' | 'chat' | 'life' | 'pipeline' | 'garden' | 'settings'
+    this.aiChats = new Map();         // Map<tabId, AIChat>
+    this.chatTabs = [];               // {id, title, createdAt}[]
+    this.activeChatTabId = null;       // Currently active chat tab
   }
 
   getViewType() { return VIEW_TYPE_COCKPIT; }
@@ -108,7 +111,7 @@ class CockpitView extends ItemView {
   }
 
   
-  // ──────────────── Font Size ────────────────
+  // ========================= Font Size =========================
 
   _applyFontSize() {
     var size = this.settings?.fontSize || 'medium';
@@ -120,7 +123,7 @@ class CockpitView extends ItemView {
     root.addClass('font-' + size);
   }
 
-  // ──────────────── Seasonal Theme ────────────────
+  // ========================= Seasonal Theme =========================
 
   _applySeasonalTheme() {
     var season = this.settings?.seasonalTheme || 'spring';
@@ -130,7 +133,7 @@ class CockpitView extends ItemView {
     root.addClass('theme-' + season);
   }
 
-  // ──────────────── Panel Router ────────────────
+  // ========================= Panel Router =========================
 
   renderPanel(data) {
     const container = this.contentEl;
@@ -159,13 +162,13 @@ class CockpitView extends ItemView {
     }
   }
 
-  // ──────────────── Tab Bar ────────────────
+  // ========================= Tab Bar =========================
 
   _renderTabBar(container) {
     const tabs = [
       { id: 'home', icon: '\uD83D\uDCCA', label: this._t('tab.dashboard') },
       { id: 'chat', icon: '\uD83E\uDD16', label: this._t('ai.title') },
-      { id: 'life', icon: '\uD83E\uDDEC', label: this._t('tab.life') },
+      { id: 'kos-life', icon: '\uD83E\uDDEC', label: this._t('tab.life') },
       { id: 'pipeline', icon: '\uD83D\uDD27', label: this._t('tab.pipeline') },
       { id: 'garden', icon: '\uD83C\uDF33', label: this._t('tab.garden') },
       { id: 'settings', icon: '\u2699\uFE0F', label: this._t('tab.settings') },
@@ -183,23 +186,23 @@ class CockpitView extends ItemView {
     }.bind(this));
   }
 
-  // ──────────────── Home (Dashboard) ────────────────
+  // ========================= Home (Dashboard) =========================
 
   renderDashboard(container, data) {
     this._renderTopBar(container, data);
     this._renderPipelineFlow(container, data);
     this._renderKeyMetrics(container, data);
     const grid = container.createEl('div', { cls: 'kos-dashboard-grid' });
-    // Zone 1 — 引擎 (Engine): Health · Engine Control · Quick Launch
+    // Zone 1 — Engine: Health | Engine Control | Quick Launch
     const zone1 = grid.createEl('div', { cls: 'kos-zone-left', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
     this._renderHealthPanel(zone1, data);
     this._renderEngineControl(zone1, data);
     this._renderLaunchPanel(zone1);
-    // Zone 2 — 工作 (Work): Today Focus · Active Projects
+    // Zone 2 — Work: Today Focus | Active Projects
     const zone2 = grid.createEl('div', { cls: 'kos-zone-center', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
     this._renderTodayFocus(zone2, data);
     this._renderProjectsPanel(zone2, data);
-    // Zone 3 — 知识 (Knowledge): Growth · Feed · Hot
+    // Zone 3 — Knowledge: Growth | Feed | Hot
     const zone3 = grid.createEl('div', { cls: 'kos-zone-right', attr: { style: 'display:flex;flex-direction:column;gap:14px' } });
     this._renderGrowthPanel(zone3, data);
     this._renderFeedPanel(zone3, data);
@@ -484,9 +487,69 @@ class CockpitView extends ItemView {
     try {
       new Notice(msg);
     } catch (_) {}
+    // Also execute the actual Obsidian command if registered
+    if (this.app && this.app.commands) {
+      var cmdId = 'obsidian-' + action;
+      try { this.app.commands.executeCommandById(cmdId); } catch (_) {}
+      try { this.app.commands.executeCommandById(action); } catch (_) {}
+    }
+        // Fallback: create daily note from template
+    if (action === 'kos-daily' || action === 'daily') {
+      try {
+        var self = this;
+        var m = this.app.moment ? this.app.moment() : moment();
+        var dateStr = m.format('YYYY-MM-DD');
+        var dailyRelPath = 'Periodic/' + m.format('YYYY/MM/YYYY-MM-DD');
+        var fullRelPath = dailyRelPath + '.md';
+        var vault = this.app.vault;
+        vault.adapter.exists(fullRelPath).then(function(exists) {
+          if (!exists) {
+            var tplPath = '_meta/system/templates/\u6BCF\u65E5\u7B14\u8BB0\u6A21\u677F.md';
+            Promise.all([
+              vault.adapter.read(tplPath),
+              vault.adapter.list('0 Inbox/').catch(function() { return { files: [] }; }),
+              vault.adapter.read('_meta/hot.md').catch(function() { return ''; }),
+            ]).then(function(results) {
+              var tpl = results[0];
+              var inboxList = results[1];
+              var hotContent = results[2];
+              var wk = m.format('YYYY-WW');
+              var inboxCount = 0;
+              if (inboxList && inboxList.files) {
+                inboxCount = inboxList.files.filter(function(f) { return f.endsWith('.md') && f.indexOf('_processed/') < 0; }).length;
+              }
+              var recentCtx = '';
+              if (hotContent) {
+                var lines = hotContent.split('\n');
+                for (var hi = 0; hi < lines.length && hi < 15; hi++) {
+                  var line = lines[hi].trim();
+                  if (line && !line.startsWith('---') && !line.startsWith('#')) {
+                    recentCtx += line.substring(0, 120) + '\n';
+                  }
+                }
+              }
+              var content = tpl
+                .replace(/\{\{date:YYYY-MM-DD\}\}/g, dateStr)
+                .replace(/\{\{date:YYYY-WW\}\}/g, wk);
+              if (inboxCount > 0) {
+                content = content.replace('- \u65E0\u5F85\u5904\u7406', '- ' + inboxCount + ' \u4E2A\u5F85\u5904\u7406\u6587\u4EF6\uFF08\u89C1 0 Inbox/\uFF09');
+              }
+              if (recentCtx) {
+                content = content.replace('## \uD83D\uDCE5 Inbox', '## \uD83D\uDD04 \u6700\u8FD1\u4E0A\u4E0B\u6587\n> ' + recentCtx.trim().split('\n').join('\n> ') + '\n\n## \uD83D\uDCE5 Inbox');
+              }
+              vault.adapter.write(fullRelPath, content).then(function() {
+                self.app.workspace.openLinkText(dailyRelPath, '', true);
+              });
+            }).catch(function() {
+              self.app.workspace.openLinkText(dailyRelPath, '', true);
+            });
+          } else {
+            self.app.workspace.openLinkText(dailyRelPath, '', true);
+          }
+        });
+      } catch (_) {}
+    }
   }
-
-  // Widget: Activity Feed
 
   _renderFeedPanel(container, data) {
     var panel = this._createPanel(container, this._t('feed.title'), 'feed');
@@ -524,7 +587,7 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ──────────────── Life+AI Panel ────────────────
+  // ========================= Life+AI Panel =========================
 
   renderLifeView(container, data) {
     var engines = data.engines || {};
@@ -594,7 +657,7 @@ class CockpitView extends ItemView {
     }.bind(this));
   }
 
-  // ──────────────── Pipeline Panel ────────────────
+  // ========================= Pipeline Panel =========================
 
   renderPipelineView(container, data) {
     var inboxItems = data.inboxDetail || [];
@@ -674,7 +737,7 @@ class CockpitView extends ItemView {
     stage3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-sm);color:var(--kc-text-dim);text-align:center;margin-top:6px' }, text: this._t('pipeline.currentWeek', { total: throughput.total, avg: throughput.avg }) });
   }
 
-  // ──────────────── Knowledge Garden Panel ────────────────
+  // ========================= Knowledge Garden Panel =========================
 
   renderGardenView(container, data) {
     var stats = data.stats?.stats || {};
@@ -743,7 +806,7 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ──────────────── Settings Panel (inline) ────────────────
+  // ========================= Settings Panel (inline) =========================
 
   renderSettingsView(container, data) {
     var panel = container.createEl('div', { cls: 'kos-panel kos-settings-view' });
@@ -874,7 +937,7 @@ class CockpitView extends ItemView {
     sec3.createEl('div', { attr: { style: 'font-size:var(--kc-fs-xs);color:var(--kc-text-dim);margin-top:6px' }, text: this._t('settings.notesCount', { count: String(data.stats?.totalNotes || 0) }) });
   }
 
-  // ──────────────── Shared Widget Helpers ────────────────
+  // ========================= Shared Widget Helpers =========================
 
   _createPanel(container, titleHtml, widgetId) {
     var panel = container.createEl('div', { cls: 'kos-panel' });
@@ -888,7 +951,7 @@ class CockpitView extends ItemView {
     return { panel: panel, body: body, header: header };
   }
 
-  // ──────────────── Chat (Claudian-style) ────────────────
+  // ========================= Chat (Claudian-style) =========================
 
   renderChatView(container, data) {
     // Main chat panel — mimics oc-main structure
@@ -923,19 +986,35 @@ class CockpitView extends ItemView {
 
     // Connection status pill
     var statusPill = tRight.createEl('span', { cls: 'kos-ai-status-pill' });
-    var isConfigured = this.aiChat && this.aiChat.isConfigured;
+    var activeAiChat = this.activeChatTabId ? this.aiChats.get(this.activeChatTabId) : null;
+    var isConfigured = activeAiChat && activeAiChat.isConfigured;
     statusPill.addClass(isConfigured ? 'ok' : 'warn');
     statusPill.textContent = isConfigured ? this._t('ai.connected') : this._t('ai.notConfigured');
 
     // Clear button
     var clearBtn = tRight.createEl('button', { cls: 'kos-ai-toolbar-btn', text: this._t('ai.clearBtn') });
     clearBtn.addEventListener('click', function() {
-      if (this.aiChat) { this.aiChat.clear(); this._refreshChatMsgs(); }
+      var clearAi = this.activeChatTabId ? this.aiChats.get(this.activeChatTabId) : null;
+      if (clearAi) { clearAi.clear(); this._refreshChatMsgs(); }
     }.bind(this));
 
     // Messages wrapper
     var msgWrapper = main.createEl('div', { cls: 'kos-ai-msgs-wrapper' });
     var msgContainer = msgWrapper.createEl('div', { cls: 'kos-ai-msgs' });
+
+    // Slash commands definition
+    var slashCommands = [
+      { id: 'kos-triage', icon: '\uD83D\uDD0D', label: 'Triage', desc: this._t('action.triage'), action: 'launch', obsidianId: 'obsidian-kos-triage' },
+      { id: 'kos-compile', icon: '\u2699\uFE0F', label: 'Compile', desc: 'Compile raw/', action: 'launch', obsidianId: 'obsidian-kos-compile' },
+      { id: 'kos-link', icon: '\uD83D\uDD17', label: 'Link', desc: 'Link check', action: 'launch', obsidianId: 'obsidian-kos-link' },
+      { id: 'kos-daily', icon: '\uD83D\uDCC5', label: 'Daily', desc: 'Daily note', action: 'launch', obsidianId: 'obsidian-kos-daily' },
+      { id: 'kos-query', icon: '\uD83D\uDD0D', label: 'Query', desc: 'Search vault', action: 'launch', obsidianId: 'obsidian-kos-query' },
+      { id: 'kos-project', icon: '\uD83D\uDCC1', label: 'Project', desc: 'New project', action: 'launch', obsidianId: 'obsidian-kos-project' },
+      { id: 'kos-week', icon: '\uD83D\uDCCA', label: 'Week-R', desc: 'Week review', action: 'launch', obsidianId: 'obsidian-kos-week' },
+      { id: 'kos-month', icon: '\uD83D\uDCC8', label: 'Month-R', desc: 'Month review', action: 'launch', obsidianId: 'obsidian-kos-month' },
+      { id: 'kos-init', icon: '\uD83C\uDFE0', label: 'Init', desc: 'Health check', action: 'launch', obsidianId: 'obsidian-kos-init' },
+      { id: 'kos-life', icon: '\uD83E\uDDEC', label: 'Life+AI', desc: 'Three pillars', action: 'launch', obsidianId: 'obsidian-kos-life' },
+    ];
 
     // Input area (fixed at bottom)
     var inputArea = main.createEl('div', { cls: 'kos-ai-input-area' });
@@ -946,20 +1025,113 @@ class CockpitView extends ItemView {
     });
     var sendBtn = inputRow.createEl('button', { cls: 'kos-ai-send', text: this._t('ai.sendBtn') });
 
+    // Slash command menu
+    var slashMenu = inputArea.createEl('div', { cls: 'kos-slash-menu', attr: { style: 'display:none' } });
+
+    var activeSlashIdx = -1;
+    var isSlashOpen = false;
+    var _pendingSlashCmd = null;
+
+    function renderSlashMenu(query) {
+      slashMenu.empty();
+      var q = query.slice(1).toLowerCase();
+      var matched = q ? slashCommands.filter(function(c) { return c.id.indexOf(q) === 0 || c.label.toLowerCase().indexOf(q) === 0; }) : slashCommands;
+      if (matched.length === 0) { slashMenu.style.display = 'none'; isSlashOpen = false; return; }
+      matched.forEach(function(cmd, idx) {
+        var item = slashMenu.createEl('div', { cls: 'kos-slash-item' + (idx === 0 ? ' kos-slash-selected' : '') });
+        item.createEl('span', { cls: 'kos-slash-icon', text: cmd.icon });
+        var info = item.createEl('div', { cls: 'kos-slash-info' });
+        info.createEl('span', { cls: 'kos-slash-label', text: '/' + cmd.id });
+        info.createEl('span', { cls: 'kos-slash-desc', text: cmd.desc });
+        item.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          executeSlashCommand(cmd);
+        }.bind(this));
+      }.bind(this));
+      slashMenu.style.display = 'block';
+      isSlashOpen = true;
+      activeSlashIdx = 0;
+    }
+
+    function executeSlashCommand(cmd) {
+      slashMenu.style.display = 'none';
+      isSlashOpen = false;
+      // Fill input with command text and wait for user to press Enter
+      input.value = '/' + cmd.id + ' ';
+      input.focus();
+      // Store pending command for execution on Enter
+      _pendingSlashCmd = cmd;
+    }
+
     // Chat engine
-    this._initAiChat();
+    this._initChatTabs();
     this._renderChatMessages(msgContainer);
 
     var doSend = function() {
       var val = input.value.trim();
       if (!val) return;
+      // Check for pending slash command and execute engine action
+      var pending = _pendingSlashCmd;
+      if (pending) {
+        _pendingSlashCmd = null;
+        this._handleLaunch(pending.id);
+      }
       this._sendChatMessage(val, msgContainer, input);
     }.bind(this);
+
     sendBtn.addEventListener('click', doSend);
-    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSend(); });
+    input.addEventListener('keydown', function(e) {
+      if (isSlashOpen) {
+        var items = slashMenu.querySelectorAll('.kos-slash-item');
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeSlashIdx = (activeSlashIdx + 1) % items.length;
+          items.forEach(function(el, i) { el.toggleClass('kos-slash-selected', i === activeSlashIdx); });
+          return;
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeSlashIdx = (activeSlashIdx - 1 + items.length) % items.length;
+          items.forEach(function(el, i) { el.toggleClass('kos-slash-selected', i === activeSlashIdx); });
+          return;
+        }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          var sel = slashMenu.querySelector('.kos-slash-selected');
+          if (sel) {
+            var itemsArr = Array.prototype.slice.call(items);
+            var idx = itemsArr.indexOf(sel);
+            var q = input.value.slice(1).toLowerCase();
+            var matched = q ? slashCommands.filter(function(c) { return c.id.indexOf(q) === 0 || c.label.toLowerCase().indexOf(q) === 0; }) : slashCommands;
+            if (idx >= 0 && idx < matched.length) executeSlashCommand.call(this, matched[idx]);
+          }
+          return;
+        }
+        if (e.key === 'Escape') {
+          slashMenu.style.display = 'none';
+          isSlashOpen = false;
+          input.value = '';
+          return;
+        }
+      }
+      if (e.key === 'Enter') { doSend(); }
+    }.bind(this));
+
+    // Show slash menu on keyup
+    input.addEventListener('keyup', function(e) {
+      var v = input.value;
+      // Skip navigation keys
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === 'Escape') return;
+      if (v.indexOf('/') === 0 && v.length > 0) {
+        renderSlashMenu.call(this, v);
+      } else if (isSlashOpen) {
+        slashMenu.style.display = 'none';
+        isSlashOpen = false;
+      }
+    }.bind(this));
   }
 
-  // ──────────────── Chat Welcome (Claudian-style) ────────────────
+  // ========================= Chat Welcome (Claudian-style) =========================
 
   _renderChatWelcome(container) {
     const welcome = container.createEl('div', { cls: 'kos-ai-welcome' });
@@ -988,27 +1160,42 @@ class CockpitView extends ItemView {
     });
   }
 
-  // ──────────────── Shared AI Chat Logic ────────────────
+  // ========================= Shared AI Chat Logic =========================
 
-  _initAiChat() {
-    if (this.aiChat && this.aiChat.isConfigured) return;
-    if (this.aiChat) return;
-
-    const self = this;
-    resolveProviderConfig(self.settings, self.app.vault.adapter).then((cfg) => {
-      if (cfg) {
-        self.aiChat = new AIChat({
-          locale: self.settings?.locale || 'zh-cn',
-          baseUrl: cfg.baseUrl,
-          apiKey: cfg.apiKey,
-          model: cfg.model,
-          systemPrompt: cfg.systemPrompt || self.settings?.aiSystemPrompt || '',
-          label: cfg.label,
-        });
-        self._refreshChatMsgs();
-      }
-    });
-  }
+    _initAiChat(tabId) {
+      tabId = tabId || this.activeChatTabId;
+      if (!tabId) return null;
+      if (this.aiChats.has(tabId)) return this.aiChats.get(tabId);
+    
+      // Prevent concurrent init (race condition fix)
+      if (this._initLocks && this._initLocks[tabId]) return null;
+      if (!this._initLocks) this._initLocks = {};
+      this._initLocks[tabId] = true;
+      var self = this;
+      resolveProviderConfig(self.settings, self.app.vault.adapter).then(function(cfg) {
+        if (cfg) {
+          var chat = new AIChat({
+            locale: self.settings?.locale || 'zh-cn',
+            providerId: cfg.providerId,
+            baseUrl: cfg.baseUrl,
+            apiKey: cfg.apiKey,
+            model: cfg.model,
+            systemPrompt: cfg.systemPrompt || self.settings?.aiSystemPrompt || '',
+            label: cfg.label,
+          });
+          self.aiChats.set(tabId, chat);
+      if (self._initLocks) delete self._initLocks[tabId];
+          if (!self.aiChat) self.aiChat = chat;
+          self._refreshChatMsgs();
+          var pill = self.contentEl.querySelector('.kos-ai-status-pill');
+          if (pill) {
+            pill.textContent = self._t('ai.connected');
+            pill.removeClass('warn');
+            pill.addClass('ok');
+          }
+        }
+      });
+    }
 
   _refreshChatMsgs() {
     const section = this.contentEl.querySelector('.kos-ai-chat, .kos-db-ai, .kos-db-ai-full');
@@ -1018,109 +1205,470 @@ class CockpitView extends ItemView {
     }
   }
 
+
+
+  _renderUserMessage(container, msg) {
+    var bubble = container.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-user' });
+    bubble.createEl('div', { cls: 'kos-ai-msg-text', text: msg.text || '' });
+
+    // Context file chips
+    if (msg.linkedContextFiles && msg.linkedContextFiles.length > 0) {
+      var filesEl = bubble.createEl('div', { cls: 'kos-ai-msg-files' });
+      var maxChips = Math.min(msg.linkedContextFiles.length, 3);
+      for (var fi = 0; fi < maxChips; fi++) {
+        var fpath = msg.linkedContextFiles[fi];
+        (function(fp) {
+          var chip = filesEl.createEl('span', { cls: 'kos-ai-msg-file-chip', text: fp.split('/').pop() });
+          chip.title = fp;
+          chip.addEventListener('click', function() {
+            this.app.workspace.openLinkText(fp, '', true);
+          }.bind(this));
+        }).bind(this)(fpath);
+      }
+      if (msg.linkedContextFiles.length > 3) {
+        filesEl.createEl('span', { cls: 'kos-ai-msg-file-chip', text: '+' + (msg.linkedContextFiles.length - 3) });
+      }
+    }
+  }
+
+  _renderAssistantMessage(container, msg) {
+    var bubble = container.createEl('div', {
+      cls: 'kos-ai-msg kos-ai-msg-assistant' + (msg.pending && !msg.text ? ' kos-ai-thinking' : ''),
+    });
+
+    // Text content
+    if (msg.text) {
+      bubble.createEl('div', { cls: 'kos-ai-msg-text', text: msg.text });
+    } else if (msg.pending) {
+      bubble.createEl('div', { cls: 'kos-ai-msg-text', text: this._t('ai.thinking') });
+    }
+
+    // Reasoning section
+    if (msg.reasoning) {
+      this._renderReasoningSection(bubble, msg.reasoning);
+    }
+
+    // Tool section
+    if (msg.blocks && msg.blocks.length > 0) {
+      this._renderToolSection(bubble, msg.blocks);
+    }
+
+    // Meta line (hover to show)
+    if (msg.meta && !msg.pending) {
+      bubble.createEl('div', { cls: 'kos-ai-msg-meta', text: msg.meta });
+    }
+
+    // Copy button
+    if (msg.text && !msg.pending && msg.meta) {
+      var msgText = msg.text;
+      var copyBtn = bubble.createEl('button', { cls: 'kos-ai-copy-btn', text: this._t('ai.copy') });
+      copyBtn.addEventListener('click', async function() {
+        try {
+          await navigator.clipboard.writeText(msgText);
+          copyBtn.textContent = this._t('ai.copied');
+          setTimeout(function() { copyBtn.textContent = this._t('ai.copy'); }, 2000);
+        } catch {}
+      }.bind(this));
+    }
+
+    // Error
+    if (msg.error) {
+      var errRow = bubble.createEl('div', { cls: 'kos-ai-tool-row', attr: { style: 'margin-top:6px;color:var(--kc-red)' } });
+      errRow.createEl('span', { text: '\u2717 Error: ' + msg.error });
+    }
+  }
+
+  _renderReasoningSection(bubble, reasoning) {
+    var section = bubble.createEl('div', { cls: 'kos-ai-msg-reasoning' });
+    var toggle = section.createEl('button', {
+      cls: 'kos-ai-reasoning-toggle',
+      text: '\uD83E\uDDD0 Show thinking',
+    });
+    var content = section.createEl('div', {
+      cls: 'kos-ai-reasoning-content',
+      text: reasoning,
+      attr: { style: 'display:none' },
+    });
+    var isVisible = false;
+    toggle.addEventListener('click', function() {
+      isVisible = !isVisible;
+      content.style.display = isVisible ? 'block' : 'none';
+      toggle.textContent = isVisible ? '\uD83E\uDDD0 Hide thinking' : '\uD83E\uDDD0 Show thinking';
+    });
+  }
+
+  _renderToolSection(bubble, blocks) {
+    // Filter internal blocks
+    var visibleBlocks = [];
+    for (var bi = 0; bi < blocks.length; bi++) {
+      if (!blocks[bi].internal) visibleBlocks.push(blocks[bi]);
+    }
+    if (visibleBlocks.length === 0) return;
+
+    var section = bubble.createEl('div', { cls: 'kos-ai-msg-tool-section' });
+
+    // Header (collapsible)
+    var header = section.createEl('div', { cls: 'kos-ai-tool-header' });
+    var completed = 0, total = 0;
+    for (var bi = 0; bi < visibleBlocks.length; bi++) {
+      if (visibleBlocks[bi].type === 'tool') {
+        total++;
+        if (visibleBlocks[bi].status === 'completed') completed++;
+      }
+    }
+    header.textContent = '\u26A1 Tools (' + completed + '/' + total + ')';
+
+    var list = section.createEl('div', { cls: 'kos-ai-tool-list' });
+    var isCollapsed = false;
+    header.addEventListener('click', function() {
+      isCollapsed = !isCollapsed;
+      list.style.display = isCollapsed ? 'none' : 'block';
+    });
+
+    for (var bi = 0; bi < visibleBlocks.length; bi++) {
+      var block = visibleBlocks[bi];
+
+      if (block.type === 'stream-text') {
+        if (!block.text) continue;
+        var row = list.createEl('div', { cls: 'kos-ai-tool-row' });
+        row.createEl('span', { cls: 'kos-ai-tool-icon', text: '\u25B6' });
+        row.createEl('span', { cls: 'kos-ai-tool-name', text: 'stream-text' });
+        var tokenCount = Math.max(1, Math.round(block.text.length / 4));
+        row.createEl('span', { cls: 'kos-ai-tool-summary', text: tokenCount + ' tokens' });
+        continue;
+      }
+
+      if (block.type === 'tool') {
+        var row = list.createEl('div', { cls: 'kos-ai-tool-row' });
+
+        // Status icon
+        var icon, color;
+        if (block.status === 'completed') { icon = '\u2713'; color = 'var(--kc-green)'; }
+        else if (block.status === 'error') { icon = '\u2717'; color = 'var(--kc-red)'; }
+        else if (block.status === 'running') { icon = '\u25CB'; color = 'var(--kc-amber)'; }
+        else { icon = '?'; color = 'var(--kc-text-dim)'; }
+        row.createEl('span', { cls: 'kos-ai-tool-icon', text: icon, attr: { style: 'color:' + color } });
+
+        // Tool name
+        row.createEl('span', { cls: 'kos-ai-tool-name', text: block.tool || 'tool' });
+
+        // Summary
+        if (block.summary) {
+          row.createEl('span', { cls: 'kos-ai-tool-summary', text: block.summary.slice(0, 40) });
+        }
+
+        // Duration
+        if (block.durationMs != null) {
+          var durText = block.durationMs >= 1000
+            ? (block.durationMs / 1000).toFixed(1) + 's'
+            : block.durationMs + 'ms';
+          row.createEl('span', { cls: 'kos-ai-tool-duration', text: durText });
+        }
+
+        // Click to expand detail
+        if (block.detail || block.input || block.output) {
+          var detailExpanded = false;
+          row.addEventListener('click', function() {
+            detailExpanded = !detailExpanded;
+            var detailEl = row.querySelector('.kos-ai-tool-detail');
+            if (!detailEl) {
+              detailEl = row.createEl('div', { cls: 'kos-ai-tool-detail' });
+              if (block.input) {
+                detailEl.createEl('div', { text: 'Input:', cls: 'kos-ai-tool-detail-label' });
+                detailEl.createEl('pre', { text: JSON.stringify(block.input, null, 2) });
+              }
+              if (block.output) {
+                detailEl.createEl('div', { text: 'Output:', cls: 'kos-ai-tool-detail-label' });
+                detailEl.createEl('pre', { text: String(block.output).slice(0, 1000) });
+              }
+              if (block.detail && !block.input && !block.output) {
+                detailEl.createEl('pre', { text: block.detail });
+              }
+            }
+            detailEl.style.display = detailExpanded ? 'block' : 'none';
+          });
+        }
+      }
+    }
+  }
+
+
+  // W8: Render messages for current active tab
   _renderChatMessages(container) {
     container.empty();
-    const msgs = this.aiChat ? this.aiChat.getHistory() : [];
+    var activeAiChat = this.activeChatTabId ? this.aiChats.get(this.activeChatTabId) : null;
+    var msgs = activeAiChat ? activeAiChat.getHistory() : [];
 
-    if (!this.aiChat || !this.aiChat.isConfigured) {
+    if (!activeAiChat || !activeAiChat.isConfigured) {
       container.createEl('div', { text: this._t('ai.needConfig'), cls: 'kos-ai-need-config' });
       return;
     }
 
-    // Show welcome screen if only system/welcome messages exist (no user messages)
-    var hasUserMessages = msgs.some(function(m) { return m.role === 'user'; });
-    if (!hasUserMessages && msgs.length <= 1) {
+    // Count user messages to determine if conversation has started
+    var userCount = 0;
+    for (var mi = 0; mi < msgs.length; mi++) {
+      if (msgs[mi].role === 'user') userCount++;
+    }
+
+    // Show welcome screen only when no conversation exists
+    if (userCount === 0) {
       this._renderChatWelcome(container);
       return;
     }
 
-    msgs.forEach(function(msg) {
-      if (msg.role === 'system') return;
-      var bubble = container.createEl('div', {
-        cls: 'kos-ai-msg kos-ai-msg-' + msg.role,
-      });
-      var textEl = bubble.createEl('div', { cls: 'kos-ai-msg-text' });
-      textEl.textContent = msg.content;
-
-      if (msg.role === 'assistant') {
-        var copyBtn = bubble.createEl('button', { cls: 'kos-ai-copy-btn', text: this._t('ai.copy') });
-        copyBtn.addEventListener('click', async function() {
-          try {
-            await navigator.clipboard.writeText(msg.content);
-            copyBtn.textContent = this._t('ai.copied');
-            setTimeout(function() { copyBtn.textContent = this._t('ai.copy'); }.bind(this), 2000);
-          } catch {}
-        }.bind(this));
+    // Render messages (max 50), skip the intro/welcome message (meta === '')
+    var startIdx = Math.max(0, msgs.length - 50);
+    var rendered = 0;
+    for (var mi = startIdx; mi < msgs.length; mi++) {
+      var msg = msgs[mi];
+      // Skip the initial welcome message (meta === '') once conversation starts
+      if (msg.role === 'assistant' && !msg.meta && userCount > 0) continue;
+      if (msg.role === 'user') {
+        this._renderUserMessage(container, msg);
+        rendered++;
+      } else if (msg.role === 'assistant') {
+        this._renderAssistantMessage(container, msg);
+        rendered++;
       }
-    }.bind(this));
+    }
 
     container.scrollTop = container.scrollHeight;
   }
 
+
+
   _sendChatMessage(text, msgContainer, inputEl) {
-    if (!this.aiChat || !this.aiChat.isConfigured) return;
+    // Capture the AIChat reference to avoid race conditions with async init
+    var chat = this.activeChatTabId ? this.aiChats.get(this.activeChatTabId) : this.aiChat;
+    if (!chat || !chat.isConfigured) {
+      try { new Notice(this._t('ai.needConfig')); } catch (_) {}
+      return;
+    }
 
     inputEl.disabled = true;
     inputEl.value = '';
 
-    this._renderChatMessages(msgContainer);
 
-    const thinkingEl = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant kos-ai-thinking' });
-    thinkingEl.createEl('span', { text: this._t('ai.thinking'), cls: 'kos-db-ai-msg-text' });
+    chat.sendMessage(text, {
+      onUserMessage: (function(msg) {
+        this._renderChatMessages(msgContainer);
+      }).bind(this),
 
-    let assistantText = '';
-    let assistantBubble = null;
+      onAssistantCreated: (function(msg) {
+        this._renderChatMessages(msgContainer);
+      }).bind(this),
 
-    this.aiChat.sendMessage(text, {
-      onToken: (token) => {
-        assistantText += token;
-        if (!assistantBubble) {
-          thinkingEl.remove();
-          assistantBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant' });
-          assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text' });
-        }
-        assistantBubble.querySelector('.kos-db-ai-msg-text').textContent = assistantText;
-        msgContainer.scrollTop = msgContainer.scrollHeight;
-      },
-      onDone: () => {
-        if (thinkingEl.isConnected) thinkingEl.remove();
-        if (!assistantBubble && assistantText) {
-          assistantBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-assistant' });
-          assistantBubble.createEl('div', { cls: 'kos-db-ai-msg-text', text: assistantText });
-        }
-        if (assistantBubble && assistantText) {
-          const copyBtn = assistantBubble.createEl('button', { cls: 'kos-ai-copy-btn', text: this._t('ai.copy') });
-          copyBtn.addEventListener('click', async () => {
-            try {
-              await navigator.clipboard.writeText(assistantText);
-              copyBtn.textContent = this._t('ai.copied');
-              setTimeout(() => { copyBtn.textContent = this._t('ai.copy'); }, 2000);
-            } catch {}
-          });
-        }
+      onToken: (function(token) {
+        this._renderChatMessages(msgContainer);
+      }).bind(this),
+
+      onBlockUpdate: (function(block, index) {
+        this._renderChatMessages(msgContainer);
+      }).bind(this),
+
+      onReasoning: (function(text) {
+        this._renderChatMessages(msgContainer);
+      }).bind(this),
+
+      onDone: (function() {
+        this._renderChatMessages(msgContainer);
         inputEl.disabled = false;
         inputEl.focus();
         msgContainer.scrollTop = msgContainer.scrollHeight;
-      },
-      onError: (err) => {
-        if (thinkingEl.isConnected) thinkingEl.remove();
-        const errBubble = msgContainer.createEl('div', { cls: 'kos-ai-msg kos-ai-msg-error' });
-        errBubble.createEl('div', {
-          text: this._t('ai.error', { msg: err.message || 'Unknown error' }),
-          cls: 'kos-db-ai-msg-text',
-        });
-        const retryBtn = errBubble.createEl('button', { cls: 'kos-db-ai-retry-btn', text: this._t('ai.retry') });
-        retryBtn.addEventListener('click', () => {
-          this._sendChatMessage(text, msgContainer, inputEl);
-        });
+      }).bind(this),
+
+      onError: (function(err) {
+        this._renderChatMessages(msgContainer);
         inputEl.disabled = false;
         msgContainer.scrollTop = msgContainer.scrollHeight;
-      }
+      }).bind(this),
     });
   }
+
+  // W8: Multi-Chat Tab Management
+  // ============================================================
+
+  _genChatTabId() {
+    return 'tab-' + Date.now().toString(36) + '-' + (Math.random() * 46656 | 0).toString(36);
+  }
+
+  _initChatTabs() {
+    var saved = this.settings?.tabManagerState;
+    if (saved && saved.tabs && saved.tabs.length > 0) {
+      this.chatTabs = saved.tabs.map(function(t) { return { id: t.id, title: t.title, createdAt: t.createdAt || Date.now() }; });
+      this.activeChatTabId = saved.activeTabId || this.chatTabs[0].id;
+    } else {
+      var defaultId = this._genChatTabId();
+      this.chatTabs = [{ id: defaultId, title: this._t('ai.defaultTab'), createdAt: Date.now() }];
+      this.activeChatTabId = defaultId;
+    }
+    var found = false;
+    for (var i = 0; i < this.chatTabs.length; i++) {
+      if (this.chatTabs[i].id === this.activeChatTabId) { found = true; break; }
+    }
+    if (!found && this.chatTabs.length > 0) this.activeChatTabId = this.chatTabs[0].id;
+    if (!this.activeChatTabId && this.chatTabs.length === 0) {
+      var id = this._genChatTabId();
+      this.chatTabs.push({ id: id, title: this._t('ai.defaultTab'), createdAt: Date.now() });
+      this.activeChatTabId = id;
+    }
+    this._initAiChat(this.activeChatTabId);
+  }
+
+  _saveChatTabState() {
+    if (!this.plugin) return;
+    var state = {
+      tabs: this.chatTabs.map(function(t) { return { id: t.id, title: t.title, createdAt: t.createdAt }; }),
+      activeTabId: this.activeChatTabId,
+    };
+    if (!this.plugin.settings.tabManagerState) this.plugin.settings.tabManagerState = {};
+    this.plugin.settings.tabManagerState.tabs = state.tabs;
+    this.plugin.settings.tabManagerState.activeTabId = state.activeTabId;
+    this.plugin.saveData(this.plugin.settings);
+  }
+
+  _renderChatTabBar(container) {
+    var existing = container.querySelector('.kos-ai-chat-tabbar');
+    if (existing) existing.remove();
+
+    var bar = container.createEl('div', { cls: 'kos-ai-chat-tabbar' });
+
+    for (var i = 0; i < this.chatTabs.length; i++) {
+      (function(self, tab, isActive, tabId, tabTitle) {
+        var item = bar.createEl('div', {
+          cls: 'kos-ai-chat-tab' + (isActive ? ' active' : ''),
+        });
+
+        var titleSpan = item.createEl('span', {
+          cls: 'kos-ai-chat-tab-title',
+          text: tabTitle,
+        });
+
+        if (self.chatTabs.length > 1) {
+          var closeBtn = item.createEl('span', {
+            cls: 'kos-ai-chat-tab-close',
+            text: '×',
+          });
+          closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            self._closeChatTab(tabId);
+          });
+        }
+
+        item.addEventListener('click', function() {
+          self._switchChatTab(tabId);
+        });
+
+        titleSpan.addEventListener('dblclick', function() {
+          var input = document.createElement('input');
+          input.type = 'text';
+          input.value = tabTitle;
+          input.className = 'kos-ai-chat-tab-rename-input';
+          input.style.cssText = 'width:80px;background:var(--kc-bg-card);border:1px solid var(--kc-border-focus);border-radius:4px;color:var(--kc-text-primary);font-size:12px;padding:2px 6px;outline:none;font-family:var(--kc-font)';
+          titleSpan.textContent = '';
+          titleSpan.appendChild(input);
+          input.focus();
+          input.select();
+          input.addEventListener('blur', function() {
+            var newTitle = input.value.trim() || tabTitle;
+            titleSpan.textContent = newTitle;
+            for (var j = 0; j < self.chatTabs.length; j++) {
+              if (self.chatTabs[j].id === tabId) {
+                self.chatTabs[j].title = newTitle;
+                break;
+              }
+            }
+            self._saveChatTabState();
+          });
+          input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { input.blur(); }
+            if (e.key === 'Escape') { titleSpan.textContent = tabTitle; input.blur(); }
+          });
+        });
+      })(this, this.chatTabs[i], this.chatTabs[i].id === this.activeChatTabId, this.chatTabs[i].id, this.chatTabs[i].title);
+    }
+
+    var newBtn = bar.createEl('button', {
+      cls: 'kos-ai-chat-tab-new',
+      text: '+',
+      attr: { title: this._t('ai.newTab') },
+    });
+    newBtn.addEventListener('click', function() {
+      this._createChatTab();
+    }.bind(this));
+  }
+
+  _switchChatTab(tabId) {
+    if (tabId === this.activeChatTabId) return;
+
+    var inputEl = this.contentEl.querySelector('.kos-ai-input');
+    this.activeChatTabId = tabId;
+    this._initAiChat(tabId);
+
+    var chatPanel = this.contentEl.querySelector('.kos-ai-chat');
+    if (chatPanel) this._renderChatTabBar(chatPanel);
+
+    var msgContainer = this.contentEl.querySelector('.kos-ai-msgs');
+    if (msgContainer) this._renderChatMessages(msgContainer);
+
+    if (inputEl) inputEl.value = '';
+    this._saveChatTabState();
+  }
+
+  _createChatTab(title) {
+    title = title || this._t('ai.newTab');
+    var id = this._genChatTabId();
+    this.chatTabs.push({ id: id, title: title, createdAt: Date.now() });
+    this._switchChatTab(id);
+    var chatPanel = this.contentEl.querySelector('.kos-ai-chat');
+    if (chatPanel) this._renderChatTabBar(chatPanel);
+    this._saveChatTabState();
+  }
+
+  _closeChatTab(tabId) {
+    if (this.chatTabs.length <= 1) return;
+
+    var idx = -1;
+    for (var i = 0; i < this.chatTabs.length; i++) {
+      if (this.chatTabs[i].id === tabId) { idx = i; break; }
+    }
+    if (idx < 0) return;
+
+    var nextTabId = null;
+    if (tabId === this.activeChatTabId) {
+      var nextIdx = idx > 0 ? idx - 1 : 0;
+      if (nextIdx < this.chatTabs.length) nextTabId = this.chatTabs[nextIdx].id;
+    }
+
+    if (this.aiChats.has(tabId)) {
+      var chat = this.aiChats.get(tabId);
+      if (chat && chat.isStreaming) chat.abort();
+      this.aiChats.delete(tabId);
+    }
+
+    this.chatTabs.splice(idx, 1);
+
+    if (nextTabId) this._switchChatTab(nextTabId);
+
+    var chatPanel = this.contentEl.querySelector('.kos-ai-chat');
+    if (chatPanel) this._renderChatTabBar(chatPanel);
+    this._saveChatTabState();
+  }
+
+  getOrCreateAIChat(tabId) {
+    tabId = tabId || this.activeChatTabId;
+    if (!tabId) return null;
+    if (this.aiChats.has(tabId)) return this.aiChats.get(tabId);
+    this._initAiChat(tabId);
+    return null;
+  }
+
+
+
 }
 
 module.exports = { CockpitView, VIEW_TYPE_COCKPIT };
+
 
 
 
