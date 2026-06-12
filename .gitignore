@@ -1,4 +1,4 @@
-# gitignore template for LangChain products, e.g., LangGraph, LangSmith
+﻿# gitignore template for LangChain products, e.g., LangGraph, LangSmith
 # website: https://www.langchain.com/
 # website: https://www.langchain.com/langgraph
 
@@ -75,5 +75,3 @@ _temp/
 # Business management (client records, accounting templates)
 2 Areas/工作/企业管理/
 
-# Project lifecycle (private projects)
-1 Projects/
