@@ -1,4 +1,4 @@
----
+﻿---
 title: "KOS 系统指南"
 created: 2026-06-12
 updated: 2026-06-12
@@ -9,7 +9,7 @@ tags: [meta, guide, kos, system]
 # KOS 系统指南
 
 > **Knowledge Organization System** — PARA × UDC × LLM-Wiki 三语言知识中枢
-> 版本 3.0 | 三平台：Codex / Claude Code / FLOWnote
+> 版本 3.0.1 | 三平台：Codex / Claude Code / FLOWnote
 
 ---
 
@@ -306,7 +306,9 @@ _meta/ai/skills/canon/   → 权威源
 
 | 版本 | 日期 | 概要 |
 |------|------|------|
-| **v3.0** | 2026-06-12 | 方法论模式 + AutoResearch + 检索增强 + 矛盾标记 + WIKI.md |
+| **v3.0.1** | 2026-06-12 | Phase 1 WP 全部实施完成 + 验收测试通过 + 文档同步 |
+| **v3.0** | 2026-06-12 (v3.0.1) | 方法论模式 + AutoResearch + 检索增强 + 矛盾标记 + WIKI.md |
 | v3.0-rc | 2026-06-09 | 三平台 Skill 架构 / KOS 引擎 / 热缓存 / 文件锁 / Canvas |
 | v2.0 | 2026-06-07 | LifeOS × LLM-Wiki 融合 / Codex 适配 / 三语言 |
 | v1.0 | 2026-06-03 | 初始系统构建 |
+
