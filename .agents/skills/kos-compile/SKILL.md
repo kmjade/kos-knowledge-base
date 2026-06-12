@@ -1,6 +1,7 @@
----
+﻿---
 name: kos-compile
-description: 编译 3 Resources/ 下raw 源文件为 wiki/ 知识页面。六步管道：来源分析 →概念提取 →页面创建/更新 →交叉引用 →索引更新 →日志记录。---
+description: 编译 3 Resources/ 下raw 源文件为 wiki/ 知识页面。六步管道：来源分析 →概念提取 →页面创建/更新 →交叉引用 →索引更新 →日志记录。
+---
 
 # KOS-Wiki-Compile：Wiki 编译引擎
 
@@ -104,6 +105,38 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 
 ---
 
+
+## 模式感知编译
+
+编译时若指定 `--mode`，页面类型映射和模板选择按模式分叉。
+
+### 模式决策链
+
+`
+IF 源文件有 methodology 字段 → 使用该模式
+ELSE IF compile --mode 参数 → 使用指定模式
+ELSE → 默认 para
+`
+
+### 页面类型 → 模板映射
+
+| 页面类型 | PARA/LlamaWiki 模板 | LYT 模板 | Zettel 模板 | Generic 模板 |
+|---------|--------------------|---------|------------|------------|
+| concept | modes/llm-wiki/llm-wiki-concept | modes/lyt/lyt-concept | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| entity | modes/llm-wiki/llm-wiki-entity | modes/lyt/lyt-entity | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| source | modes/llm-wiki/llm-wiki-source | modes/llm-wiki/llm-wiki-source | modes/zettel/zettel-literature | modes/llm-wiki/llm-wiki-source |
+| project | modes/para/para-project | — | — | — |
+| area | modes/para/para-area | — | — | — |
+| resource | modes/para/para-resource | — | — | — |
+| moc | — | modes/lyt/lyt-moc | — | — |
+| idea | — | modes/lyt/lyt-idea | — | — |
+| hub | — | — | modes/zettel/zettel-hub | — |
+| literature | — | — | modes/zettel/zettel-literature | — |
+| home | — | modes/lyt/lyt-home | — | — |
+
+模板路径相对于 _meta/system/templates/
+
+---
 ## 六步编译管道
 
 ### 步骤 0：Delta 检查
@@ -117,6 +150,15 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 
 确定主题领域（LLM-Wiki / PARA / UDC / People 等）
 
+### 第1b 步：模式判定（新增）
+
+参考上方**模式决策链**确定编译模式：
+1. 检查源文件 frontmatter 是否有 methodology 字段 → 使用该模式
+2. 否则检查 --mode 参数 → 使用指定模式
+3. 否则默认 para 模式
+
+模式确定后，后续步骤中的模板选择将按模式分叉（见上方页面类型→模板映射表）。
+
 ### 第2 步：概念提取
 
 决定页面类型：
@@ -129,7 +171,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 ### 第3 步：页面创建/更新（需加锁，
 | 情况 | 行为 |
 |------|------|
-| 不存在| 按模板新建→acquire 目标路径 →写入 →release |
+| 不存在| 按**模式映射表**选模板新建→acquire 目标路径 →写入 →release |
 | 存在为`reviewed: false` | 合并更新 →acquire 目标路径 →写入 →release |
 | 存在为`reviewed: true` | 跳过（无需锁） |
 
@@ -166,7 +208,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 |------|------|
 | 一致| 跳过 |
 | 补充 | 追加 |
-| 矛盾 | 双方保留 + 标记 `conflict: true` |
+| 矛盾 | 双方保留 + 标记 `conflict: true` + 添加 `[!contradiction]` callout |
 | 完全覆盖 | 旧版移入 `_archived/` |
 
 ---
@@ -193,3 +235,8 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 | 8 | ACCEPT | 矛盾时标记`conflict: true`，不强行统一 |
 | 9 | CREATE | 创建 wiki 页面 + 交叉引用 + 三语言索引 |
 | 10 | GROW | 记录 pages_created / pages_updated 供审记|
+
+
+
+
+

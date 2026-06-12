@@ -1,4 +1,4 @@
----
+﻿---
 name: kos-triage
 description: "分拣 0 Inbox/ 待处理笔记。按时效性/主题/类型/复杂度四维分析，复制到目标目录，原始文件移入 _processed/。增强：残留记录扫描、去向决策、旧笔记分流。"
 ---
@@ -70,13 +70,44 @@ fi
 
 ---
 
+## 模式感知路由
+
+分拣时若指定 `--mode`，路由目标和 frontmatter 注入按模式分叉：
+
+### 路由矩阵
+
+| 四维 C（类型） | PARA 路由 | LYT 路由 | Zettel 路由 | Generic 路由 |
+|--------------|----------|---------|------------|------------|
+| concept | wiki/concepts/ | wiki/concepts/ + ace | wiki/permanent/ | notes/ |
+| entity | wiki/entities/ | wiki/entities/ + ace | wiki/permanent/ | notes/ |
+| source | wiki/sources/ | wiki/sources/ | wiki/literature/ | wiki/sources/ |
+| fleeting | 0 Inbox/ 保留 | wiki/ideas/ | 合并到永久 | notes/ |
+| task | 1 Projects/ | 2 Areas/ | 不适用 | notes/ |
+
+### Frontmatter 注入差异
+
+| 模式 | 额外字段 |
+|------|---------|
+| para | （无，保持现状） |
+| lyt | `methodology: lyt`, `ace:`, `mocs:` |
+| zettel | `methodology: zettel`, `liveness:`, `hub:` |
+| generic | `methodology: generic` |
+
+- 无 `--mode` 或无 `methodology` 字段 → 默认 `para` 行为
+
+---
+
 ## 执行流程
 
 步骤0: Delta 检查（哈希比对，匹配则跳过）
 步骤1: 扫描 Inbox 待处理文件
 步骤2: 四维分析
+    步骤2a: 模式判定 — 检查 --mode 参数；若无则检查源文件已有 methodology 字段；均无则默认 para
+    步骤2b: 根据 mode 确定路由目标和额外 frontmatter 字段（参照上方模式感知路由矩阵）
 步骤3: 添加 frontmatter（需加锁）
+    注入基础字段（created/updated/udc/tags）+ 模式特有字段（见 Frontmatter 注入差异表）
 步骤4: 复制到目标目录（需加锁）
+    按模式路由矩阵决定目标目录（concept/entity/source 等类型 × 四种模式）
 步骤5: 原始文件移入 _processed/
 步骤6: 更新 Manifest
 步骤7: 日志记录
@@ -132,8 +163,65 @@ fi
 - --fold — 生成批次折叠报告
 - --inbox — 残留记录处理模式
 - --legacy — 旧笔记分流模式
+- --batch — 批量处理模式（一次处理 Inbox 中所有待处理文件）
+- --mode <para|lyt|zettel|generic> — 方法论模式（默认 para）
 
 ---
+
+## 批量处理模式
+
+当指定 `--batch` 时，一次处理 `0 Inbox/1-input/` 下所有待处理文件。
+
+### 批量流程
+
+1. 扫描 Inbox 所有待处理文件，生成文件列表
+2. 对每个文件执行四维分析（A/B/C/D/E）
+3. 批量添加 frontmatter（逐文件加锁）
+4. 批量复制到目标目录（逐文件加锁）
+5. 原始文件批量移入 _processed/
+6. 生成批次折叠报告到 _meta/system/logs/reports/
+
+### 批次折叠报告格式
+
+```markdown
+## Triage Batch Report: {YYYY-MM-DD HH:mm}
+
+| 文件 | 类型 | 路由 | 状态 |
+|------|------|------|:----:|
+| file1.md | concept | wiki/concepts/ | ok |
+| file2.md | task | 1 Projects/ | ok |
+
+处理: 3 文件 | 成功: 2 | 跳过: 1 | 失败: 0
+```
+
+### 注意事项
+- 批量模式仍然逐文件加锁，非并发
+- 单个文件失败不影响其他文件
+- 批次折叠报告写入 `_meta/system/logs/reports/triage-batch-{YYYY-MM-DD}.md`
+
+
+## Advisory Lock（可见锁）
+
+当编辑一个已有文件时，先在文件 frontmatter 中添加可见锁标记，以便其他协作者知晓。
+
+### 上锁
+
+在文件 frontmatter 的 tags 行后追加：
+
+```
+lock_advisory: {holder: <agent_name>, acquired_at: "YYYY-MM-DDTHH:MM:SS"}
+```
+
+### 解锁
+
+编辑完成后，从 frontmatter 中移除 `lock_advisory` 行。
+
+### 规则
+
+- 每次编辑前检查目标文件是否有 `lock_advisory`。若有且 `acquired_at` 在 10 分钟内，等待或跳过。
+- 若 `acquired_at` 超过 10 分钟，视为过期锁，可以覆盖。
+- 读操作不需要上锁。
+- 锁是 advisory（建议性）的，不强制执行，但应尊重。
 
 ## 10原则映射
 
@@ -144,3 +232,5 @@ fi
 5. SYSTEM — 锁 -> Delta -> 写入 -> Manifest -> 日志
 6. CREATE — 写入目标文件 + frontmatter + manifest
 7. GROW — 残留追踪 + 跨会话进度记录
+
+

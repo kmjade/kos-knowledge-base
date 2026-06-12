@@ -1,4 +1,4 @@
----
+﻿---
 title: "WIKI — Vault Entry Point"
 created: 2026-06-12
 updated: 2026-06-12
@@ -34,6 +34,7 @@ A **Knowledge Organization System** built on Obsidian, powered by AI agents. It 
 | `KOS-Link [--path <dir>] [--fix]` | Health check (7 levels) |
 | `KOS-Query [quick|standard|deep] <question>` | Knowledge base query |
 | `KOS-Project` | Create/manage projects |
+| `KOS-Archive` | Archive completed projects |
 | `Daily Open` / `Day-Review` | Daily note / review |
 | `KOS-Init [--status] [--fix]` | Initialize / health check vault |
 
@@ -79,3 +80,4 @@ If this is a new vault session:
 3. Run `KOS-Init --status` to verify vault integrity
 4. Run `KOS-Status` to check inbox/project health
 5. Run `Daily Open` to create today's note
+

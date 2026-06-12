@@ -1,4 +1,4 @@
-# KOS_LLM-Wiki
+﻿# KOS_LLM-Wiki
 
 **Knowledge Organization System** — v3.0
 
@@ -67,9 +67,10 @@ Daily Open                      # 今日笔记
 ├── en/ + zh-tw/      语言镜像
 ├── Periodic/         周期笔记
 │
-├── AGENTS.md         AI 行为规范
+├── AGENTS.md         AI 行为规范（权威源）
 ├── SYSTEM_GUIDE.md   系统完整指南
 ├── WIKI.md           Vault 入口
+├── CLAUDE.md         快速参考
 ├── Home.md           Obsidian 首页
 └── README.md         本文件
 ```
@@ -120,3 +121,4 @@ mocs: ["[[MOC 路径]]"]
 ## 许可
 
 MIT
+
