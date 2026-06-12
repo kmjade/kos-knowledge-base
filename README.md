@@ -1,10 +1,10 @@
 ﻿# KOS_LLM-Wiki
 
-**Knowledge Organization System** — v3.0.1
+**Knowledge Organization System** — v3.0.0
 
 PARA × UDC × LLM-Wiki — 三语言知识中枢，AI 驱动的个人知识管理。
 
-![version](https://img.shields.io/badge/version-v3.0.1-blue)
+![version](https://img.shields.io/badge/version-v3.0.0-blue)
 ![license](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)
 ![lang](https://img.shields.io/badge/lang-CN%20%7C%20EN%20%7C%20TW-orange)
 
@@ -100,7 +100,7 @@ mocs: ["[[MOC 路径]]"]
 
 | 版本 | 日期 | 概要 |
 |------|------|------|
-| **v3.0.1** | 2026-06-12 | Phase 1 WP 全部实施完成 + 验收测试通过 + 文档同步 |
+| **v3.0.0** | 2026-06-12 | 公开版 — 不含私密项目/财务/企业数据 |
 | **v3.0** | 2026-06-12 (v3.0.1) | 方法论模式 + AutoResearch + 检索增强 + 矛盾标记 + WIKI.md |
 | v3.0-rc | 2026-06-09 | 三平台 Skill 架构 / KOS 引擎 / 热缓存 / 文件锁 / Canvas |
 | v2.0 | 2026-06-07 | LifeOS × LLM-Wiki 融合 / Codex 适配 / 三语言 |
@@ -122,6 +122,7 @@ mocs: ["[[MOC 路径]]"]
 ## 许可
 
 CC BY-SA 4.0
+
 
 
 
