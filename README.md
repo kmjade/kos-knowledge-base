@@ -5,7 +5,7 @@
 PARA × UDC × LLM-Wiki — 三语言知识中枢，AI 驱动的个人知识管理。
 
 ![version](https://img.shields.io/badge/version-v3.0.1-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
+![license](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)
 ![lang](https://img.shields.io/badge/lang-CN%20%7C%20EN%20%7C%20TW-orange)
 
 ---
@@ -121,6 +121,7 @@ mocs: ["[[MOC 路径]]"]
 
 ## 许可
 
-MIT
+CC BY-SA 4.0
+
 
 
