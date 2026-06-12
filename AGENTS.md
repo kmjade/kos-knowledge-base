@@ -1,4 +1,4 @@
-# AGENTS — KOS_LLM-Wiki 维护指南
+﻿# AGENTS — KOS_LLM-Wiki 维护指南
 
 > 本仓库是知识组织管理系统，**非软件项目** — 无构建系统、无测试套件、无应用代码。通过 Obsidian 管理，AI 辅助分拣、编译与链接校验。
 > `CLAUDE.md` 是快速上手参考；本文件是权威行为规范。
@@ -8,11 +8,11 @@
 ## 目录结构
 
 ```
-├── 0 Inbox/          # 待分拣笔记（仅根目录 .md；_processed/ 内文件忽略）
-├── 1 Projects/       # 有目标与截止日期的项目
-├── 2 Areas/          # 持续关注的长期领域
+├── 0 Inbox/          # IOO 流水线：1-input/ → 2-output/ → 3-outcome/
+├── 1 Projects/       # ITO 生命周期：1-proposal/ → 2-execution/ → 3-completion/ → 4-archived/
+├── 2 Areas/          # 人生轨迹：生活/工作/学习
 ├── 3 Resources/      # 参考资料与知识库
-├── 4 Archives/       # 已完成项目（gitignored）
+├── 4 Archives/       # 冷存储：projects/（项目） tasks/（工单） legacy/（不明）
 
 ├── _meta/            # 模板、ADR、日志、查询、索引、AI（技能/记忆/角色）、资产
 
@@ -24,6 +24,32 @@
 
 ---
 
+### 0 Inbox 流水线结构
+
+```
+0 Inbox/
+├── 0 Inbox.md              ← Dashboard
+├── 1-input/
+│   ├── clippings/          ← 网页剪藏
+│   └── fleeting/           ← 碎片想法
+├── 2-output/               ← 处理后的输出件
+├── 3-outcome/
+│   ├── learnings/          ← 沉淀的知识
+│   └── impacts/            ← 实际行动/决策影响
+└── _processed/             ← AI 处理后暂存
+```
+
+### 1 Projects 生命周期结构
+
+```
+1 Projects/
+├── 1 Projects.md              ← Dashboard
+├── 1-proposal/                ← 验入法论证通过，待立项
+├── 2-execution/               ← 已立项，正在执行
+├── 3-completion/              ← 产出完成，等最终确认
+└── 4-archived/                ← 已结项，准备移入 4 Archives/
+```
+
 ## 笔记规范
 
 ### 文件命名
@@ -32,6 +58,18 @@
 |------|------|------|
 | 简体中文（根目录） | 中文描述 + 空格分隔 | `提示工程.md` |
 | English（`en/`） | kebab-case | `prompt-engineering.md` |
+
+### 目录命名
+
+| 区域 | 目录语言 | 内容语言 | 备注 |
+|------|---------|---------|------|
+| 0 Inbox/（新） | 英文 | 中文 | 流水线结构：1-input/ 2-output/ 3-outcome/ |
+| 1 Projects/（新） | 英文 | 中文 | 生命周期：1-proposal/ 2-execution/ 3-completion/ 4-archived/ |
+| 2 Areas/（现有） | 中文 | 中文 | 不动 |
+| 3 Resources/（现有） | 中英混合 | 中文 | 不动 |
+| 4 Archives/（现有） | 英文 | 中文 | 不动 |
+| en/ 镜像 | 英文 | 英文 | 按新结构同步 |
+| zh-tw/ 镜像 | 繁体中文 | 繁体中文 | 按新结构同步 |
 | 繁體中文（`zh-tw/`） | 中文描述 + 空格分隔 | `提示工程.md` |
 
 ### Frontmatter（必填）
@@ -141,6 +179,35 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 
 ---
 
+## Inbox ⇄ Projects 交汇
+
+两个流水线在 **3-outcome** 节点交汇：
+
+| 方向 | 流程 |
+|------|------|
+| 想法 → 项目 | 验入法/隔离区/ → 1-proposal/ → 2-execution/ |
+| 项目 → 成果 | 3-completion/ → Outcome 记录到 0 Inbox/3-outcome/impacts/ |
+
+项目进入 3-completion/ 后，必须产出 Outcome 摘要（实际影响、关键成果、可复用方法），
+写入 `0 Inbox/3-outcome/impacts/`。
+这是项目生命周期在知识库中的闭环标志。
+
+---
+
+## 镜像同步
+
+en/、zh-tw/ 镜像按新流水线结构同步索引页：
+
+| 语言 | Inbox 路径 | Projects 路径 |
+|------|-----------|--------------|
+| English | en/0-inbox/ | en/1-projects/ |
+| 繁體中文 | zh-tw/0-收件匣/ | zh-tw/1-專案/ |
+
+镜像仅含索引/Dashboard 页，不镜像具体 Inbox 文件（临时内容不需要镜像）。
+三语言索引页之间建立 [[wikilink]] 互链。
+
+---
+
 ## AI 引擎命令
 
 所有引擎**幂等**（已处理的文件不重复操作）。
@@ -156,7 +223,7 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 
 ### KOS-Triage 规则
 
-**扫描：** 读 `0 Inbox/` 根目录 `.md` 文件，忽略 `_processed/` 子目录和 `triage.status: processed` 文件。非 `.md` 文件仅记录日志。
+**扫描：** 读 `0 Inbox/1-input/` 下所有 `.md` 文件，忽略 `triage.status: processed` 文件。非 `.md` 文件仅记录日志。
 
 **四维分析：**
 
@@ -168,7 +235,7 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 | **D — 复杂度** | <500字单主题 → `low`；500–2000字多主题 → `medium`；>2000字或多独立段 → `high` |
 | **E — UDC** | 按四层管道建议，无匹配标记 `needs-mapping` |
 
-**路由：** 复制文件到目标目录（添加 frontmatter + UDC 建议）→ 原始文件移入 `0 Inbox/_processed/` → 日志写入 `_meta/system/logs/operations/triage.md`。
+**路由：** 复制文件到 `0 Inbox/2-output/`（添加 frontmatter + UDC 建议）→ 原始文件移入 `0 Inbox/_processed/`；闭环记录移入 `0 Inbox/3-outcome/` → 日志写入 `_meta/system/logs/operations/triage.md`。
 
 ### KOS-Wiki-Compile 规则
 
@@ -267,7 +334,7 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 
 ## 会话协议
 
-**开始：** 加载 AGENTS.md → 读取 `_meta/hot.md` 恢复最近上下文（Codex/OpenCode 平台；Claude Code 通过 hooks 自动完成）→ 扫描 `1 Projects/` 活跃工单 → 检查 Inbox 待处理文件 → 检查编译状态 → **检查 `_meta/.locks/` 残留锁（如有则 `python3 scripts/wiki-lock.py clear-stale --max-age 3600` 清理并记录）** → 检查当日笔记 → 输出状态摘要。
+**开始：** 加载 AGENTS.md → 读取 `_meta/hot.md` 恢复最近上下文（Codex/OpenCode 平台；Claude Code 通过 hooks 自动完成）→ 扫描 `1 Projects/` 活跃工单 → 检查 Inbox 流水线状态（1-input/ → 2-output/ → 3-outcome/） → 检查编译状态 → **检查 `_meta/.locks/` 残留锁（如有则 `python3 scripts/wiki-lock.py clear-stale --max-age 3600` 清理并记录）** → 检查当日笔记 → 输出状态摘要。
 
 **运行中：** KOS-Triage / KOS-Compile / 周期回顾完成后，更新 `_meta/hot.md` 记录最新上下文。仅记录对 vault 知识状态有实质改变的操作。
 
@@ -295,3 +362,5 @@ UDC 格式：`\d{3}(\.\d+)?(:\d{3}(\.\d+)?)*`
 - `_meta/architecture/adr/` — 架构决策记录
 - `_meta/ai/memory/全局状态.md` — 跨会话状态
 - `_meta/ai/agents/life/` — Life+AI 三支柱角色定义
+
+

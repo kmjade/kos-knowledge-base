@@ -25,7 +25,7 @@ SORT status ASC
 
 | Project | Priority | Status |
 |:--------|:--------:|:------:|
-| [[en/1 Projects/26-02 Bug追踪/26-02 Bug追踪\|26-02 Bug Tracking]] | active |
+| [[en/1 Projects/2-execution/26-02 Bug追踪/26-02 Bug追踪\|26-02 Bug Tracking]] | active |
 | [[en/4 Archives/26-03 文件锁实现/26-03 文件锁实现\|26-03 File Lock]] | archived |
 | [[en/4 Archives/26-04 UDC整合实施/26-04 UDC整合实施\|26-04 UDC Integration]] | archived |
 | [[en/4 Archives/26-07 Life+AI 融合/26-07 Life+AI 融合\|26-07 Life+AI Fusion]] | archived |
