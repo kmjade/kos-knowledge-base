@@ -1,4 +1,4 @@
-﻿---
+---
 title: "WIKI — Vault Entry Point"
 created: 2026-06-12
 updated: 2026-06-12
@@ -18,21 +18,21 @@ A **Knowledge Organization System** built on Obsidian, powered by AI agents. It 
 
 ```
 1. Read this file (WIKI.md) — you're here
-2. Read AGENTS.md for full behavioral rules
-3. Read _meta/hot.md for recent context
+2. Read [[../AGENTS.md|AGENTS.md]] for full behavioral rules
+3. Read [[_meta/hot.md]] for recent context
 4. Run KOS-Status to check vault health
 ```
 
 ## Available commands
 
 | Command | What it does |
-|---------|-------------|
+| :--- | :--- |
 | `KOS-Status` | Vault health summary |
-| `KOS-Triage [--mode <para|lyt|zettel|generic>] [--file <path>]` | Process inbox → route to target |
+| `KOS-Triage [--mode <para&#124;lyt&#124;zettel&#124;generic>] [--file <path>]` | Process inbox → route to target |
 | `KOS-Wiki-Compile [--mode <...>] [--file <path>]` | Compile raw → wiki pages |
-| `KOS-Research --topic "..." [--depth <quick|standard|deep>]` | Autonomous web research |
+| `KOS-Research --topic "..." [--depth <quick&#124;standard&#124;deep>]` | Autonomous web research |
 | `KOS-Link [--path <dir>] [--fix]` | Health check (7 levels) |
-| `KOS-Query [quick|standard|deep] <question>` | Knowledge base query |
+| `KOS-Query [quick&#124;standard&#124;deep] <question>` | Knowledge base query |
 | `KOS-Project` | Create/manage projects |
 | `KOS-Archive` | Archive completed projects |
 | `Daily Open` / `Day-Review` | Daily note / review |
@@ -63,14 +63,14 @@ This vault supports four organizational methodologies (set via `methodology` fro
 ## Key files
 
 | File | Purpose |
-|------|---------|
-| `AGENTS.md` | Full behavioral rules for AI agents |
-| `_meta/hot.md` | Session context cache |
-| `_meta/index/links/Index/_index-zh-cn.md` | Master index (CN) |
-| `_meta/system/templates/modes/` | Mode-specific note templates |
-| `.codex/skills/` | KOS skill definitions (authoritative source) |
-| `.claude/hooks.json` | Session lifecycle hooks |
-| `_meta/system/scripts/wiki-lock.py` | File locking for multi-writer safety |
+| :--- | :--- |
+| [[../AGENTS.md]] | Full behavioral rules for AI agents |
+| [[_meta/hot.md]] | Session context cache |
+| [[../_meta/index/links/Index/_index-zh-cn.md]] | Master index (CN) |
+| `_meta/system/templates/modes/` (directory) | Mode-specific note templates (5 modes) |
+| [[../.codex/skills/]] | KOS skill definitions (authoritative source) |
+| [[../.claude/hooks.json]] | Session lifecycle hooks |
+| [[../_meta/system/scripts/wiki-lock.py]] | File locking for multi-writer safety |
 
 ## First-time setup
 
@@ -80,4 +80,3 @@ If this is a new vault session:
 3. Run `KOS-Init --status` to verify vault integrity
 4. Run `KOS-Status` to check inbox/project health
 5. Run `Daily Open` to create today's note
-

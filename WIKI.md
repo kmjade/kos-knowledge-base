@@ -1,83 +1,82 @@
-﻿---
-title: "WIKI — Vault Entry Point"
+---
+title: "WIKI — 知识库入口"
 created: 2026-06-12
 updated: 2026-06-12
 udc: 001.8
 tags: [meta, entry, guide]
 ---
 
-# KOS_LLM-Wiki — Vault Entry
+# KOS_LLM-Wiki — 知识库入口
 
-> Read this page first. It explains what this vault is and how to use it.
+> 请先阅读此页。它说明此知识库的用途与使用方式。
 
-## What is this vault?
+## 这是什么知识库？
 
-A **Knowledge Organization System** built on Obsidian, powered by AI agents. It combines PARA method, UDC classification, and LLM-Wiki knowledge graph patterns across three languages (CN/EN/TW).
+一个基于 Obsidian、由 AI 代理驱动的**知识组织系统**。它结合 PARA 方法、UDC 分类法与 LLM-Wiki 知识图谱模式，支持三种语言（CN/EN/TW）。
 
-## Quick start for AI agents
-
-```
-1. Read this file (WIKI.md) — you're here
-2. Read AGENTS.md for full behavioral rules
-3. Read _meta/hot.md for recent context
-4. Run KOS-Status to check vault health
-```
-
-## Available commands
-
-| Command | What it does |
-|---------|-------------|
-| `KOS-Status` | Vault health summary |
-| `KOS-Triage [--mode <para|lyt|zettel|generic>] [--file <path>]` | Process inbox → route to target |
-| `KOS-Wiki-Compile [--mode <...>] [--file <path>]` | Compile raw → wiki pages |
-| `KOS-Research --topic "..." [--depth <quick|standard|deep>]` | Autonomous web research |
-| `KOS-Link [--path <dir>] [--fix]` | Health check (7 levels) |
-| `KOS-Query [quick|standard|deep] <question>` | Knowledge base query |
-| `KOS-Project` | Create/manage projects |
-| `KOS-Archive` | Archive completed projects |
-| `Daily Open` / `Day-Review` | Daily note / review |
-| `KOS-Init [--status] [--fix]` | Initialize / health check vault |
-
-## Vault structure
+## AI 代理快速入门
 
 ```
-0 Inbox/          → Inbox pipeline (1-input → 2-output → 3-outcome)
-1 Projects/       → ITO lifecycle (proposal → execution → completion → archive)
-2 Areas/          → Life domains (学习/工作/生活)
-3 Resources/      → Knowledge base (concepts/entities/sources)
-4 Archives/       → Cold storage
-_meta/            → System (templates/scripts/logs/ai/memory)
-Periodic/         → Daily/weekly/monthly notes
-en/ + zh-tw/      → Language mirrors
+1. 阅读此文件 (WIKI.md) — 你正在这里
+2. 阅读 AGENTS.md 了解完整行为规范
+3. 阅读 _meta/hot.md 获取近期上下文
+4. 执行 KOS-Status 检查知识库健康状态
 ```
 
-## Methodology modes
+## 可用命令
 
-This vault supports four organizational methodologies (set via `methodology` frontmatter field):
+| 命令 | 功能 |
+| :--- | :--- |
+| `KOS-Status` | 知识库健康摘要 |
+| `KOS-Triage [--mode <para&#124;lyt&#124;zettel&#124;generic>] [--file <path>]` | 处理收件箱 → 路由到目标目录 |
+| `KOS-Wiki-Compile [--mode <...>] [--file <path>]` | 编译 raw → wiki 页面 |
+| `KOS-Research --topic "..." [--depth <quick&#124;standard&#124;deep>]` | 自主网络研究 |
+| `KOS-Link [--path <dir>] [--fix]` | 健康检查（7 层级） |
+| `KOS-Query [quick&#124;standard&#124;deep] <question>` | 知识库查询 |
+| `KOS-Project` | 创建/管理项目 |
+| `KOS-Archive` | 归档已完成项目 |
+| `Daily Open` / `Day-Review` | 每日笔记 / 回顾 |
+| `KOS-Init [--status] [--fix]` | 初始化 / 健康检查知识库 |
 
-- `para` — Projects/Areas/Resources/Archives (default)
-- `lyt` — MOC navigation + Ace principle
-- `zettel` — Atomic notes + Folgezettel + Hubs
-- `generic` — Minimal structure, tags + links
+## 知识库结构
 
-## Key files
+```
+0 Inbox/          → 收件箱流水线 (1-input → 2-output → 3-outcome)
+1 Projects/       → ITO 生命周期 (proposal → execution → completion → archive)
+2 Areas/          → 人生领域 (学习/工作/生活)
+3 Resources/      → 知识库 (概念/实体/来源)
+4 Archives/       → 冷存储
+_meta/            → 系统 (模板/脚本/日志/AI/记忆)
+Periodic/         → 每日/每周/每月笔记
+en/ + zh-tw/      → 语言镜像
+```
 
-| File | Purpose |
-|------|---------|
-| `AGENTS.md` | Full behavioral rules for AI agents |
-| `_meta/hot.md` | Session context cache |
-| `_meta/index/links/Index/_index-zh-cn.md` | Master index (CN) |
-| `_meta/system/templates/modes/` | Mode-specific note templates |
-| `.codex/skills/` | KOS skill definitions (authoritative source) |
-| `.claude/hooks.json` | Session lifecycle hooks |
-| `_meta/system/scripts/wiki-lock.py` | File locking for multi-writer safety |
+## 方法论模式
 
-## First-time setup
+此知识库支持四种组织方法论（通过 `methodology` frontmatter 字段设定）：
 
-If this is a new vault session:
-1. Confirm Obsidian is available
-2. Check Local REST API plugin (port 27124) if MCP transport needed
-3. Run `KOS-Init --status` to verify vault integrity
-4. Run `KOS-Status` to check inbox/project health
-5. Run `Daily Open` to create today's note
+- `para` — 项目/领域/资源/归档（默认）
+- `lyt` — MOC 导航 + Ace 原则
+- `zettel` — 原子笔记 + Folgezettel + Hubs
+- `generic` — 最小结构，标签 + 链接
 
+## 关键文件
+
+| 文件 | 用途 |
+| :--- | :--- |
+| [[AGENTS.md]] | AI 代理完整行为规范 |
+| [[_meta/hot.md]] | 会话上下文缓存 |
+| [[_meta/index/links/Index/_index-zh-cn.md]] | 主索引（CN） |
+| `_meta/system/templates/modes/`（目录） | 模式专用笔记模板（5 种模式） |
+| [[.codex/skills/]] | KOS 技能定义（权威来源） |
+| [[.claude/hooks.json]] | 会话生命周期钩子 |
+| [[_meta/system/scripts/wiki-lock.py]] | 多写入者文件锁定 |
+
+## 首次设置
+
+如果是新的知识库会话：
+1. 确认 Obsidian 可用
+2. 如需 MCP 传输，检查 Local REST API 插件（端口 27124）
+3. 执行 `KOS-Init --status` 验证知识库完整性
+4. 执行 `KOS-Status` 检查收件箱/项目健康状态
+5. 执行 `Daily Open` 创建今日笔记
