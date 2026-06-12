@@ -117,5 +117,5 @@ tags: [resource, llm]
 
 - [[UDC 分类索引|UDC 分类索引]]
 - [[UDC 与数字知识管理|UDC 与数字知识管理]]
--[[../../../001-PARA/wiki/PARA 方法概览|PARA 方法概览]]]
+[[PARA 方法概览|PARA 方法概览]]]]
 

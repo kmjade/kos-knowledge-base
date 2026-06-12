@@ -20,8 +20,8 @@ tags: [resource, llm]
 
 ## 相關筆記
 
-- [[知识组织与大模型|知識組織與 LLM]]
-- [[提示工程]]
+-[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/知识组织与大模型|知識組織與 LLM]]]
+-[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/提示工程]]]
 
 ## 參考
 

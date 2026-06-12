@@ -91,5 +91,5 @@ SORT file.name
 
 - [[UDC 概述|UDC 概述]]
 - [[UDC 分类索引|UDC 分类索引]]
--[[../../../001-PARA/wiki/PARA 与知识管理|PARA 与知识管理]]]
+[[PARA 与知识管理|PARA 与知识管理]]]]
 

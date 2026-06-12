@@ -37,9 +37,9 @@ RAG 的核心邏輯：通過語義向量檢索，找到與當前問題最相關�
 
 ## 相關筆記
 
-- [[LLM 基础]]
-- [[知识组织与大模型|知識組織與 LLM]]
-- [[提示工程]]
+-[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/LLM 基础]]]
+-[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/知识组织与大模型|知識組織與 LLM]]]
+-[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/提示工程]]]
 
 ## 參考
 

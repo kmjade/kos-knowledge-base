@@ -95,4 +95,4 @@ WHERE udc LIKE "004.%"
 - [[UDC 分类索引]]
 - [[UDC 概述]]
 - [[DDC-UDC 映射表]]
-- [[3 Resources/000-Knowledge/_meta/UDC映射|UDC映射]]
+- [[UDC映射|UDC映射]]

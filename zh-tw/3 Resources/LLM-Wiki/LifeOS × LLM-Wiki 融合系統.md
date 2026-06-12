@@ -40,4 +40,4 @@ reviewed: true
 ## 參考
 
 - 原始檔案：LifeOS × LLM-Wiki 融合系統.md
-- 相關頁面：[[Knowledge+PARA+LLM-Wiki融合系統]]
+- 相關頁面：[[zh-tw/3 Resources/LLM-Wiki/Knowledge+PARA+LLM-Wiki融合系統]]

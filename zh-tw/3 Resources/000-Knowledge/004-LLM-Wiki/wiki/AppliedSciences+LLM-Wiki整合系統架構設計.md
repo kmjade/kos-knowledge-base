@@ -16,7 +16,7 @@ tags: [resource, llm]
 > 本文檔是 600 Applied Sciences 領域的內部憲法——定義結構、約定和邊界。
 
 *分類: 000 Knowledge / Knowledge-Systems*
-*父文檔: [[Knowledge+PARA+LLM-Wiki融合系統|融合系統總架構 v1.1]]*
+*父文檔:[[zh-tw/3 Resources/000-Knowledge/004-LLM-Wiki/wiki/Knowledge+PARA+LLM-Wiki融合系統|融合系統總架構 v1.1]]]*
 *版本: v1.0 · 創建: 2026-05-29*
 
 ## 參考

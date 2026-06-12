@@ -20,7 +20,7 @@ tags: [resource, llm, triage]
 
 - [[LLM 基礎]]
 - [[知識組織與大模型|知識組織與 LLM]]
-- [[提示工程]]
+- [[zh-tw/3 Resources/LLM-Wiki/提示工程]]
 
 ## 參考
 

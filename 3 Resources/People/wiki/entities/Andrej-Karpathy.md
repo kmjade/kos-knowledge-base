@@ -1,4 +1,5 @@
 ﻿---
+privacy: restricted
 created: 2026-06-01
 updated: 2026-06-07
 udc: 929
@@ -13,3 +14,4 @@ status: stub
 
 ## Sources
 - Entity present in vault wiki — awaiting enrichment
+

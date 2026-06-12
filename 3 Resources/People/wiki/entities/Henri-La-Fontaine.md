@@ -1,4 +1,5 @@
----
+﻿---
+privacy: restricted
 type: entity
 entity_type: person
 tier: 2
@@ -127,3 +128,4 @@ La Fontaine 法学家背景的独特贡献：
 
 *UDC+LLM-Wiki 整合系统 · 核心实体 · Tier 2*
 *最后更新: 2026-06-02*
+

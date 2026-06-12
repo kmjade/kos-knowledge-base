@@ -20,7 +20,7 @@ tags: [resource, knowledge, general, index]
 | [[../../4 Archives/tasks\|任务清单]]                                 | 004.4 | 项目管理     |
 | [[3 Resources/000-Knowledge/哥德尔不完备定理\|哥德尔不完备定理]]               | 510   | 数学逻辑     |
 | [[raw/articles/复利与72法则\|复利与 72 法则]]                    | 030   | 通识常识     |
-| [[3 Resources/000-Knowledge/范式转移\|人类文明史上的范式转移]]                | 930   | 历史         |
+| [[范式转移\|人类文明史上的范式转移]]                | 930   | 历史         |
 
 ## 原始资料（raw/）
 
@@ -67,6 +67,6 @@ tags: [resource, knowledge, general, index]
 
 ## 关联子库
 
-- [[004-人工智能/raw/004-LLM-Wiki/004-LLM-Wiki|004-LLM-Wiki]] — AI 与 LLM 专题
+- [[3 Resources/000-Knowledge/raw/articles/004-人工智能/raw/004-LLM-Wiki/004-LLM-Wiki|004-LLM-Wiki]] — AI 与 LLM 专题
 - [[raw/articles/001-PARA/001-PARA|001-PARA]] — 知识管理方法
 - [[raw/articles/025-Classification-Metadata/025-UDC/025-UDC|025-UDC]] — 分类法体系

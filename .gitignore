@@ -75,3 +75,17 @@ _temp/
 # Business management (client records, accounting templates)
 2 Areas/工作/企业管理/
 
+
+# ======== 隐私加固（补充） ========
+
+# AI session metadata (conversation records)
+.claudian/
+
+# Obsidian plugin builds (binary + node_modules)
+.obsidian/
+
+# Plan files (transient)
+.hermes/
+
+# Temp debug artifacts
+tmp/

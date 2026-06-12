@@ -57,4 +57,4 @@ wiki/ (编译产物) ──AI 独占──▶  写入
 
 - [[0 Inbox/_INDEX|Inbox]] — 待分拣资源来源
 - [[1 Projects/_INDEX|项目]] — 资源使用场景
-- [[4 Archives/_INDEX|归档]] — 过时资源归档
+- [[4 Archives|归档]] — 过时资源归档

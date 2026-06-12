@@ -1,4 +1,5 @@
----
+﻿---
+privacy: restricted
 type: entity
 entity_type: person
 tier: 1
@@ -127,3 +128,4 @@ tags:
 
 *UDC+LLM-Wiki 整合系统 · 核心实体 · Tier 1*
 *最后更新: 2026-06-02*
+

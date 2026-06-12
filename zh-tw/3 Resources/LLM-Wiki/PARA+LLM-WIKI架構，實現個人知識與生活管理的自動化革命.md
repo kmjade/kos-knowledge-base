@@ -46,7 +46,7 @@ RAG（Retrieval-Augmented Generation）的核心邏輯是：通過語義向量�
 
 - [[LLM 基礎]]
 - [[知識組織與大模型|知識組織與 LLM]]
-- [[提示工程]]
+-[[zh-tw/3 Resources/LLM-Wiki/提示工程]]]
 
 ## 參考
 

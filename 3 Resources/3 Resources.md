@@ -31,7 +31,7 @@ tags:
 
 ## 相關
 
-- [[_INDEX]] — 資源索引
+- [[3 Resources/_INDEX]] — 資源索引
 - [[_META-INDEX]] — Wiki 全局導航
 - [[1 Projects|Projects]] — 相關項目
 - [[0 Inbox/0 Inbox|Inbox]] — 待分揀資源

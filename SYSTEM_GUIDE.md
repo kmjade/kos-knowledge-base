@@ -1,4 +1,4 @@
-﻿---
+---
 title: "KOS 系统指南"
 created: 2026-06-12
 updated: 2026-06-12
