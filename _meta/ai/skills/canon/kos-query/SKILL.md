@@ -40,9 +40,9 @@ _meta/                           # 系统元数据（设计、ADR、模板）
 | 索引 | 路径 | 内容 |
 |------|------|------|
 | **热缓存** | `_meta/hot.md` | 最近会话上下文 (~500 字) |
-| **主索引 (CN)** | `_meta/🔗 知识关联/Index/_index-zh-cn.md` | 全库 Dataview 索引 |
-| **主索引 (EN)** | `en/_meta/Knowledge-Links/Index/_index.md` | English 镜像 |
-| **主索引 (TW)** | `zh-tw/_meta/🔗 知识关联/Index/_index.md` | 繁體镜像 |
+| **主索引 (CN)** | `_meta/index/links/Index/_index-zh-cn.md` | 全库 Dataview 索引 |
+| **主索引 (EN)** | `en/_meta/index/links/Index/_index.md` | English 镜像 |
+| **主索引 (TW)** | `zh-tw/_meta/index/links/Index/_index.md` | 繁體镜像 |
 | **UDC 分类索引** | `3 Resources/000-Knowledge/wikis/concepts/UDC 分类索引.md` | 按 UDC 类号组织的索引 |
 
 ### UDC 分类导航
@@ -63,7 +63,7 @@ _meta/                           # 系统元数据（设计、ADR、模板）
 当答案很可能在 hot.md 或索引摘要中时使用。
 
 1. **读** `_meta/hot.md`。如果回答了问题，立即回复。
-2. 如果不够，**读** `_meta/🔗 知识关联/Index/_index-zh-cn.md`。扫描描述找答案。
+2. 如果不够，**读** `_meta/index/links/Index/_index-zh-cn.md`。扫描描述找答案。
 3. 如果在索引摘要中找到，回复，**不打开任何页面**。
 4. 如果找不到，回复："Quick 缓存未命中。需要执行 Standard 查询？"
 
@@ -124,6 +124,53 @@ status: developing
 
 ---
 
+
+
+## 检索质量增强（BM25 + 重排序）
+
+当 Standard 或 Deep 查询返回多个候选页面时，按以下两步提升检索质量：
+
+### 第一步：BM25 粗排
+
+对 grep/glob 找到的候选页面，按 BM25 公式估算相关性：
+
+`
+BM25(q, d) = Σ(tf(t,d) * idf(t) * (k1 + 1)) / (tf(t,d) + k1 * (1 - b + b * |d|/avgdl))
+`
+
+简化规则：
+- **tf（词频）**: 查询词在页面中出现的次数。title 中出现的权重 ×3。
+- **idf（逆文档频率）**: 稀有词匹配比常见词更相关。
+- **|d|（文档长度）**: 过度冗长的页面降权。
+
+具体操作：
+- 对每个候选页面，统计查询词在标题和正文中的出现次数
+- 标题匹配 +3 分，正文匹配 +1 分
+- 按总分降序取 top 5-8 页进入第二步
+
+### 第二步：语义重排序
+
+对 BM25 top 页面进行二次排序：
+
+1. **frontmatter 匹配**: 查询词的 UDC/tags 是否与页面 frontmatter 匹配（+5 分）
+2. **链接密度**: 被其他 wiki 页面引用多的页面优先（+3 分）
+3. **时效性**: updated 字段在 30 天内的页面优先（+2 分）
+4. **模式感知**: 若查询带方法论倾向，同模式页面优先（+1 分）
+
+### 查询扩展
+
+对于短查询（< 5 字），自动扩展：
+- UDC 类号 → 查对应类目下所有页面
+- 同义词扩展（LLM ← 大语言模型 ← 语言模型）
+- 标签联想（#concept → 同类概念页）
+
+### 检索质量检查清单
+
+- [ ] 是否优先使用了 BM25 粗排？
+- [ ] 是否做了二次重排序？
+- [ ] top 结果的相关性是否明显优于纯 grep？
+- [ ] Deep 模式下是否做了全库搜索而非局部搜索？
+
 ## Token 纪律
 
 | 从...开始 | 约成本 | 何时停止 |
@@ -151,6 +198,6 @@ status: developing
 ## 跨语言查询
 
 - 默认从简体中文索引开始
-- 如果问题为英文 → 读 `en/_meta/Knowledge-Links/Index/_index.md`
-- 如果问题为繁体 → 读 `zh-tw/_meta/🔗 知识关联/Index/_index.md`
+- 如果问题为英文 → 读 `en/_meta/index/links/Index/_index.md`
+- 如果问题为繁体 → 读 `zh-tw/_meta/index/links/Index/_index.md`
 - 答案用提问的语言回复

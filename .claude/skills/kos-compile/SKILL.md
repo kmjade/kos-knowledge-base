@@ -104,6 +104,38 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 
 ---
 
+
+## 模式感知编译
+
+编译时若指定 `--mode`，页面类型映射和模板选择按模式分叉。
+
+### 模式决策链
+
+`
+IF 源文件有 methodology 字段 → 使用该模式
+ELSE IF compile --mode 参数 → 使用指定模式
+ELSE → 默认 para
+`
+
+### 页面类型 → 模板映射
+
+| 页面类型 | PARA/LlamaWiki 模板 | LYT 模板 | Zettel 模板 | Generic 模板 |
+|---------|--------------------|---------|------------|------------|
+| concept | modes/llm-wiki/llm-wiki-concept | modes/lyt/lyt-concept | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| entity | modes/llm-wiki/llm-wiki-entity | modes/lyt/lyt-entity | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| source | modes/llm-wiki/llm-wiki-source | modes/llm-wiki/llm-wiki-source | modes/zettel/zettel-literature | modes/llm-wiki/llm-wiki-source |
+| project | modes/para/para-project | — | — | — |
+| area | modes/para/para-area | — | — | — |
+| resource | modes/para/para-resource | — | — | — |
+| moc | — | modes/lyt/lyt-moc | — | — |
+| idea | — | modes/lyt/lyt-idea | — | — |
+| hub | — | — | modes/zettel/zettel-hub | — |
+| literature | — | — | modes/zettel/zettel-literature | — |
+| home | — | modes/lyt/lyt-home | — | — |
+
+模板路径相对于 _meta/system/templates/
+
+---
 ## 六步编译管道
 
 ### 步骤 0：Delta 检查
@@ -166,7 +198,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 |------|------|
 | 一致| 跳过 |
 | 补充 | 追加 |
-| 矛盾 | 双方保留 + 标记 `conflict: true` |
+| 矛盾 | 双方保留 + 标记 `conflict: true` + 添加 `[!contradiction]` callout |
 | 完全覆盖 | 旧版移入 `_archived/` |
 
 ---

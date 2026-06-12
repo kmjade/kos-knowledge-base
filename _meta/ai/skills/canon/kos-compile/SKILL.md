@@ -22,13 +22,13 @@ description: 编译 3 Resources/ 下raw 源文件为 wiki/ 知识页面。六步
 ```bash
 # 模式：acquire →写入 →release
 TARGET="3 Resources/LLM-Wiki/wiki/concepts/Foo.md"
-if python3 _meta/scripts/wiki-lock.py acquire "$TARGET"; then
+if python3 _meta/system/scripts/wiki-lock.py acquire "$TARGET"; then
     # ... 执行写入操作 ...
-    python3 _meta/scripts/wiki-lock.py release "$TARGET"
+    python3 _meta/system/scripts/wiki-lock.py release "$TARGET"
 else
     # rc=75: 被占用→重试一次    sleep 2
-    if python3 _meta/scripts/wiki-lock.py acquire "$TARGET"; then
-        python3 _meta/scripts/wiki-lock.py release "$TARGET"
+    if python3 _meta/system/scripts/wiki-lock.py acquire "$TARGET"; then
+        python3 _meta/system/scripts/wiki-lock.py release "$TARGET"
     else
         echo "SKIPPED $TARGET —locked by another writer"
     fi
@@ -104,6 +104,38 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 
 ---
 
+
+## 模式感知编译
+
+编译时若指定 `--mode`，页面类型映射和模板选择按模式分叉。
+
+### 模式决策链
+
+`
+IF 源文件有 methodology 字段 → 使用该模式
+ELSE IF compile --mode 参数 → 使用指定模式
+ELSE → 默认 para
+`
+
+### 页面类型 → 模板映射
+
+| 页面类型 | PARA/LlamaWiki 模板 | LYT 模板 | Zettel 模板 | Generic 模板 |
+|---------|--------------------|---------|------------|------------|
+| concept | modes/llm-wiki/llm-wiki-concept | modes/lyt/lyt-concept | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| entity | modes/llm-wiki/llm-wiki-entity | modes/lyt/lyt-entity | modes/zettel/zettel-permanent | modes/generic/generic-note |
+| source | modes/llm-wiki/llm-wiki-source | modes/llm-wiki/llm-wiki-source | modes/zettel/zettel-literature | modes/llm-wiki/llm-wiki-source |
+| project | modes/para/para-project | — | — | — |
+| area | modes/para/para-area | — | — | — |
+| resource | modes/para/para-resource | — | — | — |
+| moc | — | modes/lyt/lyt-moc | — | — |
+| idea | — | modes/lyt/lyt-idea | — | — |
+| hub | — | — | modes/zettel/zettel-hub | — |
+| literature | — | — | modes/zettel/zettel-literature | — |
+| home | — | modes/lyt/lyt-home | — | — |
+
+模板路径相对于 _meta/system/templates/
+
+---
 ## 六步编译管道
 
 ### 步骤 0：Delta 检查
@@ -141,9 +173,9 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 
 | 路径 | 锁目标|
 |------|--------|
-| `_meta/🔗 知识关联/Index/_index.md` | acquire →release |
-| `en/_meta/Knowledge-Links/Index/_index.md` | acquire →release |
-| `zh-tw/_meta/🔗 知识关联/Index/_index.md` | acquire →release |
+| `_meta/index/links/Index/_index.md` | acquire →release |
+| `en/_meta/index/links/Index/_index.md` | acquire →release |
+| `zh-tw/_meta/index/links/Index/_index.md` | acquire →release |
 
 ### 第6 步：更新 Manifest
 
@@ -166,7 +198,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 |------|------|
 | 一致| 跳过 |
 | 补充 | 追加 |
-| 矛盾 | 双方保留 + 标记 `conflict: true` |
+| 矛盾 | 双方保留 + 标记 `conflict: true` + 添加 `[!contradiction]` callout |
 | 完全覆盖 | 旧版移入 `_archived/` |
 
 ---

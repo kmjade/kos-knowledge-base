@@ -114,6 +114,18 @@ SORT tags ASC
 
 ---
 
+## 按方法论模式
+
+| 模式 | 说明 | 模板来源 |
+|------|------|---------|
+| `para` | 项目驱动，PARA 分类 | `_meta/system/templates/modes/para/` |
+| `lyt` | MOC 导航数字花园 | `_meta/system/templates/modes/lyt/` |
+| `zettel` | 原子笔记 + Folgezettel | `_meta/system/templates/modes/zettel/` |
+| `generic` | 最小结构自由笔记 | `_meta/system/templates/modes/generic/` |
+| `llm-wiki` | 知识图谱页类型（概念/实体/来源） | `_meta/system/templates/modes/llm-wiki/` |
+
+> 使用 `methodology` frontmatter 字段声明模式。无该字段时默认 `para`。
+
 ## 快速跳转
 
 | 目标 | 链接 |

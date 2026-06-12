@@ -1,6 +1,6 @@
 ---
 name: kos-link
-description: 校验 vault 健康度。六级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目状态 → L6 空正文检测。支持 --fix 自动修复。
+description: 校验 vault 健康度。七级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目状态 → L6 空正文检测 → L7 陈旧声明。支持 --fix 自动修复。
 ---
 
 # KOS-Link：链接与健康度校验引擎
@@ -42,6 +42,7 @@ description: 校验 vault 健康度。六级检查：L1 Frontmatter → L2 UDC �
 |--------|---------|
 | 三语言镜像齐全 | `_meta/system/logs/`、`0 Inbox/`、`Periodic/` |
 | udc/tags 一致 | 同上 |
+| methodology 字段一致（若任一语言有该字段，其他语言也应有且值相同） | 同上 |
 
 ### L5 — 项目状态
 
@@ -51,6 +52,24 @@ description: 校验 vault 健康度。六级检查：L1 Frontmatter → L2 UDC �
 | `[x]` 任务但 status: active |
 
 ### L6 — 空正文检测
+
+| 检查项 | 排除目录 |
+|--------|---------|
+| 文件是否仅含 frontmatter 无正文 | `_meta/system/logs/`、`0 Inbox/`、`.git/`、`.obsidian/` |
+| `--fix` 时自动从备份恢复 | 同上 |
+
+### L7 — 陈旧声明检测
+
+| 检查项 | 排除目录 | 阈值 |
+|--------|---------|:----:|
+| `updated` 字段超过 90 天未更新 | `_meta/system/logs/`、`0 Inbox/`、`Periodic/`、`4 Archives/` | 90 天 |
+| 含时效性关键词（当前/最新/最近/目前）但 `updated` > 90 天 | 同上 | 90 天 |
+| 含 `liveness: budding` 超过 180 天未升级 | 同上 | 180 天 |
+| 含 `status: draft` 超过 365 天 | 同上 | 365 天 |
+
+**陈旧标记**: 扫描结果在 manifest 中记录为 `stale_count`，不自动修改文件。
+
+
 
 | 检查项 | 排除目录 |
 |--------|---------|
@@ -72,6 +91,7 @@ description: 校验 vault 健康度。六级检查：L1 Frontmatter → L2 UDC �
 | created/updated 缺失 | 用当前日期填充 |
 | UDC 格式错误 | 标准化（不改类号） |
 | 跨语言文件缺失 | 复制骨架文件 |
+| methodology 字段缺失/不一致（跨语言时） | 按主语言值补齐 |
 | L6: 空正文（有备份时） | 从备份恢复 |
 
 ### 不可自动修复
@@ -116,7 +136,7 @@ json.dump(m, open(mf, 'w'), indent=2, ensure_ascii=False)
 | # | 原则 | 在本引擎中的应用 |
 |---|------|----------------|
 | 1 | OBSERVE | 完整扫描文件，不预设问题清单 |
-| 4 | THINK | 六级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目 → L6 空正文 |
+| 4 | THINK | 七级检查：L1 Frontmatter → L2 UDC → L3 链接 → L4 跨语言 → L5 项目 → L6 空正文 |
 | 6 | CONNECT(sys) | 检查后更新 manifest.engines.link |
 | 8 | ACCEPT | 断链和缺失如实报告，不加滤镜 |
 | 9 | CREATE | 生成扫描报告 |

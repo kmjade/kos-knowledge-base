@@ -1,8 +1,8 @@
 # KOS_LLM-Wiki
 
-**Knowledge Organization System + LLM-Wiki** — v3.0
+**Knowledge Organization System** — v3.0
 
-一个融合 **PARA 方法**、**UDC 分类法** 与 **LLM-Wiki 概念** 的个人知识管理系统，支持三语言 + 三平台 AI Agent。
+PARA × UDC × LLM-Wiki — 三语言知识中枢，AI 驱动的个人知识管理。
 
 ![version](https://img.shields.io/badge/version-v3.0-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
@@ -10,115 +10,88 @@
 
 ---
 
-## 目录结构
-
-```
-KOS_LLM-Wiki/
-├── 0 Inbox/              # 待分拣笔记
-├── 1 Projects/           # 活跃项目
-├── 2 Areas/              # 长期领域
-│   ├── 生活/ 学习/ 工作/ 知识组织
-├── 3 Resources/          # 知识库
-├── 4 Archives/           # 归档（gitignored）
-├── Periodic/             # 周期笔记（gitignored）
-│
-├── _meta/                # 系统元数据
-│   ├── architecture/     # 架构设计（adr + design；私密）
-│   ├── index/            # 导航（links / queries / indices）
-│   ├── system/           # 运维（templates / scripts / config / logs）
-│   ├── ai/               # AI（skills / memory / agents）
-│   └── assets/           # 架构图
-│
-├── _attachments/         # 媒体附件（canvases / images / pdfs）
-├── en/ + zh-tw/          # 多语言镜像
-│
-├── .claude/ .codex/ .opencode/   # AI 平台配置
-├── AGENTS.md             # AI 行为规范
-├── CLAUDE.md             # Claude Code 快速参考
-└── README.md
-```
-
----
-
 ## 快速开始
 
-### Obsidian 用户
-
-1. 用 [Obsidian](https://obsidian.md) 打开本仓库
-2. 启用核心插件「模板」，模板文件夹设为 `_meta/system/templates/`
+```bash
+# 用 Obsidian 打开本仓库作为 vault
+# 启用核心插件「模板」，模板文件夹设为 _meta/system/templates/
+```
 
 ### AI Agent 用户
 
-首次开始前读取 `AGENTS.md` 了解完整规范。常用命令：
+首次会话读取 `WIKI.md` 入门，`AGENTS.md` 了解完整规范。常用命令：
 
-| 命令 | 用途 |
-|------|------|
-| `KOS-Status` | 查看 vault 状态总览 |
-| `KOS-Triage [--file <path>]` | 分拣 Inbox 收件箱 |
-| `KOS-Wiki-Compile [--topic <name>]` | 编译 raw/ 到 wiki/ |
-| `KOS-Link [--path <dir>] [--fix]` | 健康检查（Frontmatter/UDC/链接/跨语言） |
-| `KOS-Query [quick\|standard\|deep] <问题>` | 三级知识查询 |
-| `Daily Open` / `Day-Review` | 今日笔记 / 每日回顾 |
+```
+KOS-Status                      # 查看 vault 状态
+KOS-Triage [--file <path>]      # 分拣 Inbox
+KOS-Wiki-Compile [--topic <>]   # 编译知识页
+KOS-Research --topic "<主题>"     # 自主研究（搜索→抓取→综合）
+KOS-Query [quick|standard|deep] # 三级知识查询
+KOS-Link [--path <dir>] [--fix] # 健康检查（7级）
+Daily Open                      # 今日笔记
+```
 
 ---
 
 ## 核心特性
 
-| 特性 | 状态 | 说明 |
-|------|:----:|------|
-| **热缓存 (hot.md)** | 可用 | `_meta/hot.md` 会话上下文；hooks 自动读写 |
-| **生命周期 Hooks** | 可用 | `.claude/hooks.json` — SessionStart / PostCompact / PostToolUse / Stop |
-| **文件锁** | 可用 | `_meta/system/scripts/wiki-lock.py` — 多 agent 并发写入安全保护 |
-| **三级查询** | 可用 | Quick / Standard / Deep — Token 分层消耗 |
-| **KOS 引擎** | 可用 | 9 引擎：triage/compile/link/daily/canvas/init/project/archive/life |
-| **UDC 自动分类** | 可用 | 四层管道：模板→目录→关键词→AI 兜底 |
-| **三语言镜像** | 可用 | CN / EN / TW 全对齐，含跨语言链接规则 |
-| **People CRM** | 可用 | 三级人物体系（Tier 1-3），隐私保护 |
-| **周期回顾** | 可用 | 日/周/月/季/年，模板化自动化 |
-| **Canvas 可视化** | 可用 | JSON Canvas 1.0，三平台 SKILL.md |
-| **Think 框架** | 可用 | 10 原则思维循环，嵌入 SKILL.md |
-| **Delta 追踪** | 骨架 | `_meta/.manifest.json` 已创建，KOS 引擎待集成 |
-| **wiki-fold 日志折叠** | 设计阶段 | 提炼机制已规划，待实现 |
-
----
-
-## 技术栈
-
-| 组件 | 选型 |
+| 特性 | 说明 |
 |------|------|
-| 编辑器 | Obsidian v1.9+ |
-| AI Agent | Claude Code / Codex CLI / OpenCode |
-| AI 技能标准 | Agent Skills |
-| 分类法 | UDC 国际十进分类法（含自动建议管道） |
-| 方法论 | PARA + LLM-Wiki |
-| 数据格式 | Markdown + YAML Frontmatter |
-| 版本控制 | Git |
-| 工具脚本 | Python（跨平台） |
-| 查询 | Dataview（Obsidian 插件） |
-| 模板 | Templater（Obsidian 插件） |
+| **四方法论模式** | PARA / LYT / Zettelkasten / Generic，`methodology` 字段切换 |
+| **AI 引擎** | 9 引擎：Triage / Compile / Research / Link / Query / Daily / Project / Archive / Init |
+| **AutoResearch** | 自主研究管道：搜索→抓取→综合→Inbox→Triage |
+| **矛盾检测** | Compile 自动检测矛盾，`[!contradiction]` callout 标记 |
+| **检索增强** | BM25 粗排 + 语义重排序 |
+| **热缓存** | `_meta/hot.md` 跨会话上下文 |
+| **文件锁** | 多 writer 并发安全，advisory lock 可见锁 |
+| **七级健康检查** | Frontmatter → UDC → 链接 → 跨语言 → 项目 → 空正文 → 陈旧声明 |
+| **UDC 分类法** | 四层自动建议管道 |
+| **三语言镜像** | CN / EN / TW 全对齐 |
+| **三平台** | Codex / Claude Code / FLOWnote，统一 canon 源 |
+| **People CRM** | 三级人物体系，隐私保护 |
+| **周期回顾** | 日/周/月/季/年模板化 |
+| **Canvas 可视化** | JSON Canvas 1.0 支持 |
+| **生命周期 Hooks** | SessionStart / PostCompact / PostToolUse / Stop |
 
 ---
 
-## 规模
+## 目录结构
 
-| 度量 | 值 |
-|------|:---:|
-| 知识页合计 | **~107**（概念 + 实体 + 来源 + 子库） |
-| 人物实体 (People CRM) | **30**（Tier 1-3） |
-| UDC 分类覆盖 | **14** 个主类 |
-| KOS 引擎技能 | **9** 个 |
-| 三平台技能总文件 | **30+** SKILL.md |
-| 三语言同步 | **CN / EN / TW** 全对齐 |
+```
+├── 0 Inbox/          待分拣流水线
+├── 1 Projects/       项目生命周期
+├── 2 Areas/          长期领域
+├── 3 Resources/      知识库
+├── 4 Archives/       冷存储
+├── _meta/            系统元数据
+├── en/ + zh-tw/      语言镜像
+├── Periodic/         周期笔记
+│
+├── AGENTS.md         AI 行为规范
+├── SYSTEM_GUIDE.md   系统完整指南
+├── WIKI.md           Vault 入口
+├── Home.md           Obsidian 首页
+└── README.md         本文件
+```
 
 ---
 
-## 语言版本
+## 方法论模式
 
-| 语言 | 首页 | 索引 |
-|------|------|------|
-| **简体中文** | [[Home]] | [[_meta/index/links/Index/_index-zh-cn\|索引]] |
-| **English** | [[en/Home]] | [[en/_meta/index/links/Index/_index-en\|Index]] |
-| **繁體中文** | [[zh-tw/首頁]] | [[zh-tw/_meta/index/links/Index/_index\|索引]] |
+笔记通过 frontmatter 声明模式，无字段则默认 PARA：
+
+```yaml
+methodology: lyt
+ace: "一句话定义"
+mocs: ["[[MOC 路径]]"]
+```
+
+| 模式 | 适用场景 | 模板位置 |
+|------|---------|---------|
+| PARA | 项目驱动工作流 | `modes/para/` |
+| LYT | 探索性学习 | `modes/lyt/` |
+| Zettelkasten | 学术写作 | `modes/zettel/` |
+| Generic | 轻量笔记 | `modes/generic/` |
 
 ---
 
@@ -126,23 +99,24 @@ KOS_LLM-Wiki/
 
 | 版本 | 日期 | 概要 |
 |------|------|------|
-| **v3.0** | 2026-06-09 | 三平台 Skill 架构 / KOS 引擎 / 热缓存 / 文件锁 / 三级查询 / Canvas / 结构重组 |
-| v2.0 | 2026-06-07 | LifeOS x LLM-Wiki 融合 / Codex 适配 / 三语言镜像 |
-| v1.1 | 2026-06-07 | KOS-Compile 引擎 / 周期自动化 / 搜索层 |
+| **v3.0** | 2026-06-12 | 方法论模式 + AutoResearch + 检索增强 + 矛盾标记 + WIKI.md |
+| v3.0-rc | 2026-06-09 | 三平台 Skill 架构 / KOS 引擎 / 热缓存 / 文件锁 / Canvas |
+| v2.0 | 2026-06-07 | LifeOS × LLM-Wiki 融合 / Codex 适配 / 三语言 |
 | v1.0 | 2026-06-03 | 初始系统构建 |
 
 ---
 
 ## 参考
 
-- `AGENTS.md` — AI 行为规范（引擎命令、规则、模板）
-- `CLAUDE.md` — Claude Code 快速上手
-- `_meta/hot.md` — 热缓存：最近会话上下文
-- `_meta/index/links/Index/_index-zh-cn.md` — 主索引
-- `.claude/hooks.json` — 生命周期 hooks
+- `SYSTEM_GUIDE.md` — 完整系统指南
+- `WIKI.md` — Vault 入口
+- `AGENTS.md` — AI 行为规范
+- `_meta/hot.md` — 热缓存
+- `_meta/index/links/Index/_index-zh-cn.md` — 总索引
+- `1 Projects/26-15 KOS 吸收 claude-obsidian/` — 26-15 吸收项目文档
 
 ---
 
 ## 许可
 
-详见 [LICENSE](./LICENSE)。
+MIT

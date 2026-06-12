@@ -35,6 +35,7 @@ description: KOS LLM-Wiki 知识组织系统统一入口。自动识别意图，
 | canvas、画布、可视、visual、visualize、展示 | **Canvas** |
 | 初始化、检查、修复、健康、init、setup、一键初始化 | **KOS-Init** |
 | 状态、进度、当前情况 | 显示各技能状态 |
+| 研究、research、搜索、调研、查找资料、autoresearch | **KOS-Research** |
 
 ---
 
@@ -62,4 +63,5 @@ dependencies:
   - kos-init
   - kos-project
   - kos-archive
+  - kos-research
 ```
