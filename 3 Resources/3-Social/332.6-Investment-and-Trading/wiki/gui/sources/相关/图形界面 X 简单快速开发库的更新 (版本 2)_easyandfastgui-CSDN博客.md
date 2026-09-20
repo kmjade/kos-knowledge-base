@@ -1,0 +1,692 @@
+---
+title: "图形界面 X: 简单快速开发库的更新 (版本 2)_easyandfastgui-CSDN博客"
+source: "https://blog.csdn.net/Herzqt123/article/details/131374815"
+author:
+  - "[[成就一亿技术人!]]"
+  - "[[hope_wisdom 发出的红包]]"
+published:
+created: 2026-06-20
+description: "文章浏览阅读457次。量化软件，量化策略  滴滴滴_easyandfastgui"
+tags:
+  - "clippings"
+---
+#### 更新
+
+1\. 改为默认颜色规划。现在，与任何图表的背景相比，它基本上是颜色最浅的。使用默认的颜色规划使得开发在自定义类中创建控件的方法可以指定最小数量的属性。
+
+以下的屏幕截图显示了MQL程序的图形界面中与浅色和深色背景比较的实例。
+
+图 1. 默认颜色规划的图形界面实例与浅色背景的比较
+
+图 2. 默认颜色规划的图形界面实例与深色背景的比较
+
+2\. 实现了第一个版本的 **CMouse** 类，用于保存鼠标和鼠标 光标 参数。让我们仔细研究它，
+
+**CMouse** 类可以在所有库文件所在目录的 **Mouse.mqh** 文件中找到: “ *<终端目录>\\MQLX\\Include\\EasyAndFastGUI\\Controls* ”. 在此我们需要来自 标准库 中的 **CChart** 类的实例。 **CChart::SubwindowY** ()方法将在那个类中用于计算相对鼠标所在子窗口的 **Y** 坐标。在类的构造函数中，会绑定到图表，而在析构函数中会解除绑定。
+
+**CChart** 类在这里对所有开发库中的基础类都是可以使用的，所以，必须要实现对应的更改。
+
+```
+//+------------------------------------------------------------------+
+//|                                                        Mouse.mqh |
+//|                        Copyright 2016, MetaQuotes Software Corp. |
+//|                                              http://www.mql5.com |
+//+------------------------------------------------------------------+
+#include <Charts\Chart.mqh>
+//+------------------------------------------------------------------+
+//| 用于得到鼠标参数的类                             |
+//+------------------------------------------------------------------+
+class CMouse
+  {
+private:
+   //--- 用于管理图表的类的实例
+   CChart            m_chart;
+   //---
+public:
+                     CMouse(void);
+                    ~CMouse(void);
+  };
+//+------------------------------------------------------------------+
+//| 构造函数　  　 　　　　　　　                |
+//+------------------------------------------------------------------+
+CMouse::CMouse(void)
+  {
+//--- 取得当前的图表 ID
+   m_chart.Attach();
+  }
+//+------------------------------------------------------------------+
+//| 析构函数                              |
+//+------------------------------------------------------------------+
+CMouse::~CMouse(void)
+  {
+//--- 解除与图表的绑定
+   m_chart.Detach();
+  }
+```
+
+以下是在开发库中几乎所有类中用到的鼠标和光标的参数。
+
+- 当前光标坐标。
+- 当前包含光标的子窗口编号。
+- 在图表上对应光标 **X** 坐标的时间。
+- 在图表上对应光标 **Y** 坐标的价格水平。
+- 鼠标左键的状态 (按下/松开).
+
+用于保存和取得参数值的相关栏位和方法在 **CMouse** 类中的实现:
+
+```
+class CMouse
+  {
+private:
+   //--- 坐标
+   int               m_x;
+   int               m_y;
+   //--- 光标所在窗口的编号
+   int               m_subwin;
+   //--- 对应 X 坐标的时间
+   datetime          m_time;
+   //--- 对应 Y 坐标的水平(价格)
+   double            m_level;
+   //--- 鼠标左键的状态 (按下/松开)
+   bool              m_left_button_state;
+   //---
+public:
+   //--- 返回坐标
+   int               X(void)               const { return(m_x);                 }
+   int               Y(void)               const { return(m_y);                 }
+   //--- 返回 (1) 光标当前所在窗口的编号, (2) 对应 X 坐标的时间, 
+   //    (3) 对应 Y 坐标的价格水平
+   int               SubWindowNumber(void) const { return(m_subwin);            }
+   datetime          Time(void)            const { return(m_time);              }
+   double            Level(void)           const { return(m_level);             }
+   //--- 返回鼠标左键的状态 (按下/松开)
+   bool              LeftButtonState(void) const { return(m_left_button_state); }
+  };
+```
+
+但那果然，我们需要事件处理函数来跟踪 [CHARTEVENT\_MOUSE\_MOVE](https://www.mql5.com/zh/docs/constants/chartconstants/enum_chartevents "CHARTEVENT_MOUSE_MOVE") 事件的出现， **CMouse** 类中的栏位就是在事件处理模块进行填充的。我们已经在所有控件事件处理函数中看到了这样的代码，现在, 它只在 **CMouse** 类中出现了，使得控件类的代码更为合理。另外，鼠标和光标的参数在处理所有元件时只读取一次，这样减少了 CPU 的负载。
+
+```
+class CMouse
+  {
+   //--- 事件处理函数
+   void              OnEvent(const int id,const long &lparam,const double &dparam,const string &sparam);
+  };
+//+------------------------------------------------------------------+
+//| 鼠标光标移动事件处理函数                            |
+//+------------------------------------------------------------------+
+void CMouse::OnEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
+  {
+//--- 光标移动事件处理函数
+   if(id==CHARTEVENT_MOUSE_MOVE)
+     {
+      //--- 鼠标左键的坐标和状态
+      m_x                 =(int)lparam;
+      m_y                 =(int)dparam;
+      m_left_button_state =(bool)int(sparam);
+      //--- 取得光标位置
+      if(!::ChartXYToTimePrice(0,m_x,m_y,m_subwin,m_time,m_level))
+         return;
+      //--- 取得相对 Y 坐标
+      if(m_subwin>0)
+         m_y=m_y-m_chart.SubwindowY(m_subwin);
+     }
+  }
+```
+
+**CMouse** 类的实例在库引擎的基类(**CWndContainer**)中声明:
+
+```
+//+------------------------------------------------------------------+
+//| 用于保存所有界面对象的类                       |
+//+------------------------------------------------------------------+
+class CWndContainer
+  {
+protected:
+   //--- 用于取得鼠标参数的类的实例
+   CMouse            m_mouse;
+  };
+```
+
+**CMouse** 类的实例也在 **CElement** 控件基类中声明，用于保存在 **CWndContainer** 类中声明的对象的指针，另外，这里还有用于保存和取得指针的方法。
+
+```
+//+------------------------------------------------------------------+
+//| 控件的基类                                  |
+//+------------------------------------------------------------------+
+class CElement
+  {
+protected:
+   //--- 用于取得鼠标参数的类的实例
+   CMouse           *m_mouse;
+   //---
+public:
+   //--- (1) 保存 和 (2) 返回 鼠标的指针
+   void              MousePointer(CMouse &object)                   { m_mouse=::GetPointer(object);       }
+   CMouse           *MousePointer(void)                       const { return(::GetPointer(m_mouse));      }
+  };
+```
+
+当创建图形界面时，指向 **CMouse** 对象的指针自动要传到所有的控件中，为此， **CMouse** 对象应该传到 **CWndContainer::AddToObjectsArray** ()方法中，所有控件中图形对象的指针都是在这里发送到通用数组中的，代码如下所示。
+
+```
+//+------------------------------------------------------------------+
+//| 把控件对象的指针加到通用数组中                              |
+//+------------------------------------------------------------------+
+template<typename T>
+void CWndContainer::AddToObjectsArray(const int window_index,T &object)
+  {
+   int total=object.ObjectsElementTotal();
+   for(int i=0; i<total; i++)
+      AddToArray(window_index,object.Object(i));
+//--- 在控件基类中保存鼠标光标
+   object.MousePointer(m_mouse);
+  }
+```
+
+现在，每个控件类都可以访问鼠标和光标参数了，它们保存在整个库中的一个单独对象中。为了得到 **CWndEvents** 类中 **ChartEvent** ()处理函数的新值, 应该发送这个事件的当前参数给 **CMouse** 对象的处理函数，因为调用是在处理所有控件的事件之前进行的，鼠标和光标参数的相关值对所有控件都是可用的，不需要重复地转换类型，把数值赋给类的栏位以及计算相关 **Y** 坐标等。
+
+```
+//+------------------------------------------------------------------+
+//| 处理程序的事件                         |
+//+------------------------------------------------------------------+
+void CWndEvents::ChartEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
+  {
+//--- 如果数组为空就退出
+//--- 初始化事件参数成员变量
+
+//--- 取得鼠标参数
+   m_mouse.OnEvent(id,lparam,dparam,sparam);
+
+//--- 自定义事件
+//--- 检查界面控件的事件
+//--- 鼠标移动事件
+//--- 图表属性改变的事件
+  }
+```
+
+让我们使用 **CSimpleButton** 控件中的处理函数来作为例子，下面的代码展示了精简版本的 **CSimpleButton::OnEvent** ()方法，使用黄色突出显示的内容包含了对 **CMouse** 对象方法的调用，用于得到(1)鼠标光标所在子窗口的编号, (2)光标的坐标 以及(3)鼠标左键的状态。
+
+```
+//+------------------------------------------------------------------+
+//| 事件处理函数                            |
+//+------------------------------------------------------------------+
+void CSimpleButton::OnEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
+  {
+//--- 处理光标移动事件
+   if(id==CHARTEVENT_MOUSE_MOVE)
+     {
+      //--- 如果控件隐藏，就退出
+      if(!CElement::IsVisible())
+         return;
+      //--- 如果表单被屏蔽，退出
+      if(m_wnd.IsLocked())
+         return;
+      //--- 如果子窗口编号不匹配，退出
+      if(CElement::m_subwin!=CElement::m_mouse.SubWindowNumber())
+         return;
+      //--- 如果按钮被屏蔽，退出
+      if(!m_button_state)
+         return;
+      //--- 定义焦点
+      CElement::MouseFocus(CElement::m_mouse.X()>X() && CElement::m_mouse.X()<X2() && 
+                           CElement::m_mouse.Y()>Y() && CElement::m_mouse.Y()<Y2());
+      //--- 如果鼠标按键松开，退出
+      if(!CElement::m_mouse.LeftButtonState())
+         return;
+      //--- 
+      ...
+      return;
+     }
+//...
+  }
+```
+
+相应的改变已经在所有开发库控件类中实现。
+
+3\. 之前，用于根据控件图形对象名称取得控件ID和索引的方法在很多库控件的类中重复出现，现在，这些方法已经放到 **CElement** 基类中以避免重复。
+
+```
+//+------------------------------------------------------------------+
+//| 控件基类                              |
+//+------------------------------------------------------------------+
+class CElement
+  {
+protected:
+   //--- 根据按钮名称取得ID
+   int               IdFromObjectName(const string object_name);
+   //--- 根据菜单选项名称取得索引
+   int               IndexFromObjectName(const string object_name);
+  };
+```
+
+4\. 在 **CWindow** 类中增加方法，以启用按钮来展开/折叠窗口和抬头文字标签的位置。
+
+```
+//+------------------------------------------------------------------+
+//| 用于创建控件表单的类                         |
+//+------------------------------------------------------------------+
+class CWindow : public CElement
+  {
+private:
+   //--- 抬头文字标签的缩进
+   int               m_label_x_gap;
+   int               m_label_y_gap;
+   //--- 是否有按钮来进行窗口的展开/折叠
+   bool              m_roll_button;
+   //---
+public:
+   //--- 文字标签的缩进
+   void              LabelXGap(const int x_gap)                              { m_label_x_gap=x_gap;                }
+   void              LabelYGap(const int y_gap)                              { m_label_y_gap=y_gap;                }
+   //--- 使用卷动按钮
+   void              UseRollButton(void)                                     { m_roll_button=true;                 }
+  };
+```
+
+5\. 在 **CElement** 类中加入 **CheckWindowPointer** ()方法用于检查窗口指针(**CWindow**)是否存在。使用 [CheckPointer()](https://www.mql5.com/zh/docs/common/checkpointer "CheckPointer()") 系统方法来检查它的正确性，需要传入指针类型。之前，在所有控件类中在创建主控件的方法之前要重复相同的代码， **CElement::CheckWindowPointer** () 方法简化了这个过程，减少了代码量并使其更加合理。
+
+```
+//+------------------------------------------------------------------+
+//| 控件的基类                                  |
+//+------------------------------------------------------------------+
+class CElement
+  {
+protected:
+   //--- 检查表单指针是否存在
+   bool              CheckWindowPointer(ENUM_POINTER_TYPE pointer_type);
+  };
+//+------------------------------------------------------------------+
+//| 检查表单指针是否存在                        |
+//+------------------------------------------------------------------+
+bool CElement::CheckWindowPointer(ENUM_POINTER_TYPE pointer_type)
+  {
+//--- 如果没有表单指针
+   if(pointer_type==POINTER_INVALID)
+     {
+      //--- 生成消息
+      string message=__FUNCTION__+" > 在创建控件之前，表单指针: "+ClassName()+"::WindowPointer(CWindow &object)" 是必需的;
+      //--- 发送消息到终端日志
+      ::Print(message);
+      //--- 打断应用程序图形界面的创建
+      return(false);
+     }
+//--- 发送指针存在的结果
+   return(true);
+  }
+```
+
+现在, 在控件中只要调用 **CElement::CheckWindowPointer** ()方法来检验表单指针的存在就可以了，以下是例子代码 (在 **CSimpleButton** 类中创建简单按钮)。相应的改变已经在所有开发库控件类中实现。
+
+```
+//+------------------------------------------------------------------+
+//| 创建"简单按钮"控件                         |
+//+------------------------------------------------------------------+
+bool CSimpleButton::CreateSimpleButton(const long chart_id,const int subwin,const string button_text,const int x,const int y)
+  {
+//--- 如果没有表单指针，退出
+   if(!CElement::CheckWindowPointer(::CheckPointer(m_wnd)))
+      return(false);
+//--- 初始化变量
+   m_id          =m_wnd.LastId()+1;
+   m_chart_id    =chart_id;
+   m_subwin      =subwin;
+   m_x           =x;
+   m_y           =y;
+   m_button_text =button_text;
+//--- 与边缘之间的距离
+   CElement::XGap(m_x-m_wnd.X());
+   CElement::YGap(m_y-m_wnd.Y());
+//--- 创建按钮
+   if(!CreateButton())
+      return(false);
+//--- 如果是对话框窗口或者是最小化的，隐藏控件
+   if(m_wnd.WindowType()==W_DIALOG || m_wnd.IsMinimized())
+      Hide();
+//---
+   return(true);
+  }
+```
+
+6\. 在 **CElement** 基类中加入模式用于当附加表单宽度改变时自动改变控件的宽度，代码已经有所改变， **CElement::AutoXResizeMode** () 方法用于设置此模式。现在，在这种模式下，控件的右边边界与表单的右边边界是绑定的，另外，增加了 **CElement::AutoXResizeRightOffset** ()方法用于设置和取得与表单右侧边缘之间的距离(单位是像素点)。
+
+```
+//+------------------------------------------------------------------+
+//| 控件基类                                |
+//+------------------------------------------------------------------+
+class CElement
+  {
+protected:
+   //--- 控件宽度自动改变模式
+   bool              m_auto_xresize_mode;
+   //--- 自动改变控件宽度模式下，控件右侧与表单右边之间的距离
+   int               m_auto_xresize_right_offset;
+   //---
+public:
+   //--- (1) 控件宽度自动改变模式, (2) 设置/取得与表单右边的距离
+   bool              AutoXResizeMode(void)                    const { return(m_auto_xresize_mode);         }
+   void              AutoXResizeMode(const bool flag)               { m_auto_xresize_mode=flag;            }
+   int               AutoXResizeRightOffset(void)             const { return(m_auto_xresize_right_offset); }
+   void              AutoXResizeRightOffset(const int offset)       { m_auto_xresize_right_offset=offset;  }
+  };
+```
+
+默认情况下，绑定控件右边与表单右侧边界的模式是禁用的(**false**)而距离等于 **0** 。初始化过程是在 **CElement** 类的构造函数中进行的(参见以下代码):
+
+```
+//+------------------------------------------------------------------+
+//| 构造函数　  　 　　　　　　　                |
+//+------------------------------------------------------------------+
+CElement::CElement(void) : m_auto_xresize_mode(false),
+                           m_auto_xresize_right_offset(0)
+  {
+  }
+```
+
+之前, 已经在 **CWindow** 类中创建了 **CWindow::ChangeWindowWidth** ()方法用于改变表单的宽度，现在，如果启用了这个模式，表单宽度只是在指标子窗口中实现时才会自动改变，换句话说，如果图表窗口的宽度在表单事件处理函数中而发生变化, 表单的宽度就会改变。
+
+```
+//--- 图表属性改变事件
+   if(id==CHARTEVENT_CHART_CHANGE)
+     {
+      //--- 如果是松开按键
+      if(m_clamping_area_mouse==NOT_PRESSED)
+        {
+         //--- 取得图表窗口大小
+         SetWindowProperties();
+         //--- 修正坐标
+         UpdateWindowXY(m_x,m_y);
+        }
+      //--- 如果启用了这种模式，改变大小
+      if(CElement::AutoXResizeMode())
+         ChangeWindowWidth(m_chart.WidthInPixels()-2);
+      //---
+      return;
+     }
+```
+
+已经在开发库事件ID列表中加入了新的ID — **ON\_WINDOW\_CHANGE\_SIZE** ，这个ID就是用于生成表单大小改变的消息。
+
+```
+//+------------------------------------------------------------------+
+//|                                                      Defines.mqh |
+//|                        Copyright 2015, MetaQuotes Software Corp. |
+//|                                              http://www.mql5.com |
+//+------------------------------------------------------------------+
+...
+//--- 事件ID
+#define ON_WINDOW_CHANGE_SIZE     (3)  // Change the window size
+...
+```
+
+生成这种消息的处理已经加到 **CWindow::ChangeWindowWidth** () 方法中了，以下是此方法精简版的代码:
+
+```
+//+------------------------------------------------------------------+
+//| 改变窗口宽度                           |
+//+------------------------------------------------------------------+
+void CWindow::ChangeWindowWidth(const int width)
+  {
+//--- 如果宽度没有改变，退出
+//--- 更新背景和抬头的宽度
+//--- 更新所有按钮的坐标和边缘距离
+//    关闭按钮
+//--- 展开按钮
+//--- 折叠按钮
+//--- 工具提示按钮 (如果已启用)
+
+//--- 窗口大小改变的消息
+   ::EventChartCustom(m_chart_id,ON_WINDOW_CHANGE_SIZE,(long)CElement::Id(),0,””);
+  }
+```
+
+该消息是在库引擎(**CWndEvents** 类)中处理的，在 **CElement** 控件基类中加入虚拟的(virtual) **ChangeWidthByRightWindowSide** ()方法，另外，要修改在许多派生类中的方法实现 (在应该改变控件宽度的地方)。
+
+```
+//+------------------------------------------------------------------+
+//| 控件基类                              |
+//+------------------------------------------------------------------+
+class CElement
+  {
+public:
+   //--- 根据窗口右侧边界改变宽度
+   virtual void      ChangeWidthByRightWindowSide(void) {}
+  };
+```
+
+在 **ON\_WINDOW\_CHANGE\_SIZE** 事件到来之后，控件的宽度根据所启用的模式可以在 **CWndEvents** 类中进行改变， **CWndEvents::OnWindowChangeSize** ()方法就是为此实现的。
+
+```
+//+------------------------------------------------------------------+
+//| 事件处理类                               |
+//+------------------------------------------------------------------+
+class CWndEvents : public CWndContainer
+  {
+private:
+   //--- 处理窗口大小的改变
+   bool              OnWindowChangeSize(void);
+  };
+//+------------------------------------------------------------------+
+//| ON_WINDOW_CHANGE_SIZE 事件                   |
+//+------------------------------------------------------------------+
+bool CWndEvents::OnWindowChangeSize(void)
+  {
+//--- 如果是 "改变控件大小" 的信号
+   if(m_id!=CHARTEVENT_CUSTOM+ON_WINDOW_CHANGE_SIZE)
+      return(false);
+//--- 活动窗口的索引
+   int awi=m_active_window_index;
+//--- 如果窗口 ID 有冲突
+   if(m_lparam!=m_windows[awi].Id())
+      return(true);
+//--- 改变所有控件的大小，表单除外
+   int elements_total=CWndContainer::ElementsTotal(awi);
+   for(int e=0; e<elements_total; e++)
+     {
+      if(m_wnd[awi].m_elements[e].ClassName()=="CWindow")
+         continue;
+      //---
+      if(m_wnd[awi].m_elements[e].AutoXResizeMode())
+         m_wnd[awi].m_elements[e].ChangeWidthByRightWindowSide();
+     }
+//---
+   return(true);
+  }
+```
+
+此方法是在处理库事件的主方法 **CWndEvents::ChartEventCustom** ()中调用的:
+
+```
+//+------------------------------------------------------------------+
+//| CHARTEVENT_CUSTOM 事件                     |
+//+------------------------------------------------------------------+
+void CWndEvents::ChartEventCustom(void)
+  {
+//--- 折叠表单的信号
+//--- 展开表单的信号
+
+//--- 改变控件大小的信号
+   if(OnWindowChangeSize())
+      return;
+
+//--- 隐藏上下文表单项目的信号
+//--- 隐藏所有上下文菜单的信号
+//--- 打开对话框窗口的信号
+//--- 关闭对话框窗口的信号
+//--- 在指定表单中重置控件颜色的信号
+//--- 重置鼠标左键点击优先级的信号
+//--- 恢复鼠标左键点击优先级的信号
+  }
+```
+
+现在，用于根据表单宽度改变控件宽度的唯一的 **ChangeWidthByRightWindowSide** ()方法在以下控件类中使用:
+
+- **CTabs** – 简单页面；
+- **CIconTabs** – 带有图片的页面；
+- **CStatusBar** – 状态条；
+- **CMenuBar** – 主菜单；
+- **CLabelsTable** – 文本标签型表格；
+- **CTable** – 编辑框型表格；
+- **CCanvasTable** – 绘制型表格；
+- **CProgressBar** – 进度条；
+- **CTreeView** – 树形视图；
+- **CFileNavigator** – 文件导航器；
+- **CLineGraph** – 线形图表；
+
+用于 **CLabelsTable** 类型控件的方法的代码显示如下，可以作为示例。
+
+```
+//+------------------------------------------------------------------+
+//| 根据到右侧边界的距离改变宽度                              |
+//+------------------------------------------------------------------+
+void CLabelsTable::ChangeWidthByRightWindowSide(void)
+  {
+//--- 坐标
+   int x=0;
+//--- 大小
+   int x_size=0;
+//--- 计算和设置表格背景新的大小
+   x_size=m_wnd.X2()-m_area.X()-m_auto_xresize_right_offset;
+   CElement::XSize(x_size);
+   m_area.XSize(x_size);
+   m_area.X_Size(x_size);
+//--- 计算和设置垂直滚动条新的位置
+   x=m_area.X2()-m_scrollv.ScrollWidth();
+   m_scrollv.XDistance(x);
+//--- 计算和修改水平滚动条的宽度
+   x_size=CElement::XSize()-m_scrollh.ScrollWidth()+1;
+   m_scrollh.ChangeXSize(x_size);
+//--- 更新对象的位置
+   Moving(m_wnd.X(),m_wnd.Y());
+  }
+```
+
+7\. 增加了在创建页面(tabs)之后通过编程 切换 页面的功能。在 **CTabs** 和 **CIconTabs** 类中实现了 **SelectTab** () 方法，下面的代码展示了来自 **CTabs** 类方法的代码，用作示例:
+
+```
+//+------------------------------------------------------------------+
+//| 用于创建页面的类                          |
+//+------------------------------------------------------------------+
+class CTabs : public CElement
+  {
+public:
+   //--- 突出显示指定的页面
+   void              SelectTab(const int index);
+  };
+//+------------------------------------------------------------------+
+//| 突出显示页面                           |
+//+------------------------------------------------------------------+
+void CTabs::SelectTab(const int index)
+  {
+   for(int i=0; i<m_tabs_total; i++)
+     {
+      //--- 如果选择了页面
+      if(index==i)
+        {
+         //--- 坐标
+         int x=0;
+         int y=0;
+         //--- 大小
+         int x_size=0;
+         int y_size=0;
+         //--- 保存选择的页面索引
+         SelectedTab(index);
+         //--- 设置颜色
+         m_tabs[i].Color(m_tab_text_color_selected);
+         m_tabs[i].BackColor(m_tab_color_selected);
+         //---  计算相对页面的位置
+         CalculatingPatch(x,y,x_size,y_size);
+         //--- 更新数值
+         m_patch.X_Size(x_size);
+         m_patch.Y_Size(y_size);
+         m_patch.XGap(x-m_wnd.X());
+         m_patch.YGap(y-m_wnd.Y());
+         //--- 更新对象的位置
+         Moving(m_wnd.X(),m_wnd.Y());
+        }
+      else
+        {
+         //--- 设置非活动页面的颜色
+         m_tabs[i].Color(m_tab_text_color);
+         m_tabs[i].BackColor(m_tab_color);
+        }
+     }
+//--- 只显示所选页面的控件
+   ShowTabElements();
+  }
+```
+
+8\. 增加了在编辑框型表格(**CTable**)中通过再次点击而取消一行选择的功能。
+
+9\. 当编辑框型表格(**CTable**)的单元可编辑模式被禁用，而点击了一个表格单元时，会生成事件，并且文字信息会作为 字符串 型参数(sparam)传递。
+
+10\. 固定了用于定义鼠标按键点击区域的枚举和方法。现在，在所有的控件中都使用 **ENUM\_MOUSE\_STATE** 枚举来追踪鼠标左键的点击区域。
+
+11\. 重新命名了一些作为资源使用的图形文件，因为在指标类型的应用程序中文件名的长度有限制。
+
+12\. 另外，加入了一些小的外观调整和修改，有些发现的错误只能在 **MetaTrader 4** 中重现。
+
+#### 用于测试更新的应用程序
+
+让我们开发一个应用程序，使得您可以测试以上所述的所有更新。我们将创建两个版本的应用程序 — "EA交易" 和 "指标"。指标的图形界面将位于图表的子窗口中，使得可以测试窗口宽度自动适应图表窗口宽度，并且元件也会调整它们的宽度以适应它们所附加的窗口的宽度。
+
+所有现存的控件类型都应该在图形界面中实现以完成全面的测试。控件位于不同的页面(**CTabs**)，这使得尽可能的节省空间。因为控件列表相当大，把创建它们的方法放到一个独立文件中更为合理，让我们把文件命名为 **MainWindow.mqh** 。它将保存在与其他 项目 文件相同的目录中，它应该在自定义类的下方进行关联，就像以下代码中所显示的那样:
+
+```
+//+------------------------------------------------------------------+
+//|                                                      Program.mqh |
+//|                        Copyright 2015, MetaQuotes Software Corp. |
+//|                                              http://www.mql5.com |
+//+------------------------------------------------------------------+
+#include <EasyAndFastGUI\Controls\WndEvents.mqh>
+//+------------------------------------------------------------------+
+//| 用于创建应用程序的类                       |
+//+------------------------------------------------------------------+
+class CProgram : public CWndEvents
+  {
+
+//...
+
+  };
+//+------------------------------------------------------------------+
+//| 创建控件　                            |
+//+------------------------------------------------------------------+
+#include "MainWindow.mqh"
+```
+
+**Program.mqh** 应该在 **MainWindow.mqh** 　文件中包含。
+
+```
+//+------------------------------------------------------------------+
+//|                                                   MainWindow.mqh |
+//|                        Copyright 2015, MetaQuotes Software Corp. |
+//|                                              http://www.mql5.com |
+//+------------------------------------------------------------------+
+#include "Program.mqh"
+```
+
+在 **Program.mqh** 文件中, 应该只留下主文件，用于创建程序的图形界面，在其中调用所有创建控件的方法。
+
+测试程序的图形界面将一共包含8个页面，以下的屏幕截图显示了控件的位置。第一个页面包含了所有的按钮类型(包含了按钮组)以及使用垂直滚动条的列表。"简单按钮 3" 有两个模式，如果启用， 进度条 控件会模拟执行过程而显示出来。
+
+图 3. 图形界面中第一个页面的控件组
+
+当启用了"简单按钮3"时, 在状态栏区域会显示进度条 (参见下面的屏幕截图):
+
+图 4. 进度条控件
+
+第二，第三和第四页面包含了不同类型的表格:
+
+图 5. 第二个页面中图形界面的控件组
+
+图 6. 第三个页面中图形界面的控件组
+
+图 7. 第四个页面中图形界面的控件组
+
+第五个页面包含线形图表控件，用于操作它的方法是在 **CProgram** 类中声明和实现的， **CProgram::OnTimerEvent** () 计时器函数会每隔 **300** 毫秒生成随机的序列:
+
+图 8. 第五个页面中图形界面的控件组
+
+第六和第七个页面包含了树形视图和文件导航器，以及各种类型的组合框，输入栏位和复选框:
+
+图 9. 第六个页面中图形界面的控件组
