@@ -1,0 +1,28 @@
+---
+title: "建筑材料 Wiki 索引"
+type: index
+udc: "691"
+tags: [building-materials, 建筑材料]
+created: 2026-10-08
+updated: 2026-10-08
+---
+
+# 建筑材料 Wiki 索引
+
+> 691 建筑材料深库的编译产物索引。
+
+## 概念 Concepts
+
+> 暂无 —— 待 KOS-Wiki-Compile 编译 `raw/articles/` 各章后落位。
+
+## 实体 Entities
+
+> 暂无。
+
+## 来源 Sources
+
+> 暂无。
+
+## 入口
+
+[[691-建筑材料|691 建筑材料]] · [[建筑材料知识地图|知识地图]] · [[691-建筑材料/99-资源收集/资源总览|资源总览]]

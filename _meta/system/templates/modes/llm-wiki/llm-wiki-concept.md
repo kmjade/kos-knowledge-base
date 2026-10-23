@@ -1,0 +1,27 @@
+---
+methodology: llm-wiki
+created: {{date:YYYY-MM-DD}}
+updated: {{date:YYYY-MM-DD}}
+udc:
+tags: [concept, wiki]
+compiled: true
+compiled_from:
+reviewed: false
+---
+
+# {{title}}
+
+> **概念** — 定义该概念的简洁说明。
+
+## 定义
+
+
+## 关键特征
+
+
+## 与其他概念的关系
+
+
+## 参考来源
+
+-
